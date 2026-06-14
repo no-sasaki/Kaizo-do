@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>解像堂 — コンサルタントのための実装解像度 / WCM編</title>
+<meta name="description" content="青写真は描ける。では、解像度は？ ── 上流コンサルタントが、Web Content Management の実装を一周して「腹落ち」するための無料の学習サイト。生成AIを相棒に、最小の学習コストで。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  /* ── 現像済み(developed) palette ── */
+  --paper:#EEEADD;          /* drafting paper, warm but cooler than the cream cliché */
+  --paper-2:#E6E1D1;
+  --ink:#14202B;            /* deep blue-black, tied to blueprint */
+  --ink-soft:#3C4A56;
+  --ink-faint:#6B7681;
+  --blueprint:#103A5E;      /* dominant brand: cyanotype/blueprint blue */
+  --blueprint-deep:#0C2A45;
+  --blueprint-line:#9FB2BE;
+  --amber:#C9852F;          /* focus-confirm spark, used sparingly */
+  --amber-soft:#E7B86A;
+  --resolved:#2C6B59;       /* "developed" full-color confirm */
+  --rule:#C7C0AC;
+  --hair:#D4CEBC;
+  --shadow:rgba(16,40,60,.14);
+  --bg-grid:rgba(16,58,94,.07);
+
+  --serif:"Shippori Mincho","Fraunces",serif;
+  --fraunces:"Fraunces","Shippori Mincho",serif;
+  --sans:"Noto Sans JP","Helvetica Neue",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+
+  --maxw:1180px;
+  --measure:38rem;
+}
+[data-theme="darkroom"]{
+  --paper:#0C1722;          /* darkroom */
+  --paper-2:#10202E;
+  --ink:#E9E3D3;
+  --ink-soft:#B7BFC6;
+  --ink-faint:#7E8B94;
+  --blueprint:#5FA0D6;      /* cyanotype glow on dark */
+  --blueprint-deep:#9CC6E8;
+  --blueprint-line:#34536C;
+  --amber:#E6AE4E;
+  --amber-soft:#F0C988;
+  --resolved:#5FB59A;
+  --rule:#26394A;
+  --hair:#1E3142;
+  --shadow:rgba(0,0,0,.5);
+  --bg-grid:rgba(120,180,225,.06);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-weight:400;line-height:1.85;
+  font-feature-settings:"palt" 1;letter-spacing:.01em;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    linear-gradient(var(--bg-grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--bg-grid) 1px,transparent 1px);
+  background-size:34px 34px;background-position:center top;
+  transition:background-color .5s ease,color .5s ease;
+}
+img{max-width:100%}
+a{color:inherit}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(1.2rem,4vw,3rem)}
+
+/* ── shared typographic devices ── */
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--blueprint);
+  display:inline-flex;align-items:center;gap:.6em;
+}
+.eyebrow::before{content:"";width:1.6em;height:1px;background:var(--blueprint);opacity:.6}
+[data-theme="darkroom"] .eyebrow{color:var(--blueprint-deep)}
+.lead{font-family:var(--serif);font-weight:500;line-height:2;font-size:clamp(1.05rem,2.4vw,1.32rem)}
+.serif{font-family:var(--serif)}
+.amber{color:var(--amber)}
+
+/* focus-bracket: the viewfinder corner motif (signature structural device) */
+.bracket{position:relative}
+.bracket::before,.bracket::after{
+  content:"";position:absolute;width:14px;height:14px;pointer-events:none;
+  border-color:var(--blueprint);border-style:solid;opacity:.55;transition:opacity .3s,inset .3s;
+}
+.bracket::before{top:-7px;left:-7px;border-width:1.5px 0 0 1.5px}
+.bracket::after{bottom:-7px;right:-7px;border-width:0 1.5px 1.5px 0}
+
+/* ───────────── header ───────────── */
+.site-head{position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);
+  background:color-mix(in srgb,var(--paper) 82%,transparent);
+  border-bottom:1px solid var(--hair)}
+.head-row{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:baseline;gap:.55rem;text-decoration:none;font-family:var(--fraunces);
+  font-weight:600;font-size:1.18rem;letter-spacing:.02em}
+.brand b{font-family:var(--serif);font-weight:700;color:var(--blueprint)}
+.brand .romaji{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;color:var(--ink-faint);text-transform:uppercase}
+.nav{display:flex;align-items:center;gap:1.6rem}
+.nav a{font-size:.86rem;text-decoration:none;color:var(--ink-soft);transition:color .2s}
+.nav a:hover{color:var(--blueprint)}
+.theme-btn{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+  background:transparent;border:1px solid var(--rule);color:var(--ink-soft);padding:.4rem .7rem;
+  border-radius:2px;cursor:pointer;transition:all .25s}
+.theme-btn:hover{border-color:var(--blueprint);color:var(--blueprint)}
+@media(max-width:720px){.nav a.nav-link{display:none}}
+
+/* ───────────── hero ───────────── */
+.hero{padding:clamp(3rem,7vw,6rem) 0 clamp(2.5rem,5vw,4rem)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:2.4rem}}
+.hero h1{font-family:var(--serif);font-weight:800;
+  font-size:clamp(2.5rem,6.4vw,4.6rem);line-height:1.18;letter-spacing:.01em;margin:.7rem 0 0}
+.hero h1 .q{color:var(--blueprint);position:relative}
+.hero h1 .q::after{content:"";position:absolute;left:0;right:0;bottom:.06em;height:.5em;
+  background:linear-gradient(transparent 60%,color-mix(in srgb,var(--amber) 38%,transparent) 0);z-index:-1}
+.hero-sub{margin-top:1.5rem;max-width:30rem;color:var(--ink-soft);font-size:1.02rem}
+.hero-cta{display:flex;gap:.9rem;margin-top:2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.5em;font-family:var(--sans);font-weight:500;
+  font-size:.95rem;text-decoration:none;padding:.8rem 1.4rem;border-radius:2px;transition:all .25s}
+.btn-primary{background:var(--blueprint);color:var(--paper)}
+.btn-primary:hover{background:var(--blueprint-deep);transform:translateY(-1px)}
+[data-theme="darkroom"] .btn-primary{color:var(--paper)}
+.btn-ghost{border:1px solid var(--rule);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--blueprint);color:var(--blueprint)}
+.btn .arr{font-family:var(--mono)}
+
+/* ── the focus dial: signature interactive ── */
+.specimen-card{position:relative;border:1px solid var(--rule);background:var(--paper-2);
+  border-radius:4px;padding:1rem;box-shadow:0 24px 60px -28px var(--shadow)}
+.spec-label{display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.7rem}
+.spec-state{color:var(--blueprint);font-weight:600}
+.spec-window{position:relative;overflow:hidden;border-radius:3px;aspect-ratio:4/3.05;background:#fff}
+[data-theme="darkroom"] .spec-window{background:#0a1620}
+/* the rendered mini-page */
+.mini{position:absolute;inset:0;display:flex;flex-direction:column;
+  transition:filter .15s linear}
+.mini-top{display:flex;justify-content:space-between;align-items:center;padding:.7rem .9rem;
+  border-bottom:1px solid rgba(0,0,0,.08);font-family:var(--sans)}
+.mini-logo{font-family:var(--fraunces);font-weight:600;font-size:.82rem;color:#14202B}
+.mini-nav{display:flex;gap:.7rem;font-size:.6rem;color:#7a7a7a}
+.mini-hero{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.55rem;
+  padding:1.1rem 1rem;background:linear-gradient(135deg,#f3efe6,#e7ddc9)}
+.mini-eyebrow{font-family:var(--mono);font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:#b07a2a}
+.mini-h{font-family:var(--serif);font-weight:700;font-size:1.34rem;line-height:1.25;color:#1a2530;margin:0}
+.mini-p{font-size:.62rem;color:#55606a;margin:0;max-width:18rem}
+.mini-btn{align-self:flex-start;margin-top:.3rem;background:#103A5E;color:#fff;
+  font-size:.58rem;padding:.4rem .8rem;border-radius:2px}
+.mini-foot{display:flex;gap:.6rem;padding:.5rem .9rem;border-top:1px solid rgba(0,0,0,.07);font-size:.5rem;color:#9a9a9a}
+/* blueprint overlay that fades out as you focus */
+.blueprint-veil{position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;
+  background:
+    linear-gradient(0deg, rgba(16,58,94,.92), rgba(16,58,94,.92)),
+    repeating-linear-gradient(0deg,transparent 0 11px,rgba(255,255,255,.16) 11px 12px),
+    repeating-linear-gradient(90deg,transparent 0 11px,rgba(255,255,255,.16) 11px 12px);
+  opacity:var(--veil,1);transition:opacity .15s linear}
+.blueprint-veil::after{content:"BLUEPRINT";position:absolute;left:8px;bottom:7px;
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;color:rgba(255,255,255,.7);
+  opacity:var(--veil,1)}
+.dial{margin-top:1rem}
+.dial-track{position:relative}
+.dial input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;
+  background:linear-gradient(90deg,var(--blueprint),var(--amber));border-radius:3px;outline:none;cursor:ew-resize}
+.dial input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+  width:26px;height:26px;border-radius:50%;background:var(--paper);border:2px solid var(--blueprint);
+  box-shadow:0 3px 10px var(--shadow);cursor:ew-resize;transition:transform .15s}
+.dial input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.08)}
+.dial input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;
+  background:var(--paper);border:2px solid var(--blueprint);cursor:ew-resize}
+.dial-legend{display:flex;justify-content:space-between;margin-top:.55rem;
+  font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.dial-hint{text-align:center;margin-top:.6rem;font-size:.74rem;color:var(--ink-faint)}
+.dial-hint b{color:var(--blueprint);font-weight:600}
+
+/* ───────────── generic section ───────────── */
+.section{padding:clamp(3.2rem,7vw,5.6rem) 0;border-top:1px solid var(--hair)}
+.section-head{max-width:var(--measure);margin-bottom:2.6rem}
+.section-head h2{font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.32;margin:.8rem 0 0}
+
+/* manifesto */
+.manifesto p{max-width:var(--measure);font-size:clamp(1.05rem,2.2vw,1.22rem);line-height:2.15;margin:0 0 1.4rem}
+.manifesto .drop::first-letter{font-family:var(--fraunces);font-weight:600;font-size:3.4em;
+  float:left;line-height:.82;padding:.05em .12em 0 0;color:var(--blueprint)}
+.manifesto .turn{font-family:var(--serif);color:var(--blueprint);font-weight:600}
+.pullquote{font-family:var(--serif);font-weight:600;font-size:clamp(1.3rem,3.2vw,1.9rem);
+  line-height:1.7;color:var(--ink);border-left:2px solid var(--amber);padding-left:1.3rem;
+  margin:2.6rem 0;max-width:34rem}
+
+/* two layers */
+.layers{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:760px){.layers{grid-template-columns:1fr}}
+.layer{background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;
+  padding:1.8rem 1.7rem;position:relative;transition:transform .3s,box-shadow .3s}
+.layer:hover{transform:translateY(-3px);box-shadow:0 20px 40px -26px var(--shadow)}
+.layer .ix{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;color:var(--amber)}
+.layer h3{font-family:var(--serif);font-weight:700;font-size:1.34rem;margin:.5rem 0 .8rem}
+.layer p{color:var(--ink-soft);font-size:.95rem;margin:0 0 .9rem}
+.layer .split{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.chip{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;padding:.32rem .6rem;border-radius:2px;
+  border:1px solid var(--rule);color:var(--ink-soft)}
+.chip.self{border-color:var(--blueprint);color:var(--blueprint)}
+.chip.ai{border-color:var(--amber);color:var(--amber)}
+
+/* stages map */
+.stages{display:flex;flex-direction:column;gap:0}
+.stage{display:grid;grid-template-columns:auto 1fr auto;gap:1.4rem;align-items:start;
+  padding:1.6rem 0;border-top:1px solid var(--hair);text-decoration:none;color:inherit;
+  position:relative;transition:padding .3s}
+.stage:last-child{border-bottom:1px solid var(--hair)}
+.stage .no{font-family:var(--mono);font-size:.9rem;color:var(--ink-faint);padding-top:.2rem;letter-spacing:.05em}
+.stage .body h3{font-family:var(--serif);font-weight:700;font-size:1.32rem;margin:0 0 .35rem;
+  display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.stage .body .meta{display:block;font-size:.92rem;color:var(--ink-soft);margin-bottom:.5rem}
+.stage .pay{font-family:var(--mono);font-size:.7rem;letter-spacing:.05em;color:var(--blueprint);
+  display:inline-flex;align-items:center;gap:.4em}
+.stage .pay::before{content:"▸"}
+.stage .go{align-self:center;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;transition:color .25s,transform .25s}
+.stage.live{cursor:pointer}
+.stage.live:hover{padding-left:.8rem}
+.stage.live:hover .go{color:var(--blueprint);transform:translateX(3px)}
+.stage.live:hover .body h3{color:var(--blueprint)}
+.stage .tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:.2rem .5rem;border-radius:2px;border:1px solid currentColor}
+.tag.now{color:var(--resolved)}
+.tag.soon{color:var(--ink-faint)}
+@media(max-width:640px){.stage{grid-template-columns:auto 1fr;gap:1rem}.stage .go{display:none}}
+
+/* free / prereq box */
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:760px){.facts{grid-template-columns:1fr}}
+.fact{border:1px solid var(--rule);border-radius:4px;padding:1.6rem 1.6rem;background:var(--paper-2)}
+.fact h3{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--blueprint);margin:0 0 1rem}
+.fact ul{margin:0;padding:0;list-style:none}
+.fact li{display:flex;gap:.7rem;padding:.5rem 0;border-top:1px dashed var(--hair);font-size:.95rem;color:var(--ink-soft)}
+.fact li:first-child{border-top:none}
+.fact li b{color:var(--ink);font-weight:600;font-family:var(--sans)}
+.fact li .mk{color:var(--resolved);font-family:var(--mono);font-size:.8rem;flex-shrink:0}
+
+/* closing cta */
+.closing{text-align:center;padding:clamp(4rem,9vw,7rem) 0}
+.closing .eyebrow{justify-content:center}
+.closing h2{font-family:var(--serif);font-weight:800;font-size:clamp(2rem,5.5vw,3.4rem);
+  line-height:1.3;margin:1rem auto 1.6rem;max-width:24ch}
+.closing .btn{margin:0 auto}
+
+/* footer */
+.site-foot{border-top:1px solid var(--hair);padding:2.4rem 0;color:var(--ink-faint)}
+.foot-row{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;align-items:center;
+  font-size:.82rem;font-family:var(--mono);letter-spacing:.04em}
+.foot-row a{color:var(--ink-soft);text-decoration:none}
+.foot-row a:hover{color:var(--blueprint)}
+
+/* reveal motion */
+.reveal{opacity:0;transform:translateY(18px);filter:blur(6px);transition:opacity .8s ease,transform .8s ease,filter .8s ease}
+.reveal.is-in{opacity:1;transform:none;filter:none}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;filter:none;transition:none}
+  html{scroll-behavior:auto}
+  .mini,.blueprint-veil{transition:none}
+}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:2px}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="index.html">
+      <b>解像堂</b><span class="romaji">Kaizō-dō</span>
+    </a>
+    <nav class="nav">
+      <a class="nav-link" href="#manifesto">構想</a>
+      <a class="nav-link" href="#stages">ステージ</a>
+      <a class="nav-link" href="stage-1.html">Stage 1</a>
+      <button class="theme-btn" id="themeBtn" aria-label="表示モードを切り替え">暗室</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ───── hero ───── -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">実装解像度 / Web Content Management</span>
+        <h1>青写真は、<br>描ける。<br><span class="q">では、解像度は？</span></h1>
+        <p class="hero-sub">上流コンサルタントが、Webコンテンツ管理の実装を“一周”して腹落ちするための、無料の学習サイト。生成AIを相棒に、最小の学習コストで。</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="stage-1.html">Stage 1 をはじめる <span class="arr">→</span></a>
+          <a class="btn btn-ghost" href="#manifesto">構想を読む</a>
+        </div>
+      </div>
+
+      <!-- signature interactive: the focus dial -->
+      <div class="specimen-card bracket" aria-hidden="false">
+        <div class="spec-label">
+          <span>SPECIMEN — campaign LP</span>
+          <span class="spec-state" id="specState">解像度 12%</span>
+        </div>
+        <div class="spec-window">
+          <div class="mini" id="mini">
+            <div class="mini-top">
+              <span class="mini-logo">AOZORA 珈琲</span>
+              <span class="mini-nav">商品&nbsp;&nbsp;物語&nbsp;&nbsp;店舗</span>
+            </div>
+            <div class="mini-hero">
+              <span class="mini-eyebrow">Spring Single Origin</span>
+              <p class="mini-h">朝の一杯を、<br>もう一段くっきりと。</p>
+              <p class="mini-p">標高1,800mの畑から。今季の浅煎りを、数量限定でお届けします。</p>
+              <span class="mini-btn">予約する</span>
+            </div>
+            <div class="mini-foot"><span>© AOZORA</span><span>特定商取引法</span><span>お問い合わせ</span></div>
+          </div>
+          <div class="blueprint-veil" id="veil"></div>
+        </div>
+        <div class="dial">
+          <div class="dial-track">
+            <input type="range" id="dial" min="0" max="100" value="12" aria-label="解像度ダイヤル：青写真から実装へ" />
+          </div>
+          <div class="dial-legend"><span>青写真</span><span>実装</span></div>
+          <p class="dial-hint">ダイヤルを動かす。<b id="dialWord">構想</b>が、<b>実装</b>へ結像する。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── manifesto ───── -->
+  <section class="section manifesto" id="manifesto">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">なぜ、いま</span>
+        <h2>知らないのではない。<br>触っていないだけだ。</h2>
+      </div>
+      <p class="drop reveal">あなたは「ヘッドレス構成で、コンテンツをAPIで配信する」と言える。「Jamstackでパフォーマンスとセキュリティを両立する」も、「1to1でパーソナライズする」も言える。けれど ── 一度も、触ったことがない。だから言葉の輪郭が、ほんの少しだけ、ボケている。</p>
+      <p class="reveal">見積もりが甘くなるのも、ベンダーの“できます”を鵜呑みにしてしまうのも、クライアントの信頼にあと一段が出ないのも、根は同じ。<span class="turn">実装の解像度</span>が足りていない。描いた青写真は、形は正しい。ただ、ピントが合っていない。</p>
+
+      <blockquote class="pullquote reveal">このサイトのゴールは、コードが書けるようになることではない。青写真の輪郭はそのままに、ボケていた像を、くっきり合わせることだ。</blockquote>
+
+      <p class="reveal">そして、いま決定的なことが起きている。生成AIが、「触るコスト」を数ヶ月から数時間へ圧縮した。エンジニアになる必要はもうない。<span class="turn">AIを翻訳者として使い倒し</span>、実装の全工程をたった一周する。それだけで、あなたの言葉は別の手触りを持ちはじめる。現場でも「スペック比較表を眺めるより、まず30分触ってもらう方が、合う・合わないがはっきりする」と言われはじめている。腹落ちは、読んでも来ない。動かすと、来る。</p>
+    </div>
+  </section>
+
+  <!-- ───── two layers ───── -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">全編を貫く2つの軸</span>
+        <h2>“何を委ね、何を自分で腹落ちさせるか”。<br>その線引きこそが、新しいスキル。</h2>
+      </div>
+      <div class="layers">
+        <div class="layer bracket reveal">
+          <span class="ix">LAYER A</span>
+          <h3>生成AI活用レイヤー</h3>
+          <p>各ステージで、AIに任せる作業と、自分で理解すべき勘所の境界線を毎回はっきり示す。プロンプトは実物つき。学習コストが何分の一にもなる仕組みを、体で覚える。</p>
+          <div class="split">
+            <span class="chip ai">AIに委ねる：コード生成・変換・要約</span>
+            <span class="chip self">自分で腹落ち：構造・トレードオフ・判断</span>
+          </div>
+        </div>
+        <div class="layer bracket reveal">
+          <span class="ix">LAYER B</span>
+          <h3>コンサル還元レイヤー</h3>
+          <p>技術の概念は、必ず「なぜ在るのか」と「だからコンサルとして何が言えるのか」をセットで。見積もり・RFP評価・リスク察知・ベンダー管理。青写真の一文が、どう鋭くなるかまで翻訳する。</p>
+          <div class="split">
+            <span class="chip">見積もり精度</span>
+            <span class="chip">リスク察知</span>
+            <span class="chip">信頼の獲得</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── stages map ───── -->
+  <section class="section" id="stages">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">川を一周する</span>
+        <h2>7つのステージ。<br>WCMプロジェクトの一生を、そのままなぞる。</h2>
+        <p class="lead" style="margin-top:1.2rem;color:var(--ink-soft)">各ステージで、必ず①本物を手で作り → ②腹落ち → ③コンサルの武器に、まで一周する。</p>
+      </div>
+
+      <div class="stages reveal">
+        <a class="stage live" href="stage-1.html">
+          <span class="no">01</span>
+          <div class="body">
+            <h3>Webの体 <span class="tag now">いま公開中</span></h3>
+            <span class="meta">ページとは何か。HTML・見た目・振る舞いの分離を、実在ページで体感する。</span>
+            <span class="pay">この“分離”が、そのまま「ヘッドレス」の正体だと気づく</span>
+          </div>
+          <span class="go">はじめる →</span>
+        </a>
+        <div class="stage">
+          <span class="no">02</span>
+          <div class="body">
+            <h3>コンテンツを構造として捉える <span class="tag soon">近日</span></h3>
+            <span class="meta">実在のマーケ題材をコンテンツモデリング。国産・日本語UIのmicroCMS無料枠で。</span>
+            <span class="pay">見積もりとスコープ精度に直結。雑なモデルが移行地獄を生む理由を、手で知る</span>
+          </div>
+          <span class="go">近日</span>
+        </div>
+        <div class="stage">
+          <span class="no">03</span>
+          <div class="body">
+            <h3>配信のしくみ <span class="tag soon">近日</span></h3>
+            <span class="meta">CMSからAPIで取得し、ページへ描画。fetchはAIに書かせ、JSONがページになる瞬間を見る。</span>
+            <span class="pay">「API配信」が言葉でなくなる。無料枠の上限や継続性がTCOに効く理由まで</span>
+          </div>
+          <span class="go">近日</span>
+        </div>
+        <div class="stage">
+          <span class="no">04</span>
+          <div class="body">
+            <h3>公開する <span class="tag soon">近日</span></h3>
+            <span class="meta">GitHub Pagesで実際にインターネットへ公開。ビルドとは／CDNとは／SSGとSSRの違い。</span>
+            <span class="pay">自分が作った“生きたURL”を手に入れる。Core Web Vitalsが具体になる</span>
+          </div>
+          <span class="go">近日</span>
+        </div>
+        <div class="stage">
+          <span class="no">05</span>
+          <div class="body">
+            <h3>育てる <span class="tag soon">近日</span></h3>
+            <span class="meta">編集ワークフロー・プレビュー・多言語・A/B・計測(GA4/GTM)・アクセシビリティ・技術的SEO。</span>
+            <span class="pay">ローンチは終わりでなく始まり。MarTech連携と1to1がここに住む</span>
+          </div>
+          <span class="go">近日</span>
+        </div>
+        <div class="stage">
+          <span class="no">06</span>
+          <div class="body">
+            <h3>コンサルへの還元 <span class="tag soon">近日</span></h3>
+            <span class="meta">各体験を「鋭い一手」へ翻訳。見積もり・RFP評価・ベンダー管理・アーキ選定・信頼獲得。</span>
+            <span class="pay">青写真の一文が、Before/Afterでどう変わるかを言語化する</span>
+          </div>
+          <span class="go">近日</span>
+        </div>
+        <div class="stage">
+          <span class="no">07</span>
+          <div class="body">
+            <h3>失敗の博物館 <span class="tag soon">近日</span></h3>
+            <span class="meta">移行事故・モデル破綻・性能劣化・ガバナンス崩壊。実プロジェクトの地雷を嗅ぎ分ける。</span>
+            <span class="pay">“やらかし”の匂いを、提案の前に察知できるようになる</span>
+          </div>
+          <span class="go">近日</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── facts ───── -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">入口は、せばめない</span>
+        <h2>何が無料で、何を前提にするか。</h2>
+      </div>
+      <div class="facts reveal">
+        <div class="fact">
+          <h3>ぜんぶ無料でできる</h3>
+          <ul>
+            <li><span class="mk">¥0</span><span><b>ホスティング</b>　GitHub Pages</span></li>
+            <li><span class="mk">¥0</span><span><b>ハンズオンCMS</b>　microCMS 無料枠（日本語UI）</span></li>
+            <li><span class="mk">¥0</span><span><b>生成AI</b>　無料ティアでも十分に進められる</span></li>
+            <li><span class="mk">¥0</span><span><b>このサイト</b>　教材・ソースとも無料公開</span></li>
+          </ul>
+        </div>
+        <div class="fact">
+          <h3>前提にすること</h3>
+          <ul>
+            <li><span class="mk">✓</span><span><b>Officeアプリの操作</b>　資料を作れるなら十分</span></li>
+            <li><span class="mk">✓</span><span><b>基本のロジカルシンキング</b>　構造で考える癖</span></li>
+            <li><span class="mk">—</span><span><b>プログラミング経験</b>　不要。文理も問わない</span></li>
+            <li><span class="mk">—</span><span><b>コマンドライン</b>　触ったことがなくて構わない</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── closing ───── -->
+  <section class="closing wrap">
+    <span class="eyebrow">はじめる</span>
+    <h2>青写真に、ピントを。</h2>
+    <a class="btn btn-primary" href="stage-1.html">Stage 1：Webの体 <span class="arr">→</span></a>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-row">
+    <span>解像堂 — 実装解像度 / WCM編</span>
+    <span>非技術者にも、入りやすく。それでいて、陳腐でなく。</span>
+    <a href="stage-1.html">Stage 1 →</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ── focus dial ── */
+  var dial=document.getElementById('dial');
+  var mini=document.getElementById('mini');
+  var veil=document.getElementById('veil');
+  var state=document.getElementById('specState');
+  var word=document.getElementById('dialWord');
+  function applyFocus(v){
+    var r=v/100;                 // 0..1
+    var blur=(1-r)*7;            // px
+    var sat=0.15+r*0.95;
+    mini.style.filter='blur('+blur.toFixed(2)+'px) saturate('+sat.toFixed(2)+') contrast('+(0.85+r*0.25).toFixed(2)+')';
+    veil.style.setProperty('--veil', Math.max(0,(1-r*1.18)).toFixed(2));
+    state.textContent='解像度 '+v+'%';
+    word.textContent = r<0.34 ? '青写真' : (r<0.7 ? '構想' : '設計');
+  }
+  dial.addEventListener('input',function(){applyFocus(+dial.value)});
+  applyFocus(+dial.value);
+
+  // gentle one-time invite (resolve up a touch), respect reduced motion
+  var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!rm){
+    var target=78,cur=12,raf;
+    setTimeout(function(){
+      (function step(){
+        cur+=(target-cur)*0.06;
+        if(Math.abs(target-cur)>0.6){dial.value=Math.round(cur);applyFocus(Math.round(cur));raf=requestAnimationFrame(step);}
+        else{dial.value=target;applyFocus(target);}
+      })();
+    },650);
+    // if user grabs it, cancel the auto demo
+    dial.addEventListener('pointerdown',function(){cancelAnimationFrame(raf)});
+  }
+
+  /* ── scroll reveal (with fail-safe so content never stays hidden) ── */
+  function revealAll(){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('is-in');});}
+  if(!('IntersectionObserver' in window)){revealAll();}
+  else{
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target);}});
+    },{threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+    setTimeout(revealAll,8000); /* ultimate safety net */
+  }
+
+  /* ── theme toggle (暗室 / 現像済み) ── */
+  var btn=document.getElementById('themeBtn');
+  btn.addEventListener('click',function(){
+    var dark=document.documentElement.getAttribute('data-theme')==='darkroom';
+    document.documentElement.setAttribute('data-theme',dark?'':'darkroom');
+    btn.textContent=dark?'暗室':'現像';
+  });
+})();
+</script>
+</body>
+</html>
