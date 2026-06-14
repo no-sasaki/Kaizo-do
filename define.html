@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>合意の解像度 — 理解・定義・合意 / 解像堂</title>
+<meta name="description" content="サンプルは作れる。では、仕事はどう進める？ クライアントが実現したいことを、理解し・定義し・合意する方法論。ペルソナ・カスタマージャーニー・ユーザーストーリー・受け入れ条件を、本質から。そして、その定義がそのまま実装の設計図になる。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:#EEEADD;--paper-2:#E6E1D1;--ink:#14202B;--ink-soft:#3C4A56;--ink-faint:#6B7681;
+  --blueprint:#103A5E;--blueprint-deep:#0C2A45;--blueprint-line:#9FB2BE;
+  --amber:#C9852F;--amber-soft:#E7B86A;--resolved:#2C6B59;--alarm:#B0492F;
+  --rule:#C7C0AC;--hair:#D4CEBC;--shadow:rgba(16,40,60,.14);--bg-grid:rgba(16,58,94,.07);
+  --serif:"Shippori Mincho","Fraunces",serif;--fraunces:"Fraunces","Shippori Mincho",serif;
+  --sans:"Noto Sans JP","Helvetica Neue",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;
+  --maxw:1180px;--measure:38rem;
+}
+[data-theme="darkroom"]{
+  --paper:#0C1722;--paper-2:#10202E;--ink:#E9E3D3;--ink-soft:#B7BFC6;--ink-faint:#7E8B94;
+  --blueprint:#5FA0D6;--blueprint-deep:#9CC6E8;--blueprint-line:#34536C;
+  --amber:#E6AE4E;--amber-soft:#F0C988;--resolved:#5FB59A;--alarm:#E07A5A;
+  --rule:#26394A;--hair:#1E3142;--shadow:rgba(0,0,0,.5);--bg-grid:rgba(120,180,225,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.85;
+  font-feature-settings:"palt" 1;letter-spacing:.01em;-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--bg-grid) 1px,transparent 1px),linear-gradient(90deg,var(--bg-grid) 1px,transparent 1px);
+  background-size:34px 34px;transition:background-color .5s,color .5s}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(1.2rem,4vw,3rem)}
+.narrow{max-width:46rem}
+a{color:inherit}
+.eyebrow{font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--blueprint);display:inline-flex;align-items:center;gap:.6em}
+.eyebrow::before{content:"";width:1.6em;height:1px;background:var(--blueprint);opacity:.6}
+.serif{font-family:var(--serif)}
+.bracket{position:relative}
+.bracket::before,.bracket::after{content:"";position:absolute;width:14px;height:14px;pointer-events:none;
+  border-color:var(--blueprint);border-style:solid;opacity:.55}
+.bracket::before{top:-7px;left:-7px;border-width:1.5px 0 0 1.5px}
+.bracket::after{bottom:-7px;right:-7px;border-width:0 1.5px 1.5px 0}
+
+/* header */
+.site-head{position:sticky;top:0;z-index:50;backdrop-filter:blur(8px);
+  background:color-mix(in srgb,var(--paper) 82%,transparent);border-bottom:1px solid var(--hair)}
+.head-row{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:baseline;gap:.55rem;text-decoration:none;font-family:var(--fraunces);font-weight:600;font-size:1.18rem}
+.brand b{font-family:var(--serif);font-weight:700;color:var(--blueprint)}
+.brand .romaji{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;color:var(--ink-faint);text-transform:uppercase}
+.nav{display:flex;align-items:center;gap:1.4rem}
+.nav a{font-size:.86rem;text-decoration:none;color:var(--ink-soft)}
+.nav a:hover{color:var(--blueprint)}
+.theme-btn{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;
+  border:1px solid var(--rule);color:var(--ink-soft);padding:.4rem .7rem;border-radius:2px;cursor:pointer}
+.theme-btn:hover{border-color:var(--blueprint);color:var(--blueprint)}
+@media(max-width:640px){.nav a.nav-link{display:none}}
+
+/* lesson hero */
+.lesson-hero{padding:clamp(2.6rem,6vw,4.6rem) 0 1.5rem}
+.crumb{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--ink-faint)}
+.crumb a{text-decoration:none}.crumb a:hover{color:var(--blueprint)}
+.crumb .stage-no{color:var(--amber);letter-spacing:.1em}
+.lesson-hero h1{font-family:var(--serif);font-weight:800;font-size:clamp(2.2rem,6vw,4rem);line-height:1.2;margin:1rem 0 0}
+.lesson-lead{font-family:var(--serif);font-weight:500;line-height:2.05;font-size:clamp(1.08rem,2.4vw,1.34rem);
+  max-width:42rem;margin:1.8rem 0 0;color:var(--ink)}
+
+/* prose */
+.prose{padding:clamp(2rem,4vw,3rem) 0}
+.prose p{max-width:var(--measure);margin:0 0 1.3rem;color:var(--ink-soft);font-size:1.03rem}
+.prose h2{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,3.6vw,2.1rem);line-height:1.4;
+  margin:3rem 0 1.2rem;display:flex;align-items:baseline;gap:.7rem}
+.prose h2 .n{font-family:var(--mono);font-size:.9rem;color:var(--amber);letter-spacing:.08em;flex-shrink:0}
+.prose strong{color:var(--ink);font-weight:600}
+.prose code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);padding:.1em .45em;border-radius:2px;border:1px solid var(--hair)}
+.tag-line{font-family:var(--serif);color:var(--blueprint);font-weight:600}
+
+/* the brief (vague request) */
+.brief{max-width:var(--measure);border:1px solid var(--rule);border-radius:6px;background:var(--paper-2);
+  padding:1.5rem 1.6rem;margin:1.6rem 0;position:relative}
+.brief .who{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.6rem}
+.brief .said{font-family:var(--serif);font-weight:600;font-size:1.2rem;line-height:1.7;color:var(--ink)}
+.brief .said::before{content:"\201C";color:var(--blueprint);font-size:1.4em;margin-right:.05em}
+.brief .said::after{content:"\201D";color:var(--blueprint)}
+.brief .blur-note{font-size:.82rem;color:var(--ink-faint);margin-top:.8rem}
+
+/* question sorter (理解) */
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.4rem 0;max-width:42rem}
+@media(max-width:620px){.qgrid{grid-template-columns:1fr}}
+.qcard{border:1px solid var(--rule);border-radius:5px;background:var(--paper-2);padding:1rem 1.1rem;cursor:pointer;
+  transition:border-color .25s,transform .2s;position:relative}
+.qcard:hover{transform:translateY(-2px)}
+.qcard .q{font-size:.96rem;color:var(--ink);line-height:1.6}
+.qcard .verdict{display:none;margin-top:.7rem;padding-top:.7rem;border-top:1px dashed var(--hair);font-size:.84rem;line-height:1.6}
+.qcard .verdict .lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;display:inline-block;
+  padding:.15rem .5rem;border-radius:2px;margin-bottom:.4rem}
+.qcard.revealed .verdict{display:block}
+.qcard.good.revealed{border-color:var(--resolved)}
+.qcard.good .verdict .lbl{color:var(--resolved);border:1px solid var(--resolved)}
+.qcard.surface.revealed{border-color:var(--alarm)}
+.qcard.surface .verdict .lbl{color:var(--alarm);border:1px solid var(--alarm)}
+.qcard .tapnote{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--ink-faint);margin-top:.6rem}
+.qcard.revealed .tapnote{display:none}
+
+/* reveal-the-job */
+.job-reveal{max-width:var(--measure);margin:1.4rem 0;border-left:3px solid var(--amber);padding:.2rem 0 .2rem 1.3rem}
+.job-reveal .from{font-size:.92rem;color:var(--ink-faint)}
+.job-reveal .to{font-family:var(--serif);font-size:1.14rem;color:var(--ink);margin-top:.4rem;line-height:1.7}
+
+/* persona essence */
+.persona-test{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;max-width:42rem;margin:1.2rem 0}
+@media(max-width:620px){.persona-test{grid-template-columns:1fr}}
+.ptile{border:1px solid var(--rule);border-radius:5px;padding:.9rem 1rem;background:var(--paper-2)}
+.ptile h4{margin:0 0 .5rem;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase}
+.ptile.changes h4{color:var(--resolved)}.ptile.vanity h4{color:var(--ink-faint)}
+.ptile ul{margin:0;padding-left:1.1rem;font-size:.88rem;color:var(--ink-soft)}
+.ptile li{margin:.25rem 0}
+
+/* journey strip (定義) */
+.journey{margin:1.6rem 0;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2);overflow:hidden}
+.j-steps{display:flex;border-bottom:1px solid var(--rule)}
+.j-step{flex:1;border:none;border-right:1px solid var(--hair);background:transparent;cursor:pointer;
+  padding:.9rem .5rem;font-family:var(--sans);font-size:.8rem;color:var(--ink-soft);transition:background .2s,color .2s;position:relative}
+.j-step:last-child{border-right:none}
+.j-step .ph{display:block;font-family:var(--mono);font-size:.56rem;letter-spacing:.06em;color:var(--ink-faint);margin-bottom:.25rem}
+.j-step:hover{background:color-mix(in srgb,var(--blueprint) 6%,transparent)}
+.j-step.active{background:color-mix(in srgb,var(--blueprint) 12%,transparent);color:var(--blueprint);font-weight:700}
+.j-step.peak::after{content:"効きどころ";position:absolute;top:.35rem;right:.35rem;font-family:var(--mono);font-size:.5rem;
+  letter-spacing:.06em;color:var(--amber);border:1px solid var(--amber);border-radius:2px;padding:.05rem .25rem}
+@media(max-width:620px){.j-step{font-size:.66rem}.j-step .ph{font-size:.5rem}.j-step.peak::after{display:none}}
+.j-detail{padding:1.3rem 1.5rem;min-height:120px}
+.j-detail .row{display:flex;gap:.7rem;margin-bottom:.7rem;font-size:.95rem}
+.j-detail .row:last-child{margin-bottom:0}
+.j-detail .row .k{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--blueprint);
+  flex-shrink:0;width:5.5rem;padding-top:.2rem}
+.j-detail .row .v{color:var(--ink);line-height:1.7}
+.j-detail .row.job .v{font-family:var(--serif);font-weight:600;color:var(--blueprint)}
+
+/* story builder (定義+合意) */
+.builder{margin:1.6rem 0;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--paper-2);
+  box-shadow:0 30px 70px -42px var(--shadow)}
+.builder-bar{padding:.7rem 1rem;border-bottom:1px solid var(--rule);background:color-mix(in srgb,var(--blueprint) 8%,var(--paper-2));
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blueprint)}
+.builder-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:780px){.builder-grid{grid-template-columns:1fr}}
+.b-left{padding:1.2rem 1.2rem;border-right:1px solid var(--rule)}
+@media(max-width:780px){.b-left{border-right:none;border-bottom:1px solid var(--rule)}}
+.b-grp{margin-bottom:.9rem}
+.b-grp label{display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:.3rem}
+.b-grp label b{color:var(--blueprint)}
+.b-grp select{width:100%;font-family:var(--sans);font-size:.88rem;color:var(--ink);background:var(--paper);
+  border:1px solid var(--rule);border-radius:2px;padding:.5rem .55rem}
+.b-grp select:focus{outline:none;border-color:var(--blueprint)}
+.crit-title{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:1rem 0 .5rem}
+.crit{display:flex;align-items:flex-start;gap:.55rem;padding:.45rem .55rem;border:1px solid var(--rule);border-radius:3px;
+  margin-bottom:.4rem;cursor:pointer;background:var(--paper);transition:border-color .2s}
+.crit input{margin-top:.25rem;flex-shrink:0}
+.crit .ct{font-size:.84rem;color:var(--ink);line-height:1.5}
+.crit .ct .why{display:block;font-size:.7rem;color:var(--ink-faint);margin-top:.15rem}
+.crit.on.testable{border-color:var(--resolved)}
+.crit.on.vague{border-color:var(--alarm)}
+
+.b-right{padding:1.2rem 1.2rem;display:flex;flex-direction:column;gap:1rem}
+.story-card{border:1px solid var(--rule);border-radius:5px;background:var(--paper);padding:1.1rem 1.2rem}
+.story-card .lbl{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blueprint);margin-bottom:.5rem}
+.story-card .sentence{font-family:var(--serif);font-size:1.05rem;line-height:1.85;color:var(--ink)}
+.story-card .sentence em{font-style:normal;color:var(--blueprint);font-weight:600;
+  border-bottom:2px solid color-mix(in srgb,var(--amber) 45%,transparent)}
+.story-card .ac{margin-top:.9rem;padding-top:.8rem;border-top:1px dashed var(--hair)}
+.story-card .ac .ac-h{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.4rem}
+.story-card .ac ul{margin:0;padding-left:1.1rem;font-size:.82rem;color:var(--ink-soft)}
+.story-card .ac li{margin:.2rem 0}
+.story-card .ac .empty{font-size:.8rem;color:var(--ink-faint);font-style:italic}
+
+.meter{}
+.meter .m-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.4rem}
+.meter .m-name{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.meter .m-val{font-family:var(--serif);font-weight:700;font-size:1rem}
+.meter .m-track{height:8px;border-radius:5px;background:color-mix(in srgb,var(--ink) 9%,transparent);overflow:hidden}
+.meter .m-fill{height:100%;width:0;border-radius:5px;transition:width .4s,background .4s}
+.meter .m-note{margin-top:.6rem;font-size:.84rem;line-height:1.6}
+.meter .m-note b{font-weight:600}
+
+/* mapping (接続) */
+.mapping{max-width:42rem;margin:1.4rem 0}
+.map-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.9rem;
+  padding:.9rem 0;border-top:1px solid var(--hair)}
+.map-row:first-child{border-top:none}
+.map-row .def{font-family:var(--sans);font-size:.92rem;color:var(--ink);text-align:right}
+.map-row .def .k{display:block;font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--blueprint);margin-bottom:.15rem}
+.map-row .arrow{font-family:var(--mono);color:var(--amber);font-size:1rem}
+.map-row .impl{font-size:.92rem;color:var(--ink-soft)}
+.map-row .impl .k{display:block;font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--resolved);margin-bottom:.15rem}
+@media(max-width:560px){.map-row{grid-template-columns:1fr;gap:.3rem}.map-row .def{text-align:left}.map-row .arrow{display:none}}
+
+/* callouts */
+.callout{border:1px solid var(--rule);border-left:3px solid var(--blueprint);border-radius:4px;
+  background:var(--paper-2);padding:1.4rem 1.5rem;margin:1.8rem 0;max-width:var(--measure)}
+.callout.aha{border-left-color:var(--amber)}
+.callout .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--blueprint);display:block;margin-bottom:.6rem}
+.callout.aha .k{color:var(--amber)}
+.callout p{margin:0;color:var(--ink);max-width:none}
+.callout .serif{font-family:var(--serif);font-weight:600;font-size:1.12rem;line-height:1.8}
+
+/* AI boundary */
+.ai-split{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.6rem 0;max-width:var(--measure)}
+@media(max-width:620px){.ai-split{grid-template-columns:1fr}}
+.ai-col{border:1px solid var(--rule);border-radius:4px;padding:1.1rem 1.2rem;background:var(--paper-2)}
+.ai-col h4{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;margin:0 0 .7rem}
+.ai-col.ai h4{color:var(--amber)}.ai-col.self h4{color:var(--blueprint)}
+.ai-col ul{margin:0;padding-left:1.1rem;font-size:.9rem;color:var(--ink-soft)}
+.ai-col li{margin:.3rem 0}
+.prompt{font-family:var(--mono);font-size:.82rem;background:var(--blueprint-deep);color:#e7eef4;
+  padding:1rem 1.1rem;border-radius:4px;margin:1rem 0;max-width:var(--measure);line-height:1.7;white-space:pre-wrap}
+[data-theme="darkroom"] .prompt{background:#071420;border:1px solid var(--blueprint-line)}
+
+/* consult return */
+.return{max-width:var(--measure);margin:1.4rem 0}
+.return .ba{border-top:1px solid var(--hair);padding:1rem 0}
+.return .ba .before{font-size:.92rem;color:var(--ink-faint)}
+.return .ba .before b{color:var(--ink-soft);font-weight:500}
+.return .ba .after{font-family:var(--serif);font-size:1.05rem;color:var(--ink);margin-top:.35rem;line-height:1.7}
+.return .ba .after .mk{font-family:var(--mono);font-size:.7rem;color:var(--resolved);letter-spacing:.1em;margin-right:.5em}
+
+/* museum */
+.museum{border:1px solid var(--rule);border-radius:4px;background:
+  repeating-linear-gradient(135deg,transparent 0 9px,color-mix(in srgb,var(--amber) 7%,transparent) 9px 10px),var(--paper-2);
+  padding:1.5rem 1.6rem;margin:1.8rem 0;max-width:var(--measure)}
+.museum .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:.6rem}
+.museum h4{font-family:var(--serif);font-weight:700;font-size:1.15rem;margin:0 0 .6rem}
+.museum p{margin:0;color:var(--ink-soft);font-size:.95rem}
+
+/* nav */
+.lesson-foot{border-top:1px solid var(--hair);margin-top:2rem;padding:2.4rem 0 4rem}
+.nextcard{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;
+  border:1px solid var(--rule);border-radius:6px;padding:1.4rem 1.6rem;background:var(--paper-2)}
+.nextcard .l .eyebrow{margin-bottom:.5rem}
+.nextcard .l h3{font-family:var(--serif);font-weight:700;font-size:1.3rem;margin:0}
+.nextcard .l p{margin:.3rem 0 0;color:var(--ink-soft);font-size:.9rem}
+.nextcard .soon{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);
+  border:1px solid var(--rule);padding:.5rem .9rem;border-radius:2px}
+.back{display:inline-flex;align-items:center;gap:.5em;margin-top:1.6rem;font-family:var(--mono);font-size:.78rem;
+  letter-spacing:.08em;color:var(--ink-soft);text-decoration:none}
+.back:hover{color:var(--blueprint)}
+
+.reveal{opacity:0;transform:translateY(16px);filter:blur(5px);transition:opacity .7s,transform .7s,filter .7s}
+.reveal.is-in{opacity:1;transform:none;filter:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;filter:none;transition:none}html{scroll-behavior:auto}}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:2px}
+.site-foot{border-top:1px solid var(--hair);padding:2.2rem 0;color:var(--ink-faint)}
+.foot-row{display:flex;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;font-size:.82rem;font-family:var(--mono);letter-spacing:.04em}
+.foot-row a{color:var(--ink-soft);text-decoration:none}.foot-row a:hover{color:var(--blueprint)}
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="index.html"><b>解像堂</b><span class="romaji">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a class="nav-link" href="index.html#stages">ステージ一覧</a>
+      <a class="nav-link" href="stage-1.html">Stage 1</a>
+      <button class="theme-btn" id="themeBtn" aria-label="表示モードを切り替え">暗室</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="lesson-hero">
+    <div class="wrap">
+      <p class="crumb"><a href="index.html">解像堂</a> &nbsp;/&nbsp; 第二部・合意の解像度 &nbsp;/&nbsp; <span class="stage-no">通し</span></p>
+      <h1>合意の解像度</h1>
+      <p class="lesson-lead">サンプルは、作れるようになった。では ── <strong>仕事は、どう進める？</strong> どんなに手が動いても、「クライアントが本当に実現したいこと」を、理解し・定義し・合意できなければ、何を作るかが決まらない。ここでは、その<strong>上流の解像度</strong>を上げる。そして最後に、定義した成果物が、そのまま第一部で触れた実装の設計図になることを見届ける。</p>
+    </div>
+  </section>
+
+  <section class="prose">
+    <div class="wrap">
+
+      <h2><span class="n">00</span>「作れる」の、その先</h2>
+      <p>第一部で、あなたは中身と見た目の分離を手で知り、コンテンツが構造であることを体感した。だがクライアントの前に座ったとき、最初に必要なのはコードではない。<strong>「で、何を作るべきか」を、相手と一緒に決める力</strong>だ。</p>
+      <p>そして要望は、いつも曖昧な言葉でやってくる。たとえば、第一部で扱った珈琲ブランドから、こんな相談が来たとする。</p>
+      <div class="brief reveal">
+        <div class="who">CLIENT — AOZORA 珈琲・マーケ担当</div>
+        <div class="said">新しいシングルオリジンを売りたい。サイトをかっこよくして、予約をもっと増やしたいんです。</div>
+        <p class="blur-note">── 一見、明確に聞こえる。だが「かっこよく」も「もっと」も、解像度はゼロに近い。ここから始まる。</p>
+      </div>
+
+      <h2><span class="n">01</span>理解 ── 御用聞きを、超える</h2>
+      <p>素人は、言われた要望をそのまま実装する（御用聞き）。プロは、その奥にある<span class="tag-line">本当に片づけたい用事（ジョブ）</span>を掘る。顧客は「コーヒー」が欲しいのではない。「朝の数分で、気分をひとつリセットする」を雇っている。クライアントも「かっこいいサイト」が欲しいのではない。「新規の人に、新豆の価値を伝え、最初の一回を試させる」を片づけたい。</p>
+      <p>では、最初の一手はどれか。下のカードを<strong>タップ</strong>して、効く問い／効かない問いを見分けてみる。</p>
+      <div class="qgrid reveal" id="qgrid">
+        <div class="qcard good" data-v="good">
+          <div class="q">「予約が増えたら、何が達成された状態ですか？ 売上、新規比率、どれを見ていますか？」</div>
+          <div class="tapnote">タップして判定を見る</div>
+          <div class="verdict"><span class="lbl">効く</span>成功の定義を相手の言葉で固定する。これが無いと、後で「増えた／増えてない」で揉める。</div>
+        </div>
+        <div class="qcard surface" data-v="surface">
+          <div class="q">「トップは1カラム派ですか、2カラム派ですか？」</div>
+          <div class="tapnote">タップして判定を見る</div>
+          <div class="verdict"><span class="lbl">効かない</span>解決（実装）に飛びすぎ。誰の何の課題かが未定のまま見た目を詰めても、土台が無い。</div>
+        </div>
+        <div class="qcard good" data-v="good">
+          <div class="q">「いま予約に至らず離脱する人は、どこで・なぜ諦めていそうですか？」</div>
+          <div class="tapnote">タップして判定を見る</div>
+          <div class="verdict"><span class="lbl">効く</span>“効きどころ”の仮説を引き出す。全部を均等に直すのは素人。決定的な一点を探す。</div>
+        </div>
+        <div class="qcard surface" data-v="surface">
+          <div class="q">「競合のA社、おしゃれですよね。あんな感じにしますか？」</div>
+          <div class="tapnote">タップして判定を見る</div>
+          <div class="verdict"><span class="lbl">効かない</span>他社の見た目を基準にすると、自社の顧客の課題が消える。誘導的で、合意の土台にならない。</div>
+        </div>
+      </div>
+      <div class="job-reveal reveal">
+        <div class="from">要望（言われたこと）：「サイトをかっこよく、予約を増やしたい」</div>
+        <div class="to">→ ジョブ（本当に片づけたいこと）：<strong>初めて当ブランドに触れる人が、自分に合う豆だと納得し、不安なく初回予約に踏み切れる状態をつくる。</strong></div>
+      </div>
+
+      <p>そして「誰のために」を、ひとりに固定する。これが<strong>ペルソナ</strong>だ。ただし注意 ── ペルソナの価値は、年齢や年収の精緻さではない。<span class="tag-line">そのペルソナが、設計上の意思決定をひとつでも変えるか</span>。変えないペルソナは、ただの飾りだ。</p>
+      <div class="persona-test reveal">
+        <div class="ptile changes">
+          <h4>意思決定を変える属性</h4>
+          <ul>
+            <li>豆の知識：浅い → 専門用語を避け、味を3軸で“翻訳”する必要</li>
+            <li>不安の正体：「自分に合うか不安」→ 比較体験を最優先に置く</li>
+            <li>来訪文脈：平日朝の数分 → 3タップで予約完了の導線</li>
+          </ul>
+        </div>
+        <div class="ptile vanity">
+          <h4>飾りで終わる属性</h4>
+          <ul>
+            <li>名前は「田中さん」、好きな映画は…</li>
+            <li>年齢32歳ちょうど（33でも設計は変わらない）</li>
+            <li>休日の過ごし方（今回の決定に効かない）</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2><span class="n">02</span>定義 ── ジャーニーで“効きどころ”を見抜く</h2>
+      <p>ペルソナが決まったら、その人の<strong>実際の道のり</strong>を辿る。カスタマージャーニーは、きれいな図を描く儀式ではない。<span class="tag-line">どの瞬間に価値が生まれ／壊れるか</span>を見つけ、力を注ぐ一点を定める道具だ。各段階を押して、顧客の問いと「サイトがすべき仕事」を見てみる。</p>
+      <div class="journey reveal" id="journey">
+        <div class="j-steps" id="jSteps">
+          <button class="j-step active" data-j="0"><span class="ph">01</span>認知</button>
+          <button class="j-step" data-j="1"><span class="ph">02</span>興味</button>
+          <button class="j-step peak" data-j="2"><span class="ph">03</span>比較検討</button>
+          <button class="j-step" data-j="3"><span class="ph">04</span>初回予約</button>
+          <button class="j-step" data-j="4"><span class="ph">05</span>受取</button>
+          <button class="j-step" data-j="5"><span class="ph">06</span>再訪</button>
+        </div>
+        <div class="j-detail" id="jDetail"></div>
+      </div>
+      <div class="callout reveal">
+        <span class="k">勘所</span>
+        <p>6段階すべてを均等に磨くのは、力の分散でしかない。ここでの<strong>効きどころは「比較検討」</strong>。「自分に合う豆か分からない」という不安が、最も多くの離脱を生む。<strong>力を注ぐ一点を、根拠とともに合意する</strong>。これが定義の核心。</p>
+      </div>
+
+      <h2><span class="n">03</span>定義と合意 ── 作れる単位に割り、Doneを共有する</h2>
+      <p>効きどころが決まったら、それを<strong>ユーザーストーリー</strong>に落とす。良いストーリーは「作れて・テストできて・価値がある」最小単位。そして必ず<span class="tag-line">受け入れ条件（=何をもって完成とするか）</span>を伴う。受け入れ条件のない要件は、要件ではない。“言った言わない”の火種だ。</p>
+      <p>下のビルダーで、ストーリーと受け入れ条件を組み立てる。右の<strong>合意可能度メーター</strong>が、定義の解像度を映す。曖昧な条件を選ぶと赤に沈み、検証可能な条件を選ぶと緑に結像する。</p>
+
+      <div class="builder bracket reveal">
+        <div class="builder-bar">ユーザーストーリー・ビルダー — 定義 × 合意</div>
+        <div class="builder-grid">
+          <div class="b-left">
+            <div class="b-grp">
+              <label>誰が <b>ペルソナ</b></label>
+              <select id="s_persona">
+                <option>豆の知識が浅く、平日朝に余白がほしい30代の新規客</option>
+                <option>他店と飲み比べる、こだわりの強い20代</option>
+                <option>贈り物を探している40代</option>
+              </select>
+            </div>
+            <div class="b-grp">
+              <label>どんな状況で <b>きっかけ</b></label>
+              <select id="s_trigger">
+                <option>広告で新しい豆を知り、初めてサイトに来たとき</option>
+                <option>いつもの豆に少し飽きた朝</option>
+                <option>大切な人への贈り物を探しているとき</option>
+              </select>
+            </div>
+            <div class="b-grp">
+              <label>何をしたい <b>欲求</b></label>
+              <select id="s_want">
+                <option>自分の好みに本当に合う豆か、確かめたい</option>
+                <option>失敗せずに一本を選びたい</option>
+                <option>贈って外さないか、確認したい</option>
+              </select>
+            </div>
+            <div class="b-grp">
+              <label>なぜなら <b>得たい結果</b></label>
+              <select id="s_outcome">
+                <option>初回でがっかりして、お金と朝を無駄にしたくないから</option>
+                <option>自分への小さなご褒美を、確実に当てたいから</option>
+                <option>相手にちゃんと喜ばれたいから</option>
+              </select>
+            </div>
+
+            <div class="crit-title">受け入れ条件を選ぶ（Done の定義）</div>
+            <label class="crit testable" data-w="t"><input type="checkbox" /><span class="ct">味わいを酸味・コク・焙煎度の3軸で比較できる<span class="why">数値で検証できる。実装にも落ちる。</span></span></label>
+            <label class="crit testable" data-w="t"><input type="checkbox" /><span class="ct">初回予約が3タップ以内で完了する<span class="why">テスト可能。朝の文脈に効く。</span></span></label>
+            <label class="crit testable" data-w="t"><input type="checkbox" /><span class="ct">送料・受取方法が、予約に進む前に明示される<span class="why">離脱要因を潰す。可否を判定できる。</span></span></label>
+            <label class="crit vague" data-w="v"><input type="checkbox" /><span class="ct">サイトがかっこいい<span class="why">主観で、完成を判定できない。揉める。</span></span></label>
+            <label class="crit vague" data-w="v"><input type="checkbox" /><span class="ct">なんとなく使いやすい<span class="why">“なんとなく”は合意にならない。</span></span></label>
+          </div>
+          <div class="b-right">
+            <div class="story-card">
+              <div class="lbl">User Story</div>
+              <div class="sentence" id="storyText"></div>
+              <div class="ac">
+                <div class="ac-h">受け入れ条件（Done）</div>
+                <ul id="acList"></ul>
+              </div>
+            </div>
+            <div class="meter">
+              <div class="m-top"><span class="m-name">合意可能度</span><span class="m-val" id="mVal">—</span></div>
+              <div class="m-track"><div class="m-fill" id="mFill"></div></div>
+              <p class="m-note" id="mNote"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout aha reveal">
+        <span class="k">腹落ちポイント</span>
+        <p class="serif">合意とは、仲良くうなずき合うことではない。<strong>同じ絵を、検証可能な言葉で固定する</strong>こと。受け入れ条件が「3軸で比較できる」「3タップで予約完了」まで具体になった瞬間、誰が見ても完成を判定できる。これが、揉めない定義 ── つまり合意の正体だ。</p>
+      </div>
+
+      <h2><span class="n">04</span>接続 ── 合意は、そのまま設計図になる</h2>
+      <p>ここで第一部とつながる。いま合意した定義は、抽象論で終わらない。<span class="tag-line">あなたが手で触れた実装の、ほぼそのままの設計図</span>だ。だから上流の質が、そのまま実装の質を決める。</p>
+      <div class="mapping reveal">
+        <div class="map-row">
+          <div class="def"><span class="k">ペルソナ</span>豆の知識が浅い新規客</div>
+          <div class="arrow">→</div>
+          <div class="impl"><span class="k">実装：出し分け</span>初回訪問者に“比較から”を優先表示（Stage 5）</div>
+        </div>
+        <div class="map-row">
+          <div class="def"><span class="k">ジャーニーの効きどころ</span>比較検討</div>
+          <div class="arrow">→</div>
+          <div class="impl"><span class="k">実装：ページ／テンプレート</span>「味の比較」ページを主要導線に（Stage 4）</div>
+        </div>
+        <div class="map-row">
+          <div class="def"><span class="k">受け入れ条件</span>3軸で比較できる</div>
+          <div class="arrow">→</div>
+          <div class="impl"><span class="k">実装：コンテンツ型／フィールド</span>商品に「酸味・コク・焙煎度」フィールドを設計（Stage 2）</div>
+        </div>
+        <div class="map-row">
+          <div class="def"><span class="k">受け入れ条件</span>3タップで予約</div>
+          <div class="arrow">→</div>
+          <div class="impl"><span class="k">実装：計測／改善</span>予約完了までのタップ数をKPIに（Stage 5）</div>
+        </div>
+      </div>
+      <p>これが「で、仕事はどう進める？」への答えだ。<strong>理解 → 定義 → 合意 → 実装</strong>が、ぶつ切りの工程ではなく、一本の線でつながる。第一部で得た“実装の手触り”があるからこそ、受け入れ条件を実装可能な粒度で書ける。逆に、良い定義があるから、実装は迷わない。<strong>二つの解像度は、互いを高め合う。</strong></p>
+
+      <h2><span class="n">05</span>生成AIに、どこまで任せるか</h2>
+      <p>この上流工程こそ、生成AIが効く。ただし任せる先を間違えない。AIは<strong>叩き台を量産</strong>し、<strong>見落としを潰す</strong>。判断と合意形成は、あなたの仕事だ。</p>
+      <div class="ai-split reveal">
+        <div class="ai-col ai">
+          <h4>AIに委ねてよい</h4>
+          <ul>
+            <li>ペルソナ／ジャーニーの初稿を一気に出す</li>
+            <li>ユーザーストーリーを10本に分解する</li>
+            <li>抜けがちなエッジケースの受け入れ条件出し</li>
+            <li>議事メモ → ストーリー草案への変換</li>
+          </ul>
+        </div>
+        <div class="ai-col self">
+          <h4>自分で握る</h4>
+          <ul>
+            <li>“本当のジョブ”はどれか、の見極め</li>
+            <li>効きどころを一点に絞る判断</li>
+            <li>何をもってDoneとするかの合意</li>
+            <li>受け入れ条件が実装可能な粒度かの検品</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prompt">あなたは熟練のサービスデザイナーです。次のジョブに対し、ペルソナを1名、
+そのカスタマージャーニーを6段階で作成してください。各段階に「顧客の問い」
+「感情」「サイトがすべき仕事」を付け、最後に“最も離脱が起きそうな段階”を
+理由つきで1つ指摘してください。ジョブ：〔ここに貼る〕</div>
+
+      <h2><span class="n">06</span>定義の質を、コンサルの言葉に還す</h2>
+      <p>同じ提案でも、定義の解像度で説得力がまるで違う。曖昧な約束は不安にされ、検証可能な定義は信頼される。</p>
+      <div class="return reveal">
+        <div class="ba">
+          <div class="before"><b>Before：</b>「ユーザー目線で、使いやすいサイトにします」</div>
+          <div class="after"><span class="mk">AFTER</span>「初回訪問者が“自分に合う豆か”を3軸で比較でき、3タップで予約完了する ── ここを完成の条件として握ります」</div>
+        </div>
+        <div class="ba">
+          <div class="before"><b>Before：</b>「要件を整理して進めます」</div>
+          <div class="after"><span class="mk">AFTER</span>「効きどころは比較検討の不安です。ここに絞って効果を測るので、投資対効果が検証できます」</div>
+        </div>
+        <div class="ba">
+          <div class="before"><b>Before：</b>「柔軟に対応します」</div>
+          <div class="after"><span class="mk">AFTER</span>「各ストーリーにDoneの定義があるので、“言った言わない”を防ぎ、変更も影響範囲を明示して合意できます」</div>
+        </div>
+      </div>
+
+      <div class="museum reveal">
+        <span class="k">失敗の博物館 — Exhibit 02</span>
+        <h4>立派なペルソナが、引き出しで眠った現場</h4>
+        <p>あるプロジェクトでは、写真付きの美しいペルソナを30ページ作った。だが ── <strong>そのペルソナが、設計上の判断を一度も変えなかった</strong>。作ること自体が目的化し、誰も参照しない資料になった。本質は装丁ではない。「この人だから、ここはこう決める」という<strong>意思決定の分岐</strong>を生むかどうか。器（PPT/Word）に凝る前に、その定義が“判断を動かすか”を問う ── この一言が、提案の場で効く。</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="lesson-foot">
+    <div class="wrap narrow">
+      <div class="nextcard reveal">
+        <div class="l">
+          <span class="eyebrow">第一部へ橋をかける</span>
+          <h3>Stage 02：コンテンツを構造として捉える</h3>
+          <p>いま合意した受け入れ条件を、実際のコンテンツ型・フィールドへ落とす。定義が、設計になる瞬間。</p>
+        </div>
+        <span class="soon">近日公開</span>
+      </div>
+      <a class="back" href="index.html">← 解像堂トップへ戻る</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap foot-row">
+    <span>解像堂 — 第二部 / 合意の解像度</span>
+    <a href="index.html">トップ →</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ── 01 question sorter ── */
+  document.querySelectorAll('#qgrid .qcard').forEach(function(c){
+    c.addEventListener('click',function(){c.classList.add('revealed');});
+  });
+
+  /* ── 02 journey ── */
+  var J=[
+    {q:'これ、何のブランド？',e:'通りすがりの無関心',w:'一目で“何屋か”と、新しい豆の存在を伝える'},
+    {q:'ちょっと良さそう。どんな豆？',e:'軽い好奇心',w:'豆の物語と特徴を、専門用語なしで届ける'},
+    {q:'自分の好みに合う？ 失敗しない？',e:'不安・迷い（最も離脱しやすい）',w:'酸味・コク・焙煎度で“自分用に翻訳”し、比較させる',peak:true},
+    {q:'いくら？ どう届く？ 面倒じゃない？',e:'あと一歩の慎重さ',w:'料金と受取を予約前に明示し、3タップで完了させる'},
+    {q:'ちゃんと届く？ うまく淹れられる？',e:'期待と、少しの不安',w:'淹れ方ガイドで、初回体験の失敗を防ぐ'},
+    {q:'また頼もうかな。',e:'満足、あるいは忘却',w:'好みに合わせた“次の一杯”を提案する（出し分け）'}
+  ];
+  var jDetail=document.getElementById('jDetail');
+  function paintJ(i){
+    var d=J[i];
+    jDetail.innerHTML=
+      '<div class="row"><span class="k">顧客の問い</span><span class="v">'+d.q+'</span></div>'+
+      '<div class="row"><span class="k">感情</span><span class="v">'+d.e+'</span></div>'+
+      '<div class="row'+(d.peak?' job':'')+'"><span class="k">サイトの仕事</span><span class="v">'+d.w+'</span></div>';
+  }
+  document.querySelectorAll('#jSteps .j-step').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#jSteps .j-step').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');paintJ(+b.getAttribute('data-j'));
+    });
+  });
+  paintJ(0);
+
+  /* ── 03 story builder + meter ── */
+  var sel=['s_persona','s_trigger','s_want','s_outcome'].map(function(id){return document.getElementById(id);});
+  var storyText=document.getElementById('storyText');
+  var acList=document.getElementById('acList');
+  var mVal=document.getElementById('mVal'),mFill=document.getElementById('mFill'),mNote=document.getElementById('mNote');
+  var crits=Array.prototype.slice.call(document.querySelectorAll('.builder .crit'));
+
+  function critLabel(c){return c.querySelector('.ct').childNodes[0].textContent.trim();}
+  function recompute(){
+    var p=sel[0].value,t=sel[1].value,w=sel[2].value,o=sel[3].value;
+    storyText.innerHTML='<em>'+p+'</em>が、<em>'+t+'</em>、<em>'+w+'</em>。<br>なぜなら、<em>'+o+'</em>。';
+    var chosen=crits.filter(function(c){return c.querySelector('input').checked;});
+    var tcount=chosen.filter(function(c){return c.getAttribute('data-w')==='t';}).length;
+    var vcount=chosen.filter(function(c){return c.getAttribute('data-w')==='v';}).length;
+    // acceptance list
+    if(chosen.length){
+      acList.innerHTML=chosen.map(function(c){return '<li>'+critLabel(c)+'</li>';}).join('');
+    }else{
+      acList.innerHTML='<li class="empty">まだ条件がない ── これでは“完成”を判定できない。</li>';
+    }
+    crits.forEach(function(c){c.classList.toggle('on',c.querySelector('input').checked);});
+    // score
+    var score=18+tcount*24-vcount*22;
+    if(tcount>=2&&vcount===0)score+=10;
+    score=Math.max(0,Math.min(100,score));
+    mVal.textContent=score+'%';
+    mFill.style.width=score+'%';
+    var col,label,note;
+    if(score<40){col='var(--alarm)';label='曖昧 — 揉める定義';note='完成を客観的に判定できない。これは合意ではなく、後の火種だ。';}
+    else if(score<75){col='var(--amber)';label='もう一歩';note='方向は良い。あと少し、検証可能な条件に置き換えよう。';}
+    else{col='var(--resolved)';label='合意可能';note='誰が見てもDoneを判定できる。これが揉めない定義 ── 合意の状態だ。';}
+    mFill.style.background=col;
+    mNote.innerHTML='<b style="color:'+col+'">'+label+'</b>　'+note;
+  }
+  sel.forEach(function(s){s.addEventListener('change',recompute);});
+  crits.forEach(function(c){c.querySelector('input').addEventListener('change',recompute);});
+  recompute();
+
+  /* ── reveal (fail-safe) ── */
+  function revealAll(){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('is-in');});}
+  if(!('IntersectionObserver' in window)){revealAll();}
+  else{
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target);}});},{threshold:0.1});
+    document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+    setTimeout(revealAll,8000);
+  }
+
+  /* ── theme ── */
+  var tb=document.getElementById('themeBtn');
+  tb.addEventListener('click',function(){
+    var dark=document.documentElement.getAttribute('data-theme')==='darkroom';
+    document.documentElement.setAttribute('data-theme',dark?'':'darkroom');
+    tb.textContent=dark?'暗室':'現像';
+  });
+})();
+</script>
+</body>
+</html>
