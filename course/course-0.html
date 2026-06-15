@@ -18,6 +18,7 @@
     <nav class="nav">
       <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
       <a href="m4.html" data-page="m4.html">M4 機能要件</a>
+      <a href="playground.html" data-page="playground.html">Playground</a>
       <a href="../nagi/index.html">NAGI サイト</a>
       <a class="btn btn--accent" href="m4.html">M4 へ進む <span class="arr">→</span></a>
     </nav>
@@ -30,7 +31,7 @@
     <p class="crumb"><a href="../index.html">改造道</a> ／ Phase 0 ・ 方向付け</p>
     <p class="eyebrow">Course 0 ── オリエンテーション＆ブリーフ｜T1</p>
     <h1 style="max-width:18ch">ようこそ。まず、<br>「自分で動かせる」を体験する。</h1>
-    <p class="lede read" style="margin-top:var(--sp-3)">この教材のゴールは、あなたをエンジニアにすることではありません。
+    <p class="lede read" style="margin-top:var(--sp-3)">この教材のゴールは、エンジニアになることではありません。
       上流の判断が下流でどう効くかを“体で”理解し、生成AIでそれを速く・広く・深くできるようになること。
       Course 0 では、その舞台と道具に出会います。</p>
     <div class="meta-row">
@@ -61,25 +62,25 @@
 
     <!-- WHY -->
     <h2 id="why">なぜこの教材か</h2>
-    <p>あなたはおそらく、戦略や青写真を描くことに長けたコンサルタントです。一方で、プログラミングやコマンドラインに触れたことはないかもしれません。それは弱点ではありません。
-      ただ一つ、補える穴があります ── <strong>上流で決めたことが、下流の実装でどう跳ね返るかが見えない</strong>こと。</p>
-    <p>盲点の残った要件は、最も高くつく場所＝実装フェーズで初めて表面化します。「カテゴリで絞り込めると思っていた」「多言語は後から足せると思っていた」── こうしたズレは、設計図の上では美しく、コードの上で崩れます。</p>
+    <p>経営課題を整理し、To-Be を描き、ロードマップに落とす ── 戦略の設計は、コンサルティングの確かな価値です。そこに“実装が見える目”を一つ足すと、要件の解像度が変わります。
+      <strong>上流で決めたことが、下流の実装でどう効くかが見える</strong>ようになるからです。</p>
+    <p>決めきれていない要件は、最も高くつく場所＝実装フェーズで初めて表面化します。「カテゴリで絞り込めると思っていた」「多言語は後から足せると思っていた」── こうしたズレは、設計図の上では美しく、コードの上で崩れる。現場で誰の身にも起きる構造です。</p>
     <blockquote>この教材が腹落ちさせたいことは、突き詰めるとたった一つ。<br>
       <strong>要件定義の質は、そのままプロダクトの質になる。そして生成AIは、技術が“見えている”人が使うほど、要件定義を速く・広く・深くする増幅器になる。</strong></blockquote>
 
     <!-- PROOF -->
-    <h2 id="proof">制約は、弱点ではなく「証明」</h2>
-    <p>あなたが使える道具は、たった二つに限定されています。</p>
+    <h2 id="proof">制約は、足かせではなく「証明」</h2>
+    <p>使える道具は、たった二つに限定されています。</p>
     <ul>
       <li><strong>ブラウザ</strong> ── GitHub の Web エディタとプレビュー</li>
       <li><strong>チャット型の生成AI</strong> ── ChatGPT / Claude などの対話型AI</li>
     </ul>
-    <p>ローカル環境も、コマンドラインも、サーバも要りません。それでも、あなたは本物のブランドサイトを動かし、コンテンツの“型”を定義し、機能を実装し、結果を目で見ます。
+    <p>ローカル環境も、コマンドラインも、サーバも要りません。それでも、本物のブランドサイトを動かし、コンテンツの“型”を定義し、機能を実装し、結果を目で見られます。
       <strong>それができてしまうこと自体が、「AIが学習コストを極限まで下げる」という主張の、生きた証拠</strong>になります。制約は敵ではなく、最大の説得材料です。</p>
 
     <!-- SETUP -->
     <h2 id="setup">作業環境の準備 ── ブラウザだけで完結</h2>
-    <p>あなたの「砂場」は、仮想ブランド <strong>NAGI</strong> のサイトです。まずは触ってみましょう。</p>
+    <p>学習の「砂場」になるのは、仮想ブランド <strong>NAGI</strong> のサイトです。まずは触ってみましょう。</p>
     <div class="card" style="margin:var(--sp-4) 0">
       <p class="num">STEP 1</p>
       <h3 style="margin:.2rem 0 .5rem">NAGI サイトを見る</h3>
@@ -89,8 +90,14 @@
     <div class="card" style="margin:var(--sp-4) 0">
       <p class="num">STEP 2</p>
       <h3 style="margin:.2rem 0 .5rem">自分のコピーを持つ（Fork）</h3>
-      <p style="color:var(--ink-2)">本番の演習では、このリポジトリを GitHub 上で <strong>Fork</strong>（または “Use this template”）して、自分のアカウントにコピーします。設定 → Pages を有効にすれば、<strong>あなた専用のNAGIサイト</strong>が数分で公開されます。編集はすべて GitHub の鉛筆アイコン（Webエディタ）から。git のインストールもコマンドも不要です。</p>
+      <p style="color:var(--ink-2)">本番の演習では、このリポジトリを GitHub 上で <strong>Fork</strong>（または “Use this template”）して、自分のアカウントにコピーします。設定 → Pages を有効にすれば、<strong>自分専用のNAGIサイト</strong>が数分で公開されます。編集はすべて GitHub の鉛筆アイコン（Webエディタ）から。git のインストールもコマンドも不要です。</p>
       <p style="color:var(--muted);font-size:.88rem;margin-top:var(--sp-2)">※ この縦切り版では、まず読み進めるだけでも全体像をつかめます。手を動かす準備ができたら Fork してください。</p>
+    </div>
+    <div class="card" style="margin:var(--sp-4) 0; border-left:4px solid var(--delegate)">
+      <p class="num" style="color:var(--delegate)">STEP 3 ── 最初の一手（30秒）</p>
+      <h3 style="margin:.2rem 0 .5rem">コンテンツを1行変えて、サイトに映す</h3>
+      <p style="color:var(--ink-2)">いきなりコードは触りません。Fork したリポジトリで <code style="font-family:var(--mono);background:var(--accent-tint);padding:.1rem .3rem;border-radius:3px">nagi/data/products.json</code> を Web エディタで開き、先頭の製品の <code style="font-family:var(--mono);background:var(--accent-tint);padding:.1rem .3rem;border-radius:3px">"tagline_ja"</code> の文字を好きな一文に書き換えて “Commit” するだけ。数十秒後、コレクションページのその製品の説明が、書いた言葉に変わります。</p>
+      <p style="color:var(--ink-2);margin-top:var(--sp-2)">触ったのは <strong>コンテンツ（中身）だけ</strong>。表示のコード（見た目）には一切触れていないのに、画面が変わった ── これが「中身」と「見た目」が分離した構造の、最初の手応えです。本物のサイトを、自分の手で動かせました。</p>
     </div>
     <div class="callout">
       <h4>🧭 唯一の“つまずきポイント”はここだけ</h4>
@@ -132,7 +139,7 @@
           <tr><th>目的</th><td>ブランド世界観を保ちながら、語れる・見つかる・運用できるブランドサイトへ。海外市場での発見性とガバナンスを強化する。</td></tr>
           <tr><th>背景</th><td>現行サイトは静的でコンテンツ追加が属人的。海外PR・多言語の要望が増加。</td></tr>
           <tr><th>スコープ仮説</th><td>WCM（コンテンツ管理・表現・情報設計）に集中。EC機能は対象外。</td></tr>
-          <tr><th>体制（RACI抜粋）</th><td>意思決定：CMO（A）／要件：コンサル＝あなた（R）／承認：CMO・法務（C/A）／運用：デジタル（R）</td></tr>
+          <tr><th>体制（RACI抜粋）</th><td>意思決定：CMO（A）／要件定義：担当コンサル（R）＝この案件で動く役回り／承認：CMO・法務（C/A）／運用：デジタル（R）</td></tr>
           <tr><th>制約</th><td>技術前提として静的配信（GitHub Pages 相当）＋構造化データ駆動。多言語・ガバナンス必須。</td></tr>
           <tr><th>進め方</th><td>要件定義の15タスクを5フェーズで。各機能は「依頼→要件→実装→結果」の体験ループで検証する。</td></tr>
         </table>
@@ -141,7 +148,7 @@
 
     <!-- BACKLOG -->
     <h2 id="backlog">要望バックログ ── 難度は徐々に上がる</h2>
-    <p>ステークホルダーからの要望はバックログ化され、モジュールが進むごとに難度が上がります。あなたが最初に取り組むのは <strong>PR・林さんからの依頼</strong>です。</p>
+    <p>ステークホルダーからの要望はバックログ化され、モジュールが進むごとに難度が上がります。最初に取り組むのは <strong>PR・林さんからの依頼（R-01）</strong>です。</p>
     <div class="artifact">
       <div class="artifact__head"><b>Requirements Backlog</b><span class="tag">起点</span></div>
       <div class="artifact__body">
@@ -182,7 +189,7 @@
 
     <!-- NEXT -->
     <h2 id="next">次へ ── M4「機能要件」で、ループを1周まわす</h2>
-    <p>準備は整いました。次のモジュールでは、PR・林さんの曖昧な依頼を、ユーザーストーリーと受け入れ条件へと締め上げ、実際に NAGI サイトへ実装します。そして ── <strong>わざと一度、浅いやり方で失敗します。</strong>その品質差が、この教材で一番伝えたいことです。</p>
+    <p>準備は整いました。次のモジュールでは、PR・林さんの曖昧な依頼を、ユーザーストーリーと受け入れ条件へと締め上げ、実際に NAGI サイトへ実装します。途中で ── <strong>同じAIに、粗いブリーフと精緻なブリーフを渡して、出力を見比べる実験</strong>をします。同じAIでも、ブリーフの解像度で結果がここまで変わる ── その手応えが、この教材で一番伝えたいことです。</p>
     <div class="center" style="margin:var(--sp-5) 0">
       <a class="btn btn--accent" href="m4.html" style="font-size:1rem;padding:.9rem 1.8rem">M4 機能要件モジュールへ進む <span class="arr">→</span></a>
     </div>

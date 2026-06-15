@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>サイトマップ ｜ NAGI 凪</title>
+<meta name="description" content="NAGI 凪 のサイト全体像。ページ構成とコンテンツタイプの対応。（教育目的の架空ブランドサイト）">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Shippori+Mincho+B1:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/nagi.css">
+</head>
+<body data-page="sitemap">
+
+<div class="learner-banner">
+  <div class="wrap">
+    <span><span class="dot">●</span> 学習用の砂場。このサイトマップで全体像をつかんでから、追加要件に取り組みましょう。</span>
+    <a href="../course/m4.html">M4 機能要件モジュールへ →</a>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap nav__in">
+    <a class="logo" href="index.html"><span class="mark">凪</span><span class="latin">NAGI</span></a>
+    <nav class="nav__links">
+      <a href="products.html" data-nav="products.html">Collections</a>
+      <a href="index.html#ritual">Ritual</a>
+      <a href="journal.html" data-nav="journal.html">Journal</a>
+      <a href="index.html#philosophy">About</a>
+      <a class="nav__lang" href="#">JA / EN</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-head">
+  <p class="display">Sitemap</p>
+  <h1>サイトの全体像</h1>
+  <p>NAGI は <strong>ページ（表示）</strong>と <strong>コンテンツタイプ（型）</strong>でできています。下の地図で、どのページがどの型のデータ（<code>data/*.json</code>）から描画されているかを確認できます。</p>
+</section>
+
+<section class="wrap">
+  <div class="sm-legend">
+    <span>🟢 <span class="ct">content-type</span> ＝ 構造化データの「型」</span>
+    <span>● 公開中　／　○ 受講者が追加する（M4・M5）</span>
+  </div>
+
+  <div class="sitemap" style="margin-top:1.6rem">
+
+    <div class="sm-node reveal">
+      <a href="index.html">ホーム ●</a>
+      <span class="path">index.html</span>
+      <ul>
+        <li>ヒーロー（ブランドの第一印象）</li>
+        <li>フィロソフィー <span class="ct">site.json</span></li>
+        <li>コレクション抜粋 <span class="ct">products.json</span></li>
+        <li>リチュアル <span class="ct">site.json</span></li>
+        <li>ジャーナル抜粋 <span class="ct">journal.json</span></li>
+      </ul>
+    </div>
+
+    <div class="sm-node reveal">
+      <a href="products.html">コレクション ●</a>
+      <span class="path">products.html</span>
+      <ul>
+        <li>製品一覧（フィルタ） <span class="ct">product</span></li>
+        <li><a href="products.html?id=nagi-essence-02">製品詳細（PDP）</a> <span class="ct">product</span></li>
+        <li>└ 仕様・価格・バリエーション</li>
+        <li>└ CTA・FAQ・関連製品/記事</li>
+      </ul>
+    </div>
+
+    <div class="sm-node reveal">
+      <a href="journal.html">ジャーナル ●</a>
+      <span class="path">journal.html</span>
+      <ul>
+        <li>記事一覧 <span class="ct">journal_article</span></li>
+        <li><a href="journal.html?id=fermentation-kyoto">記事詳細</a> <span class="ct">journal_article</span></li>
+        <li>カテゴリ：成分と科学／リチュアル／サステナビリティ</li>
+      </ul>
+    </div>
+
+    <div class="sm-node reveal" style="border-style:dashed">
+      <span class="root">プレスルーム ○</span>
+      <span class="path">press.html（M4で受講者が作る）</span>
+      <ul>
+        <li>リリース一覧（カテゴリ絞り込み） <span class="ct">press_release</span></li>
+        <li>リリース詳細（本文・報道連絡先）</li>
+        <li>※ いまは存在しない。M4 の体験ループで追加する</li>
+      </ul>
+    </div>
+
+    <div class="sm-node reveal">
+      <span class="root">ブランド ●</span>
+      <span class="path">index.html#philosophy</span>
+      <ul>
+        <li>フィロソフィー／ヘリテージ</li>
+        <li>サステナビリティ（→ ジャーナル）</li>
+      </ul>
+    </div>
+
+    <div class="sm-node reveal">
+      <a href="sitemap.html">サイトマップ ●</a>
+      <span class="path">sitemap.html</span>
+      <ul>
+        <li>このページ</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="region-note" style="margin-top:2rem">
+    <b>多言語・多地域メモ：</b>各コンテンツタイプは <code>ja</code> / <code>en</code> のフィールドを持ち、市場ごとに表示や規制対応を出し分ける前提です。型を設計するときは「どの市場で・どの言語で出すか」を最初から織り込みます（M5・M8 で扱います）。
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot__grid">
+    <div><div class="mark">凪</div><div class="latin">NAGI</div><p style="max-width:34ch;margin-top:1rem;font-size:.88rem">静けさを、肌へ。</p></div>
+    <div><h4>Shop</h4><ul><li><a href="products.html">Collections</a></li><li><a href="index.html#ritual">Ritual</a></li></ul></div>
+    <div><h4>Discover</h4><ul><li><a href="journal.html">Journal</a></li><li><a href="sitemap.html">Sitemap</a></li></ul></div>
+    <div><h4>Markets</h4><ul><li>日本</li><li>Global (EN)</li></ul></div>
+    <p class="foot__fine">© 2026 NAGI ── 教育目的の架空ブランドサイトです。<a href="../index.html" style="color:#C8C2B6;border-bottom:1px solid #44403A">改造道トップ</a></p>
+  </div>
+</footer>
+
+<script src="assets/js/nagi.js"></script>
+</body>
+</html>

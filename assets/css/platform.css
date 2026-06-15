@@ -219,8 +219,14 @@ section { padding-block: var(--sp-7); }
   position: relative; background: #16181D; color: #E8E6E0; border-radius: var(--radius);
   border: 1px solid #2A2D34; margin: var(--sp-4) 0; overflow: hidden;
 }
-.prompt__bar { display:flex; align-items:center; justify-content:space-between; padding: .6rem .9rem; background:#1E2127; border-bottom: 1px solid #2A2D34; }
-.prompt__bar span { font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: #8A8F99; }
+.prompt__bar { display:flex; align-items:center; justify-content:space-between; gap:.8rem; padding: .55rem .9rem; background:#1E2127; border-bottom: 1px solid #2A2D34; }
+.prompt__bar .left { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; min-width:0; }
+.prompt__bar .label { font-family: var(--mono); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: #8A8F99; }
+.prompt__kind { font-family:var(--mono); font-size:.62rem; letter-spacing:.06em; text-transform:uppercase; padding:.2rem .55rem; border-radius:100px; white-space:nowrap; }
+.prompt__kind--think { background:rgba(240,201,180,.14); color:#F0C9B4; border:1px solid rgba(240,201,180,.45); }
+.prompt__kind--copy  { background:rgba(124,160,140,.16); color:#9FD0B0; border:1px solid rgba(124,160,140,.5); }
+/* "this is an example" tag for AI outputs */
+.example-tag { display:inline-flex; align-items:center; gap:.4rem; font-family:var(--mono); font-size:.66rem; letter-spacing:.06em; text-transform:uppercase; color:var(--delegate); background:var(--delegate-soft); border:1px solid color-mix(in srgb, var(--delegate) 30%, transparent); padding:.18rem .55rem; border-radius:100px; }
 .prompt__copy { background:#2A2D34; color:#E8E6E0; border:1px solid #3A3E47; border-radius:100px; padding:.3rem .8rem; font-size:.74rem; transition: background .2s; }
 .prompt__copy:hover { background: var(--accent); border-color: var(--accent); }
 .prompt__copy.copied { background: var(--delegate); border-color: var(--delegate); }

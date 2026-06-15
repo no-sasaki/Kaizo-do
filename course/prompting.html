@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Appendix ｜ プロンプトの作り方・鍛え方 ── 改造道</title>
+<meta name="description" content="教材のプロンプトをどうすれば自分でも書けるようになるのか。プロンプトの骨格、2種類のプロンプト、発散と収束、そして鍛え方を一枚にまとめたAppendix。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/platform.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m4.html" data-page="m4.html">M4 機能要件</a>
+      <a href="playground.html" data-page="playground.html">Playground</a>
+      <a href="../nagi/index.html">NAGI サイト</a>
+    </nav>
+  </div>
+</header>
+
+<section class="mod-hero">
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">改造道</a> ／ Appendix</p>
+    <p class="eyebrow">Appendix ── プロンプトの作り方・鍛え方</p>
+    <h1 style="max-width:22ch">プロンプトは、要件定義の<br>もうひとつの顔。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">教材に載っているプロンプトを見て「自分には書けない」と感じる必要はありません。
+      良いプロンプトと良い要件定義は、同じ筋肉でできています ── 目的を決め、文脈を渡し、制約と評価基準を明示する。すでに持っている力の、向け先を変えるだけです。</p>
+  </div>
+</section>
+
+<div class="wrap layout-rail" style="padding-top:var(--sp-6)">
+  <nav class="rail" aria-label="目次">
+    <ol>
+      <li><a href="#two">2種類のプロンプト</a></li>
+      <li><a href="#skeleton">プロンプトの骨格</a></li>
+      <li><a href="#diverge">発散と収束</a></li>
+      <li><a href="#example">出力は「一例」</a></li>
+      <li><a href="#train">鍛え方</a></li>
+    </ol>
+  </nav>
+
+  <main class="prose">
+
+    <h2 id="two">まず ── 教材のプロンプトには2種類ある</h2>
+    <p>この区別がつくと、心理的なハードルが大きく下がります。教材中のプロンプトカードには、必ずこのどちらかのラベルが付いています。</p>
+    <div class="split">
+      <div class="split__card split__card--hold">
+        <h4>🧭 コンサルの思考</h4>
+        <p style="font-size:.92rem;margin:0 0 .5rem"><strong>自分で書けるようになりたい側。</strong></p>
+        <ul>
+          <li>要件を発散・収束させる</li>
+          <li>成功の定義・優先度を決める</li>
+          <li>エッジケースを洗い出させる</li>
+        </ul>
+        <p style="font-size:.86rem;color:var(--muted);margin:.6rem 0 0">＝あなたの価値の中心。このAppendixが扱うのはここ。</p>
+      </div>
+      <div class="split__card split__card--delegate">
+        <h4>⚙️ 開発体験用（コピペでOK）</h4>
+        <p style="font-size:.92rem;margin:0 0 .5rem"><strong>暗記しなくていい側。</strong></p>
+        <ul>
+          <li>HTML/JSコードの生成指示</li>
+          <li>サイトの構成（擬似ヘッドレス）の説明</li>
+          <li>既存の作法に合わせる指定</li>
+        </ul>
+        <p style="font-size:.86rem;color:var(--muted);margin:.6rem 0 0">＝サイト固有の前提を含む。今は<strong>そのままコピペで十分</strong>。仕組みが見えてくれば自然と書けるようになる。</p>
+      </div>
+    </div>
+    <blockquote>コンサルが磨くべきは「🧭 思考」のプロンプト。「⚙️ 開発体験用」は、実装者やAIに渡すための道具で、最初は写経で構いません。区別がつけば、どこで力を抜いてよいかが分かります。</blockquote>
+
+    <h2 id="skeleton">プロンプトの骨格 ── 6つのブロック</h2>
+    <p>良いプロンプトは、良い要件定義書のミニチュアです。次の6ブロックを意識すると、再現性のある品質で書けます。</p>
+    <div class="artifact">
+      <div class="artifact__head"><b>再利用できるプロンプト骨格</b><span class="tag tag--core">テンプレ</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>ブロック</th><th>役割</th><th>要件定義でいうと</th></tr>
+          <tr><td><code>役割</code></td><td>「あなたは〜の専門家です」</td><td>誰の視点で考えるか</td></tr>
+          <tr><td><code>文脈</code></td><td>背景・前提・対象</td><td>プロジェクト背景・スコープ</td></tr>
+          <tr><td><code>タスク</code></td><td>何を出してほしいか</td><td>成果物の定義</td></tr>
+          <tr><td><code>制約</code></td><td>守るべき条件・除外</td><td>非機能・前提・Won't</td></tr>
+          <tr><td><code>出力形式</code></td><td>表／箇条書き／JSON 等</td><td>成果物のフォーマット</td></tr>
+          <tr><td><code>評価基準</code></td><td>「曖昧語を排し検証可能に」等</td><td>受け入れ条件・十分性</td></tr>
+        </table>
+      </div>
+    </div>
+    <p>M4 のプロンプトを読み返すと、すべてこの6ブロックでできていることが分かります。<strong>評価基準</strong>を入れられるかが、素人と玄人の分かれ目 ── ここにあなたの要件定義スキルがそのまま乗ります。</p>
+
+    <h2 id="diverge">発散と収束を、別のプロンプトに分ける</h2>
+    <p>一度にすべてを求めると、AIは器用に薄く答えます。<strong>工程を分ける</strong>と質が上がります。</p>
+    <ul>
+      <li><strong>発散</strong>：「候補を8つ」「見落としがちな観点を列挙」「私が決めるべき論点を3つ指摘して」── 広げて、抜けを潰す。</li>
+      <li><strong>収束</strong>：「この方針で確定。検証可能な受け入れ条件に落とし、優先度を付けて」── 握った軸で、絞る。</li>
+    </ul>
+    <p>発散はAIに広く委ね、収束は人が軸を握る。「委ねる／握る」の呼吸が、そのままプロンプトの分割になります。</p>
+
+    <h2 id="example">AIの出力は、つねに「一例」</h2>
+    <div class="callout callout--win">
+      <h4>✦ 結果が教材と違っても、正常です</h4>
+      <p>生成AIは確率的に答えるため、同じプロンプトでも<strong>モデルや実行のたびに出力は変わります</strong>。教材に載っている出力は「こう返ってくることがある」という<strong>一例</strong>で、あなたの手元の結果と一字一句同じにはなりません。
+        むしろ、返ってきた出力を<strong>受け入れ条件や成功の定義に照らして取捨・修正する</strong>こと ── そのばらつきを御することこそが「握る」スキルであり、この教材で鍛える対象です。</p>
+    </div>
+
+    <h2 id="train">鍛え方 ── 日々の小さな習慣</h2>
+    <ol>
+      <li><strong>握りを先に言語化する</strong>：プロンプトを書く前に「成功の定義」を一文で。これが評価基準になる。</li>
+      <li><strong>出力を疑う癖</strong>：返ってきたら「どこが曖昧？ 何が抜けた？ エッジケースは？」と一度たたく。</li>
+      <li><strong>反復で締める</strong>：一発で完成を狙わず、「ここを検証可能に」「この観点を追加」と2〜3往復で磨く。</li>
+      <li><strong>骨格を再利用する</strong>：上の6ブロックを自分のスニペットとして持ち、案件ごとに差し替える。</li>
+      <li><strong>実物で確かめる</strong>：<a href="playground.html">Playground</a> や NAGI で、出力が実際に動くか・壊れるかを見る。机上で終わらせない。</li>
+    </ol>
+
+    <div class="pill-row" style="margin:var(--sp-6) 0">
+      <a class="btn btn--ghost" href="m4.html">← M4 へ戻る</a>
+      <a class="btn" href="playground.html">Playground で試す →</a>
+    </div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap"><p class="fine">© 2026 改造道 Kaizō-dō ── 教育目的の架空教材。 ｜ <a href="../index.html">トップへ</a></p></div>
+</footer>
+
+<script src="../assets/js/platform.js"></script>
+</body>
+</html>

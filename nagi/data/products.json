@@ -1,21 +1,7 @@
 {
   "type": "product",
+  "schema_note": "1商品＝1インスタンス。表示(product.html)はこの構造化データだけを読む。フィールドを足すと表示が増え、削ると壊れる ── それを体感するのが学習の狙い。",
   "items": [
-    {
-      "id": "nagi-mist-01",
-      "name_ja": "凪 ミスト",
-      "name_en": "NAGI Calming Mist",
-      "collection": "hydration",
-      "collection_label": "Hydration",
-      "ritual_step": 1,
-      "price_ja": "¥4,800",
-      "glyph": "霧",
-      "tagline_ja": "最初のひと呼吸を、肌に。",
-      "lead_ja": "柚子の精油と深層水を含むフェイスミスト。朝の洗顔後、または日中の乾きを感じた瞬間に。肌と気持ちを同時に鎮めます。",
-      "key_ingredients": ["柚子精油", "瀬戸内深層水", "グリセリン"],
-      "size": "100mL",
-      "made_in": "日本（京都）"
-    },
     {
       "id": "nagi-essence-02",
       "name_ja": "凪 エッセンス",
@@ -23,13 +9,102 @@
       "collection": "hydration",
       "collection_label": "Hydration",
       "ritual_step": 2,
-      "price_ja": "¥9,600",
       "glyph": "満",
       "tagline_ja": "発酵が満たす、静かな潤い。",
       "lead_ja": "京都の酒蔵に伝わる米発酵液を主役にした美容液。角層のすみずみまで水分を届け、ふっくらと均一な肌へ導きます。NAGIの中心となる一本。",
+      "audience_ja": "乾燥とゆらぎが気になる30〜40代。成分の背景まで納得して選びたい人へ。",
+      "value_props": [
+        { "icon": "発", "title_ja": "発酵由来の保湿", "body_ja": "米発酵液のアミノ酸が角層になじみ、内側から潤いを抱える。" },
+        { "icon": "無", "title_ja": "ミニマル処方", "body_ja": "香料・着色料は不使用。必要な成分だけを残した。" },
+        { "icon": "京", "title_ja": "京都・伏見産", "body_ja": "老舗酒蔵と共同開発した発酵液を使用。" }
+      ],
+      "gallery": [
+        { "glyph": "満", "alt_ja": "凪 エッセンスのボトル正面。すりガラスの30mL容器。" },
+        { "glyph": "滴", "alt_ja": "スポイトから一滴垂れる、とろみのある発酵美容液のテクスチャー。" },
+        { "glyph": "京", "alt_ja": "京都・伏見の酒蔵で発酵液を仕込む様子。" }
+      ],
+      "price_ja": "¥9,600",
+      "price_note_ja": "税込・送料無料",
+      "variations": [
+        { "axis_ja": "サイズ", "options": ["30mL ¥9,600", "50mL ¥14,800", "レフィル 50mL ¥12,800"] },
+        { "axis_ja": "セット", "options": ["単品", "リチュアル3点セット ¥19,800"] }
+      ],
+      "specs": [
+        { "label_ja": "容量", "value_ja": "30mL / 50mL" },
+        { "label_ja": "主要成分", "value_ja": "米発酵液・ナイアシンアミド・ヒアルロン酸" },
+        { "label_ja": "テクスチャー", "value_ja": "とろみのある化粧液" },
+        { "label_ja": "使用順序", "value_ja": "リチュアル STEP 2（洗顔・ミストのあと）" },
+        { "label_ja": "原産国", "value_ja": "日本（京都）" }
+      ],
       "key_ingredients": ["米発酵液", "ナイアシンアミド", "ヒアルロン酸"],
-      "size": "50mL",
-      "made_in": "日本（京都）"
+      "size": "30mL / 50mL",
+      "made_in": "日本（京都）",
+      "cta": [
+        { "label_ja": "オンラインストアで購入", "kind": "primary", "href": "#", "analytics": "cta_buy" },
+        { "label_ja": "サンプルを申し込む", "kind": "secondary", "href": "#", "analytics": "cta_sample" },
+        { "label_ja": "プレスキットを請求（資料）", "kind": "ghost", "href": "press.html", "analytics": "cta_presskit" }
+      ],
+      "faq": [
+        { "q_ja": "敏感肌でも使えますか？", "a_ja": "香料・着色料・アルコールは不使用です。心配な場合はパッチテストの上でご使用ください。" },
+        { "q_ja": "使う順番は？", "a_ja": "洗顔 → 凪ミスト → 凪エッセンス → 凪オイルの順がおすすめです（リチュアル STEP 2）。" },
+        { "q_ja": "レフィルはありますか？", "a_ja": "50mL にリフィルをご用意しています。ガラス容器はリユース可能です。" }
+      ],
+      "related_products": ["nagi-mist-01", "nagi-oil-03"],
+      "related_articles": ["fermentation-kyoto", "morning-ritual"],
+      "region_note_ja": "EU市場では成分表記をINCI名で併記し、効能表現を各国規制に合わせて出し分けます。",
+      "seo": {
+        "title_ja": "凪 エッセンス｜米発酵の保湿美容液  - NAGI",
+        "description_ja": "京都・伏見の発酵液を主役にした保湿美容液。角層のすみずみまで潤いを届け、均一でふっくらとした肌へ。香料・着色料不使用。"
+      }
+    },
+    {
+      "id": "nagi-mist-01",
+      "name_ja": "凪 ミスト",
+      "name_en": "NAGI Calming Mist",
+      "collection": "hydration",
+      "collection_label": "Hydration",
+      "ritual_step": 1,
+      "glyph": "霧",
+      "tagline_ja": "最初のひと呼吸を、肌に。",
+      "lead_ja": "柚子の精油と深層水を含むフェイスミスト。朝の洗顔後、または日中の乾きを感じた瞬間に。肌と気持ちを同時に鎮めます。",
+      "audience_ja": "日中の乾燥や、気持ちの切り替えにひと呼吸を求める人へ。",
+      "value_props": [
+        { "icon": "柚", "title_ja": "柚子の香り", "body_ja": "瀬戸内の柚子精油が、肌と呼吸を整える。" },
+        { "icon": "水", "title_ja": "深層水ベース", "body_ja": "ミネラルを含む瀬戸内深層水を使用。" }
+      ],
+      "gallery": [
+        { "glyph": "霧", "alt_ja": "凪 ミストのスプレーボトル。100mLの細長い容器。" },
+        { "glyph": "柚", "alt_ja": "柚子の実と葉。原料となる柑橘。" }
+      ],
+      "price_ja": "¥4,800",
+      "price_note_ja": "税込",
+      "variations": [
+        { "axis_ja": "サイズ", "options": ["100mL ¥4,800", "携帯用 30mL ¥2,200"] }
+      ],
+      "specs": [
+        { "label_ja": "容量", "value_ja": "100mL" },
+        { "label_ja": "主要成分", "value_ja": "柚子精油・瀬戸内深層水・グリセリン" },
+        { "label_ja": "使用順序", "value_ja": "リチュアル STEP 1" },
+        { "label_ja": "原産国", "value_ja": "日本（京都）" }
+      ],
+      "key_ingredients": ["柚子精油", "瀬戸内深層水", "グリセリン"],
+      "size": "100mL",
+      "made_in": "日本（京都）",
+      "cta": [
+        { "label_ja": "オンラインストアで購入", "kind": "primary", "href": "#", "analytics": "cta_buy" },
+        { "label_ja": "店舗・スパを探す", "kind": "secondary", "href": "#", "analytics": "cta_store" }
+      ],
+      "faq": [
+        { "q_ja": "メイクの上から使えますか？", "a_ja": "はい。20cmほど離して顔全体に。気になるときは軽く押さえてなじませてください。" },
+        { "q_ja": "香りは強いですか？", "a_ja": "天然柚子精油の穏やかな香りで、数分で和らぎます。" }
+      ],
+      "related_products": ["nagi-essence-02", "nagi-oil-03"],
+      "related_articles": ["morning-ritual"],
+      "region_note_ja": "精油成分はアレルゲン表示の義務が地域で異なるため、市場ごとに表示を切り替えます。",
+      "seo": {
+        "title_ja": "凪 ミスト｜柚子のフェイスミスト - NAGI",
+        "description_ja": "瀬戸内の柚子精油と深層水のフェイスミスト。朝のスキンケアや日中の乾燥に、肌と呼吸を整えるひと呼吸を。"
+      }
     },
     {
       "id": "nagi-oil-03",
@@ -38,13 +113,45 @@
       "collection": "hydration",
       "collection_label": "Hydration",
       "ritual_step": 3,
-      "price_ja": "¥7,200",
       "glyph": "閉",
       "tagline_ja": "静けさを、一日とどめる。",
       "lead_ja": "椿オイルとライスブランオイルをブレンドした軽やかな仕上げオイル。薄い膜となって水分を抱え込み、夜のリチュアルを締めくくります。",
+      "audience_ja": "うるおいを夜のあいだ保ちたい、乾燥肌・年齢肌の人へ。",
+      "value_props": [
+        { "icon": "椿", "title_ja": "椿オイル", "body_ja": "国産椿オイルが薄い膜で水分を抱える。" },
+        { "icon": "軽", "title_ja": "軽い質感", "body_ja": "べたつかず、翌朝もっちりとした肌に。" }
+      ],
+      "gallery": [
+        { "glyph": "閉", "alt_ja": "凪 オイルのスポイト付きガラス瓶。30mL。" }
+      ],
+      "price_ja": "¥7,200",
+      "price_note_ja": "税込",
+      "variations": [
+        { "axis_ja": "サイズ", "options": ["30mL ¥7,200"] }
+      ],
+      "specs": [
+        { "label_ja": "容量", "value_ja": "30mL" },
+        { "label_ja": "主要成分", "value_ja": "椿オイル・ライスブランオイル・ビタミンE" },
+        { "label_ja": "使用順序", "value_ja": "リチュアル STEP 3（仕上げ）" },
+        { "label_ja": "原産国", "value_ja": "日本（京都）" }
+      ],
       "key_ingredients": ["椿オイル", "ライスブランオイル", "ビタミンE"],
       "size": "30mL",
-      "made_in": "日本（京都）"
+      "made_in": "日本（京都）",
+      "cta": [
+        { "label_ja": "オンラインストアで購入", "kind": "primary", "href": "#", "analytics": "cta_buy" },
+        { "label_ja": "サンプルを申し込む", "kind": "secondary", "href": "#", "analytics": "cta_sample" }
+      ],
+      "faq": [
+        { "q_ja": "朝も使えますか？", "a_ja": "使えますが、量を1滴に控えるとメイクの邪魔になりません。夜の使用がおすすめです。" }
+      ],
+      "related_products": ["nagi-essence-02", "nagi-mist-01"],
+      "related_articles": ["morning-ritual"],
+      "region_note_ja": "",
+      "seo": {
+        "title_ja": "凪 オイル｜椿の仕上げ美容オイル - NAGI",
+        "description_ja": "椿オイルとライスブランオイルの軽やかな仕上げオイル。薄い膜で水分を抱え、うるおいを一日とどめる。"
+      }
     },
     {
       "id": "nagi-cleanse-04",
@@ -53,13 +160,34 @@
       "collection": "cleansing",
       "collection_label": "Cleansing",
       "ritual_step": 0,
-      "price_ja": "¥5,400",
       "glyph": "洗",
       "tagline_ja": "一日を、やさしく解く。",
       "lead_ja": "アミノ酸系の洗浄成分を用いた、つっぱらないクリームクレンザー。必要なうるおいを残しながら、肌をニュートラルな状態へ戻します。",
+      "audience_ja": "洗うとつっぱる、乾燥が気になる人へ。",
+      "value_props": [
+        { "icon": "優", "title_ja": "アミノ酸系", "body_ja": "うるおいを守りながら汚れを落とす。" }
+      ],
+      "gallery": [{ "glyph": "洗", "alt_ja": "凪 クレンズのチューブ容器。120g。" }],
+      "price_ja": "¥5,400",
+      "price_note_ja": "税込",
+      "variations": [{ "axis_ja": "サイズ", "options": ["120g ¥5,400"] }],
+      "specs": [
+        { "label_ja": "容量", "value_ja": "120g" },
+        { "label_ja": "主要成分", "value_ja": "アミノ酸系洗浄成分・米ぬか・カミツレ" },
+        { "label_ja": "原産国", "value_ja": "日本（京都）" }
+      ],
       "key_ingredients": ["アミノ酸系洗浄成分", "米ぬか", "カミツレ"],
       "size": "120g",
-      "made_in": "日本（京都）"
+      "made_in": "日本（京都）",
+      "cta": [{ "label_ja": "オンラインストアで購入", "kind": "primary", "href": "#", "analytics": "cta_buy" }],
+      "faq": [{ "q_ja": "ダブル洗顔は必要ですか？", "a_ja": "メイクが薄い日はこれ一本で。しっかりメイクの日はクレンジングとの併用がおすすめです。" }],
+      "related_products": ["nagi-essence-02"],
+      "related_articles": [],
+      "region_note_ja": "",
+      "seo": {
+        "title_ja": "凪 クレンズ｜アミノ酸系クリームクレンザー - NAGI",
+        "description_ja": "つっぱらないアミノ酸系のクリームクレンザー。うるおいを残しながら肌をニュートラルに整える。"
+      }
     },
     {
       "id": "nagi-mask-05",
@@ -68,13 +196,39 @@
       "collection": "treatment",
       "collection_label": "Treatment",
       "ritual_step": 0,
-      "price_ja": "¥6,800",
       "glyph": "整",
       "tagline_ja": "週に一度の、深い静けさ。",
       "lead_ja": "クレイと発酵成分を組み合わせた集中マスク。週末のリセットに、肌の手触りとトーンを整えます。",
+      "audience_ja": "ごわつき・くすみが気になる、週末にケアの時間を取れる人へ。",
+      "value_props": [
+        { "icon": "土", "title_ja": "クレイ", "body_ja": "カオリンクレイが毛穴の汚れを吸着。" },
+        { "icon": "発", "title_ja": "発酵成分", "body_ja": "米発酵液がうるおいを補う。" }
+      ],
+      "gallery": [{ "glyph": "整", "alt_ja": "凪 マスクのジャー容器。75mL。" }],
+      "price_ja": "¥6,800",
+      "price_note_ja": "税込",
+      "variations": [{ "axis_ja": "サイズ", "options": ["75mL ¥6,800"] }],
+      "specs": [
+        { "label_ja": "容量", "value_ja": "75mL" },
+        { "label_ja": "主要成分", "value_ja": "カオリンクレイ・米発酵液・ハチミツ" },
+        { "label_ja": "使用頻度", "value_ja": "週1〜2回" },
+        { "label_ja": "原産国", "value_ja": "日本（京都）" }
+      ],
       "key_ingredients": ["カオリンクレイ", "米発酵液", "ハチミツ"],
       "size": "75mL",
-      "made_in": "日本（京都）"
+      "made_in": "日本（京都）",
+      "cta": [
+        { "label_ja": "オンラインストアで購入", "kind": "primary", "href": "#", "analytics": "cta_buy" },
+        { "label_ja": "サンプルを申し込む", "kind": "secondary", "href": "#", "analytics": "cta_sample" }
+      ],
+      "faq": [{ "q_ja": "放置時間は？", "a_ja": "5〜10分を目安に、完全に乾く前に洗い流してください。" }],
+      "related_products": ["nagi-essence-02", "nagi-cleanse-04"],
+      "related_articles": ["fermentation-kyoto"],
+      "region_note_ja": "",
+      "seo": {
+        "title_ja": "凪 マスク｜クレイ×発酵の集中マスク - NAGI",
+        "description_ja": "クレイと米発酵液の集中ウィークリーマスク。週末のリセットに、肌の手触りとトーンを整える。"
+      }
     },
     {
       "id": "nagi-cream-06",
@@ -83,13 +237,35 @@
       "collection": "treatment",
       "collection_label": "Treatment",
       "ritual_step": 0,
-      "price_ja": "¥8,400",
       "glyph": "守",
       "tagline_ja": "朝の肌に、静かな守り。",
       "lead_ja": "軽やかなテクスチャーで肌を保護する朝用クリーム。きめを整え、メイクのりの良い均一な肌をつくります。",
+      "audience_ja": "朝のうるおいキープとメイクのりを両立したい人へ。",
+      "value_props": [
+        { "icon": "守", "title_ja": "日中の保護", "body_ja": "スクワランが軽い膜で乾燥から守る。" }
+      ],
+      "gallery": [{ "glyph": "守", "alt_ja": "凪 クリームのジャー容器。40g。" }],
+      "price_ja": "¥8,400",
+      "price_note_ja": "税込",
+      "variations": [{ "axis_ja": "サイズ", "options": ["40g ¥8,400"] }],
+      "specs": [
+        { "label_ja": "容量", "value_ja": "40g" },
+        { "label_ja": "主要成分", "value_ja": "スクワラン・ツボクサエキス・米発酵液" },
+        { "label_ja": "使用順序", "value_ja": "朝のリチュアル仕上げ" },
+        { "label_ja": "原産国", "value_ja": "日本（京都）" }
+      ],
       "key_ingredients": ["スクワラン", "ツボクサエキス", "米発酵液"],
       "size": "40g",
-      "made_in": "日本（京都）"
+      "made_in": "日本（京都）",
+      "cta": [{ "label_ja": "オンラインストアで購入", "kind": "primary", "href": "#", "analytics": "cta_buy" }],
+      "faq": [{ "q_ja": "夜も使えますか？", "a_ja": "日中向けの設計ですが、夜にお使いいただいても問題ありません。" }],
+      "related_products": ["nagi-essence-02"],
+      "related_articles": [],
+      "region_note_ja": "",
+      "seo": {
+        "title_ja": "凪 クリーム｜朝用保護クリーム - NAGI",
+        "description_ja": "軽やかなテクスチャーの朝用クリーム。きめを整え、メイクのりの良い均一な肌へ。"
+      }
     }
   ]
 }
