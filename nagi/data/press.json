@@ -1,0 +1,45 @@
+{
+  "type": "press_release",
+  "schema_note": "M4で扱うコンテンツタイプ。データ（中身）は最初から用意済み。学習者は表示層 press.html を作って、このデータを画面に出す。",
+  "items": [
+    {
+      "id": "global-launch-2026",
+      "category": "corporate",
+      "category_label": "Corporate",
+      "date": "2026-06-01",
+      "title": { "ja": "NAGI、欧州5カ国での展開を開始", "en": "NAGI Expands to Five European Markets" },
+      "summary": { "ja": "京都発のウェルネスブランドNAGIは、6月より欧州5カ国で販売を開始します。", "en": "Kyoto-born wellness brand NAGI begins sales across five European markets this June." },
+      "body": {
+        "ja": ["凪は、静けさを肌へ届けるという思想のもと、欧州市場への展開を開始します。", "現地のサステナビリティ基準に適合した容器設計を採用しました。"],
+        "en": ["NAGI begins its European expansion under the philosophy of bringing stillness to the skin.", "Packaging has been redesigned to meet local sustainability standards."]
+      },
+      "media_contact": { "name": "Hayashi Misaki / PR", "email": "press@example-nagi.test" }
+    },
+    {
+      "id": "essence-renewal-2026",
+      "category": "product",
+      "category_label": "Product",
+      "date": "2026-05-10",
+      "title": { "ja": "主力美容液「凪 エッセンス」をリニューアル", "en": "NAGI Renews Its Flagship Ferment Essence" },
+      "summary": { "ja": "発酵液の精製工程を刷新し、保湿成分の濃度を高めました。", "en": "An updated fermentation process increases the concentration of hydrating actives." },
+      "body": {
+        "ja": ["米発酵液の精製工程を見直し、肌なじみと保湿力を高めました。"],
+        "en": ["The rice-ferment refining process has been updated to improve absorption and hydration."]
+      },
+      "media_contact": { "name": "Hayashi Misaki / PR", "email": "press@example-nagi.test" }
+    },
+    {
+      "id": "refill-program-2026",
+      "category": "sustainability",
+      "category_label": "Sustainability",
+      "date": "2026-03-01",
+      "title": { "ja": "ガラス容器のリフィルプログラムを全国展開", "en": "NAGI Rolls Out Nationwide Refill Program" },
+      "summary": { "ja": "主要容器をリフィル対応とし、ガラスのリユースを推進します。", "en": "Core containers become refillable to advance glass reuse." },
+      "body": {
+        "ja": ["2026年の環境目標の一環として、リフィルプログラムを全国へ拡大します。"],
+        "en": ["As part of our 2026 environmental goals, the refill program expands nationwide."]
+      },
+      "media_contact": { "name": "Hayashi Misaki / PR", "email": "press@example-nagi.test" }
+    }
+  ]
+}
