@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M2 誰の・どんな体験 ｜ 体験原則は、振る舞いに宿る ── 改造道</title>
+<meta name="description" content="ペルソナ・ジャーニーから体験原則を導き、それを“状態と振る舞い”の検証可能な要件へ翻訳する。言語化しにくいUXを、状態シミュレータで触って体感するM2モジュール。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/platform.css">
+<style>
+  /* M2 状態シミュレータ専用の最小スタイル（platformトークンを使用） */
+  .sim-form { display:flex; gap:.5rem; flex-wrap:wrap; }
+  .sim-form input { flex:1; min-width:180px; padding:.6rem .8rem; border:1px solid var(--line-strong); border-radius:var(--radius); font:inherit; background:#fff; }
+  .sim-form input.bad { border-color:#C0392B; background:#FBEEEC; }
+  .sim-btn { padding:.6rem 1.2rem; border-radius:100px; background:var(--ink); color:var(--paper); border:0; font-size:.9rem; }
+  .sim-btn[disabled] { opacity:.6; }
+  .sim-note { font-size:.82rem; color:var(--muted); margin:.6rem 0 0; }
+  .sim-msg { padding:.7rem .9rem; border-radius:var(--radius); font-size:.9rem; margin:.2rem 0 0; }
+  .sim-msg--ok { background:var(--delegate-soft); color:var(--delegate); }
+  .sim-msg--err { background:#FBEEEC; color:#C0392B; }
+  .sim-msg--field { color:#C0392B; font-size:.84rem; margin:.3rem 0 0; }
+  .sim-skel { height:42px; border-radius:var(--radius); background:linear-gradient(90deg,#ECE7DD,#F6F3EC,#ECE7DD); background-size:200% 100%; animation:simsh 1.2s infinite; }
+  @keyframes simsh { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  .sim-empty { border:1px dashed var(--line-strong); border-radius:var(--radius); padding:1.4rem; text-align:center; color:var(--muted); font-size:.86rem; }
+  .statebtns { display:flex; flex-wrap:wrap; gap:.4rem; margin:.6rem 0; }
+  .statebtn { font-size:.78rem; border:1px solid var(--line-strong); background:var(--surface); border-radius:100px; padding:.3rem .8rem; }
+  .statebtn[aria-pressed="true"] { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .modebtns { display:flex; gap:.4rem; }
+  .modebtn { font-size:.78rem; border:1px solid var(--line-strong); background:var(--surface); border-radius:100px; padding:.3rem .8rem; }
+  .modebtn[aria-pressed="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m2.html" data-page="m2.html">M2</a>
+      <a href="m4.html" data-page="m4.html">M4</a>
+      <a href="m5.html" data-page="m5.html">M5</a>
+      <a href="prompting.html" data-page="prompting.html">Appendix</a>
+      <a href="../nagi/index.html">NAGI サイト</a>
+      <a class="btn btn--accent" href="../nagi/index.html" target="_blank" rel="noopener">砂場を開く <span class="arr">↗</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="mod-hero">
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">改造道</a> ／ Phase 3 ・ To-Be 体験定義</p>
+    <p class="eyebrow">M2 ── 誰の・どんな体験（T4／T7／T8）｜ 体験原則は深く</p>
+    <h1 style="max-width:22ch">「親切さ」は、<br>状態と振る舞いに宿る。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">体験原則（design principles）は、壁に貼ったポスターのままだと何も変えません。
+      原則が本物になるのは、<strong>読み込み中・空・エラー</strong>といった“状態”の振る舞いに翻訳されたとき。
+      言語化しにくいUXを、検証できる要件に落とす回です。</p>
+    <div class="meta-row">
+      <span class="tag tag--core">所要 約55分</span>
+      <span class="tag">対応タスク T4／T7／T8</span>
+      <span class="tag">成果物：ペルソナ／ジャーニー／体験原則→振る舞い</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap layout-rail" style="padding-top:var(--sp-6)">
+  <nav class="rail" aria-label="目次">
+    <ol>
+      <li><a href="#brief">① 依頼を受ける</a></li>
+      <li><a href="#spar">② AIと壁打ち</a></li>
+      <li><a href="#artifact">③ 成果物をつくる</a></li>
+      <li><a href="#ux">UX＝状態と振る舞い</a></li>
+      <li><a href="#fork">原則を振る舞いに翻訳</a></li>
+      <li><a href="#playground">触って確かめる</a></li>
+      <li><a href="#build">④ AIに実装させる</a></li>
+      <li><a href="#result">⑤ 結果と振り返り</a></li>
+      <li><a href="#check">十分性チェック</a></li>
+      <li><a href="#next">次へ</a></li>
+    </ol>
+  </nav>
+
+  <main class="prose">
+
+    <!-- ===================================================== STEP 1 -->
+    <h2 id="brief">① 依頼を受ける</h2>
+    <p>M4・M5 で機能と発見性が整い、サイトは見違えました。すると今度は、ブランドを預かる CMO・佐倉さんから、つかみどころのない相談が来ます。</p>
+    <div class="callout">
+      <h4>💬 CMO・佐倉 怜 からの依頼</h4>
+      <p>「見た目はすごく綺麗になったの。でもね、実際に使うと“親切さ”が足りない気がするのよ。
+        うちのブランドって『静けさ』でしょう？ その世界観が、<strong>細かい体験のところで裏切られてる</strong>瞬間がある。ちゃんと“体験”を設計したいの。」</p>
+    </div>
+    <p>機能要件（M4）のように「何ができるか」を言えばいい依頼ではありません。これは <strong>体験（UX）の依頼</strong>。曖昧で、言語化しにくく、放っておくと「いい感じにします」で終わってしまう。M2 のゴールは、この曖昧さを<strong>検証できる体験要件</strong>に変えることです。</p>
+
+    <!-- ===================================================== STEP 2 -->
+    <h2 id="spar">② AIと壁打ちして要件を定義する</h2>
+    <p>ペルソナとジャーニーは“最小”で素早く（AIに広く委ねる）。そのうえで本当に握るのは、<strong>体験原則を「振る舞い」に翻訳する</strong>ところです。ここはAIに丸投げできません ── 実装でどんな状態が起きるかが見えていないと、原則がポスターのまま終わるからです。</p>
+    <div class="split">
+      <div class="split__card split__card--delegate">
+        <h4>▷ AIに委ねる</h4>
+        <ul>
+          <li>優先ペルソナ・ジャーニーの草案</li>
+          <li>タッチポイントと感情の起伏の洗い出し</li>
+          <li>体験原則（design principles）のたたき台</li>
+          <li>各画面で<strong>起こりうる状態</strong>の列挙（loading/empty/error…）</li>
+        </ul>
+      </div>
+      <div class="split__card split__card--hold">
+        <h4>● 人が握る</h4>
+        <ul>
+          <li><strong>効きどころ</strong>（重点モーメント）の特定</li>
+          <li>ペルソナが<strong>意思決定を変える粒度</strong>か</li>
+          <li>体験原則を<strong>検証可能な振る舞い</strong>へ翻訳</li>
+          <li>ブランド（静けさ）との整合</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>まず“発散”。ペルソナ・ジャーニー・原則・状態を一気に出させます。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">発散：誰の・どんな体験・どの瞬間</span></div><button class="prompt__copy" data-copy="#p1">コピー</button></div>
+      <pre id="p1">あなたは経験豊富なUX／体験設計のコンサルタントです。
+京都発のウェルネスブランド「NAGI」のブランドサイトの体験を設計します（非EC、多言語）。
+CMOの相談は「見た目は綺麗だが“親切さ”が足りない。静けさの世界観が細部で裏切られる」。
+
+私が判断するための“発散”をしてください。
+1. 優先すべきペルソナを1〜2人（意思決定を変える粒度で。属性の羅列でなく、目的・不安・文脈）。
+2. そのペルソナの主要ジャーニーと、感情が動く「重点モーメント（効きどころ）」を1つ。
+3. ブランド「静けさ」を体験に落とす体験原則（design principles）を3〜5個。
+4. サイトの主要なUIで起こりうる“状態”を列挙（入力前/読み込み中/成功/空(0件)/エラー/不正入力/低速回線 等）。
+5. 「綺麗なのに不親切」になりがちな具体例を、状態の観点で3つ。
+最後に、私が必ず自分で決めるべき論点を3つ。</pre>
+    </div>
+
+    <p>ここで<strong>握る</strong>のは、原則を「言葉」で終わらせないこと。「静けさ」を“待たせない・迷わせない・急かさない・隠さない”という<strong>振る舞い</strong>にまで降ろします。次の収束プロンプトで、検証可能な要件に翻訳させます。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">収束：体験原則 → 振る舞い要件</span></div><button class="prompt__copy" data-copy="#p2">コピー</button></div>
+      <pre id="p2">方針を確定します。
+- 重点モーメント：見込み客がジャーナルを読んで信頼し、ニュースレター登録で関係を始める瞬間。
+- 体験原則：「待たせない」「迷わせない」「急かさない」「隠さない（正直）」。
+- 成功の定義：どの状態(入力前/送信中/成功/エラー/不正入力)でも、ユーザーが次の一手に迷わない。
+
+各体験原則を、検証可能な「状態ごとの振る舞い要件（受け入れ条件 Given/When/Then）」に翻訳してください。
+特に loading / success / empty / error / invalid の各状態について、
+「何を表示し」「何を案内し（次の一手）」「どんな言葉（マイクロコピー）で」を具体化すること。
+曖昧語（"親切に"等）は禁止し、観察・テストできる記述にすること。MoSCoWで優先度も。</pre>
+    </div>
+    <p><span class="example-tag">● 出力は一例</span> 返ってきた翻訳を、ブランドの「静けさ」と成功の定義に照らして取捨するのが握りです。<a href="prompting.html">プロンプトを自分で書けるようになるには →（Appendix）</a></p>
+
+    <!-- ===================================================== STEP 3 -->
+    <h2 id="artifact">③ 成果物をつくる</h2>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物A ｜ 優先ペルソナ（最小・意思決定を変える粒度）</b><span class="tag">T4</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>項目</th><th>内容</th></tr>
+          <tr><td>名前/像</td><td>美和（34）｜敏感肌。成分を調べてから買う慎重派。</td></tr>
+          <tr><td>目的</td><td>刺激が少なく、根拠のある製品を、納得して選びたい。</td></tr>
+          <tr><td>不安</td><td>派手な広告は信用しない。失敗したくない。</td></tr>
+          <tr><td>文脈</td><td>夜、スマホで記事を読み込んでから判断。</td></tr>
+          <tr><td><strong>設計を変える示唆</strong></td><td>「信頼の積み上げ」が鍵。急かす・隠す体験は離脱に直結する。</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物B ｜ ジャーニーと重点モーメント</b><span class="tag">T7</span></div>
+      <div class="artifact__body">
+        <pre style="font-family:var(--mono);font-size:.82rem;line-height:1.9;white-space:pre-wrap;margin:0;color:var(--ink-2)">  検索流入 → 記事で信頼 → 製品を検討 → <strong>ニュースレター登録（関係の入口）</strong> → 再訪
+                                              ▲
+                                   ★ 効きどころ：ここで“親切さ”が試される
+                                     （送信中・成功・エラー・不正入力の振る舞い）</pre>
+        <p style="font-size:.88rem;color:var(--muted);margin:.8rem 0 0">力を注ぐのは全部ではなく、この1点。慎重派の美和が「このブランドは信頼できる」と判断する瞬間。</p>
+      </div>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物C ｜ 体験原則 → 振る舞い要件（M2の核心）</b><span class="tag tag--core">T8</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>体験原則</th><th>状態</th><th>検証可能な振る舞い要件</th></tr>
+          <tr><td rowspan="2">待たせない</td><td>読み込み中</td><td>送信後、即座にボタンを無効化＋「送信中…」を表示（無反応の時間を作らない）。</td></tr>
+          <tr><td>低速回線</td><td>スケルトン/プレースホルダで知覚速度を保つ。</td></tr>
+          <tr><td>迷わせない</td><td>空(0件)</td><td>「該当なし」だけで終わらせず、必ず<strong>次の一手</strong>（解除・別提案）を出す。</td></tr>
+          <tr><td>隠さない（正直）</td><td>エラー</td><td>失敗を隠さず、理由と<strong>再試行</strong>導線を出す。楽観的UIで成功を偽装しない。</td></tr>
+          <tr><td>急かさない</td><td>不正入力</td><td>送信を黙って通さない。インラインで<strong>責めない言葉</strong>のエラー＋該当項目にフォーカス。</td></tr>
+          <tr><td>静けさ（全体）</td><td>成功</td><td>派手に祝わず、静かな確認＋次の体験（記事へ）をそっと差し出す。</td></tr>
+        </table>
+        <p style="font-size:.88rem;color:var(--muted);margin:.8rem 0 0">この表が成果物の心臓。<strong>原則（左）が、テストできる振る舞い（右）になっている</strong>＝設計者が手を止めない。</p>
+      </div>
+    </div>
+
+    <!-- UX explainer -->
+    <h2 id="ux">UX要件は、ハッピーパスの“あいだ”に宿る</h2>
+    <p>機能要件は「正常に動いたとき」を語ります。けれど実際のユーザーは、その<strong>あいだ</strong>に落ちます ── 読み込み中、結果ゼロ、通信エラー、入力ミス。ここをどう扱うかが「親切さ」の正体で、<strong>実装して画面に出して初めて見える</strong>。だからUXは、座学より“触って体感”が効きます。</p>
+    <blockquote>「綺麗なのに不親切」の多くは、デザインの失敗ではなく <strong>“状態”の設計漏れ</strong>。ハッピーパスだけ作り込み、loading/empty/error/invalid を放置した結果です。</blockquote>
+
+    <!-- ===================================================== FORK -->
+    <h2 id="fork">なぜ「振る舞いへの翻訳」にこだわるのか ── 原則だけでは、体験は変わらない</h2>
+    <p>③で書いた「振る舞い要件」が、体験をどれだけ左右するか。実装に入る前に、同じ画面・同じ原則で <strong>状態を要件化した場合としない場合</strong>を見比べます。</p>
+    <p><span class="example-tag">● 以下は一例</span> 見るべきは「不親切がどこで生まれるか」です（このあと自分でも触れます）。</p>
+
+    <div class="compare">
+      <div class="compare__col compare__col--bad">
+        <h4>✗ 体験原則を“言葉”で止めると</h4>
+        <div class="body">
+          <p style="margin-top:0"><strong>要件：</strong>「静けさのある親切なフォームにする」（=ハッピーパスだけ実装）</p>
+          <ul style="font-size:.9rem">
+            <li>🔴 送信中：<strong>無反応</strong>（押せたのか分からず連打）</li>
+            <li>🔴 エラー：<strong>何も起きない</strong>（成功と区別がつかない）</li>
+            <li>🔴 不正入力：<strong>黙って通る</strong>（あとで届かない）</li>
+            <li>🔴 空(0件)：行き止まり、次の一手がない</li>
+          </ul>
+          <p style="font-size:.9rem;color:#9A3A18"><strong>“綺麗なのに不親切”が完成する。</strong>原則は壁のポスターのまま。</p>
+        </div>
+      </div>
+      <div class="compare__col compare__col--good">
+        <h4>✓ 原則を“振る舞い”に翻訳すると</h4>
+        <div class="body">
+          <p style="margin-top:0"><strong>要件：</strong>状態ごとの受け入れ条件（成果物C）</p>
+          <ul style="font-size:.9rem">
+            <li>🟢 送信中：即フィードバック＋ボタン無効化</li>
+            <li>🟢 エラー：理由＋再試行（隠さない）</li>
+            <li>🟢 不正入力：やさしいインラインエラー＋フォーカス</li>
+            <li>🟢 空/成功：必ず次の一手をそっと提示</li>
+          </ul>
+          <p style="font-size:.9rem;color:#2F6F6A"><strong>静けさが、細部まで届く。</strong>差を生んだのは美しさではなく、状態の要件化。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAYGROUND -->
+    <h3 id="playground">自分で触って確かめる ── 状態シミュレータ</h3>
+    <p>ニュースレター登録フォームを題材に、<strong>「原則だけ（状態を作り込まない）」</strong>と<strong>「振る舞いまで要件化」</strong>を切り替えながら、各状態を実際に表示してみてください。同じUIでも、状態の扱いで“親切さ”がここまで変わります。</p>
+    <div class="pg">
+      <div class="pg__panel">
+        <div class="pg__bar"><b>操作</b></div>
+        <div style="padding:1rem">
+          <p style="font-size:.78rem;letter-spacing:.08em;color:var(--muted);margin:0 0 .4rem">設計モード</p>
+          <div class="modebtns" role="group" aria-label="設計モード">
+            <button class="modebtn" id="m-naive" aria-pressed="true">原則だけ（状態未定義）</button>
+            <button class="modebtn" id="m-designed" aria-pressed="false">振る舞いまで要件化</button>
+          </div>
+          <p style="font-size:.78rem;letter-spacing:.08em;color:var(--muted);margin:1rem 0 .4rem">状態を切り替える</p>
+          <div class="statebtns" id="states" role="group" aria-label="状態"></div>
+          <p class="sim-note" id="sim-hint"></p>
+        </div>
+      </div>
+      <div class="pg__panel">
+        <div class="pg__bar"><b>ニュースレター登録（体験プレビュー）</b><span style="font-size:.74rem;color:var(--muted)" id="sim-statelabel"></span></div>
+        <div class="pg__out" id="out"></div>
+      </div>
+    </div>
+    <div class="pg__diag"><h4>体験要件の充足チェック（状態が要件化されているか）</h4><ul id="diag"></ul></div>
+
+    <div class="callout callout--win">
+      <h4>✦ ここに、レバレッジが見える</h4>
+      <p>「原則だけ」モードでエラーや送信中を選ぶと、画面は<strong>静かに不親切</strong>になります ── 無反応、行き止まり、黙殺。原則を<strong>状態の振る舞いに翻訳する</strong>一手間が、ブランドの「静けさ」を細部まで届ける。UXとは、この“あいだ”の設計のことです。</p>
+    </div>
+
+    <!-- ===================================================== STEP 4 -->
+    <h2 id="build">④ AIに実装させる ── 自分のNAGIサイトに反映する</h2>
+    <p>体験要件（成果物C）を仕様として渡し、状態まで作り込んだニュースレター登録を NAGI に実装させます。今回は“中身データ”ではなく<strong>振る舞いの仕様</strong>が成果物の主役です。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--copy">⚙️ 開発体験用・コピペでOK</span><span class="label">実装：状態まで作り込んだニュースレター登録</span></div><button class="prompt__copy" data-copy="#p3">コピー</button></div>
+      <pre id="p3">あなたはフロントエンド実装者です。静的サイト「NAGI」に、ニュースレター登録フォームを追加します。
+送信先は無いので、送信はクライアントで擬似的に処理（成功/失敗をシミュレート）して構いません。
+デザイントークンは assets/css/nagi.css を踏襲し、ブランドの「静けさ」に合う控えめな表現にすること。
+
+次の“状態ごとの振る舞い要件”をすべて満たすこと（ハッピーパスだけにしない）：
+- 入力前：ラベルと、月1回配信である旨の控えめなマイクロコピー。
+- 送信中：送信ボタンを無効化し「送信中…」を表示（aria-busy）。無反応の時間を作らない。
+- 成功：派手に祝わず、静かな確認文＋「最新のジャーナルを読む」への導線。
+- エラー：失敗を隠さず、理由と「再試行」導線を表示。
+- 不正入力（メール形式不正）：送信を通さず、該当項目にインラインの“責めない”エラー文＋フォーカス移動。aria-invalid を付与。
+- アクセシビリティ：ラベルと入力の関連付け、エラーは aria-live で通知。
+
+NAGI に追加する form のHTMLと、状態を扱う最小JSを出力してください。</pre>
+    </div>
+    <p>動いたら、開発者ではなく<strong>慎重派・美和の目</strong>で検収します ── あえて空のまま送信、あえて不正なメール、あえて“エラー”を起こす。どの状態でも迷子にならないか。それが「親切さ」の検収です。</p>
+
+    <!-- ===================================================== STEP 5 -->
+    <h2 id="result">⑤ 結果を体験し、振り返る</h2>
+    <blockquote>体験原則は、<strong>振る舞いに翻訳して初めて本物</strong>になった。<br>
+      「親切さ」という曖昧語は、状態ごとの受け入れ条件にした瞬間、検証できる要件に変わる。</blockquote>
+    <div class="grid grid--2">
+      <div class="card">
+        <span class="num">気づき 1</span>
+        <h3 style="font-size:1.1rem;margin:.3rem 0">UXは“あいだ”に住む</h3>
+        <p style="color:var(--ink-2)">機能が正常に動く瞬間ではなく、loading/empty/error/invalid の扱いに体験の質が出る。ここは実装を見ないと書けない。</p>
+      </div>
+      <div class="card">
+        <span class="num">気づき 2</span>
+        <h3 style="font-size:1.1rem;margin:.3rem 0">原則は“振る舞い”で測る</h3>
+        <p style="color:var(--ink-2)">「静けさ」を、待たせない・隠さない・急かさないという観察可能な振る舞いに降ろせば、合意も検収もできる。</p>
+      </div>
+    </div>
+
+    <!-- ===================================================== CHECK -->
+    <h2 id="check">十分性チェック</h2>
+    <div class="artifact">
+      <div class="artifact__head"><b>セルフチェック</b><span class="tag">合意の前に</span></div>
+      <div class="artifact__body">
+        <ul style="margin:0">
+          <li>□ ペルソナは<strong>意思決定を変える粒度</strong>か（属性の羅列で終わっていないか）</li>
+          <li>□ 力を注ぐ<strong>重点モーメント</strong>を1つに絞れたか</li>
+          <li>□ 体験原則が<strong>検証可能な振る舞い</strong>に翻訳されているか（"親切に"が残っていないか）</li>
+          <li>□ loading / success / empty / error / invalid の各状態に要件があるか</li>
+          <li>□ 各振る舞いがブランド（静けさ）と整合しているか</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NEXT -->
+    <h2 id="next">次へ</h2>
+    <p>「誰の・どんな体験」を、ポスターではなく振る舞いの要件にできました。これで要件定義の解像度に「状態」「マイクロコピー」「フォーカス」「知覚速度」が加わったはずです。</p>
+    <div class="callout">
+      <h4>📨 “親切さ”は、すべての人への親切さへ</h4>
+      <p>状態の設計は、そのまま<strong>アクセシビリティ</strong>（誰一人取り残さない親切さ）に広がります。さらに法務・和田から R-04「市場ごとに出していい表現を制御したい」も届いています。性能・アクセシビリティ（WCAG／JIS X 8341）・SEO・ガバナンスを扱う <strong>M8（非機能要件）</strong>へ。NAGIには JSON-LD・alt・data-analytics の“種”が既に仕込んであります。</p>
+    </div>
+    <div class="pill-row" style="margin:var(--sp-5) 0">
+      <a class="btn btn--ghost" href="m5.html">← M5 へ戻る</a>
+      <a class="btn" href="../nagi/index.html" target="_blank" rel="noopener">砂場（NAGI）を開く ↗</a>
+      <span class="btn btn--ghost is-soon" style="opacity:.5;pointer-events:none">M8 非機能要件（近日公開）</span>
+    </div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="fine">© 2026 改造道 Kaizō-dō ── 教育目的の架空教材。「凪 / NAGI」は架空のブランドです。 ｜ <a href="../index.html">トップへ</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/platform.js"></script>
+<script>
+/* M2 状態シミュレータ ─ 設計モード×状態 で体験プレビューを描き、要件充足を診断 */
+(function () {
+  "use strict";
+  var out = document.getElementById("out");
+  if (!out) return;
+  var STATES = [
+    { id: "idle", label: "入力前" },
+    { id: "submitting", label: "送信中" },
+    { id: "success", label: "成功" },
+    { id: "empty", label: "空(0件)" },
+    { id: "error", label: "通信エラー" },
+    { id: "invalid", label: "不正入力" }
+  ];
+  var HANDLED = { naive: ["idle"], designed: ["idle", "submitting", "success", "empty", "error", "invalid"] };
+  var mode = "naive", state = "idle";
+  var statesWrap = document.getElementById("states");
+  var hint = document.getElementById("sim-hint");
+  var stateLabel = document.getElementById("sim-statelabel");
+  var diag = document.getElementById("diag");
+
+  // build state buttons
+  STATES.forEach(function (s) {
+    var b = document.createElement("button");
+    b.className = "statebtn"; b.textContent = s.label; b.setAttribute("data-state", s.id);
+    b.setAttribute("aria-pressed", String(s.id === state));
+    b.addEventListener("click", function () { state = s.id; render(); });
+    statesWrap.appendChild(b);
+  });
+
+  function form(extra) {
+    return '<div class="sim-form"><input type="email" ' + (extra || "") + ' placeholder="メールアドレス" aria-label="メールアドレス"><button class="sim-btn">登録</button></div>';
+  }
+
+  function viewNaive(s) {
+    switch (s) {
+      case "idle": return form();
+      case "submitting": return form() + '<p class="sim-note">（押しても見た目が変わらない＝無反応に見える）</p>';
+      case "success": return '<p>登録しました</p>';
+      case "empty": return '<div class="sim-empty">（結果なし。画面が空のまま）</div>';
+      case "error": return '<div class="sim-empty">（何も表示されない＝成功と区別できない）</div>';
+      case "invalid": return form() + '<p class="sim-note">（不正なメールでもそのまま送信されてしまう）</p>';
+    }
+  }
+  function viewDesigned(s) {
+    switch (s) {
+      case "idle": return '<label style="font-size:.85rem;color:var(--ink-2);display:block;margin-bottom:.4rem">ニュースレターを購読</label>' + form() + '<p class="sim-note">月に一度、新しいジャーナルを静かにお届けします。</p>';
+      case "submitting": return '<div class="sim-form"><input type="email" value="miwa@example.com" disabled><button class="sim-btn" disabled aria-busy="true">送信中…</button></div>';
+      case "success": return '<div class="sim-msg sim-msg--ok">✓ ご登録ありがとうございます。</div><p class="sim-note">よろしければ <a href="#" style="color:var(--accent)">最新のジャーナルを読む →</a></p>';
+      case "empty": return '<div class="sim-empty">該当する記事はまだありません。<br><a href="#" style="color:var(--accent)">すべてのジャーナルを見る →</a></div>';
+      case "error": return '<div class="sim-msg sim-msg--err">⚠ 送信に失敗しました。通信環境をご確認ください。</div><div style="margin-top:.5rem"><button class="sim-btn">再試行</button></div>';
+      case "invalid": return '<div class="sim-form"><input type="email" class="bad" value="miwa.example" aria-invalid="true"><button class="sim-btn">登録</button></div><p class="sim-msg--field">メールアドレスの形式をご確認ください（例：name@example.com）</p>';
+    }
+  }
+
+  function render() {
+    statesWrap.querySelectorAll(".statebtn").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-state") === state)); });
+    document.getElementById("m-naive").setAttribute("aria-pressed", String(mode === "naive"));
+    document.getElementById("m-designed").setAttribute("aria-pressed", String(mode === "designed"));
+    var sObj = STATES.filter(function (x) { return x.id === state; })[0];
+    stateLabel.textContent = "状態：" + sObj.label;
+    out.innerHTML = (mode === "naive" ? viewNaive(state) : viewDesigned(state));
+    hint.textContent = mode === "naive"
+      ? "「原則だけ」モード：ハッピーパス以外の状態が作り込まれていません。"
+      : "「振る舞いまで要件化」モード：各状態に表示・導線・言葉が定義されています。";
+    // diagnostics: per state handled?
+    diag.innerHTML = STATES.map(function (s) {
+      var ok = HANDLED[mode].indexOf(s.id) >= 0;
+      return '<li class="' + (ok ? "ok" : "ng") + '">' + (ok ? "🟢 " : "🔴 ") + s.label + "：" + (ok ? "要件化されている（次の一手が示される）" : "未定義（無反応・行き止まり・黙殺になりがち）") + "</li>";
+    }).join("");
+  }
+
+  document.getElementById("m-naive").addEventListener("click", function () { mode = "naive"; render(); });
+  document.getElementById("m-designed").addEventListener("click", function () { mode = "designed"; render(); });
+  render();
+})();
+</script>
+</body>
+</html>
