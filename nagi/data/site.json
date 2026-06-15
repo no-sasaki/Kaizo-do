@@ -1,0 +1,29 @@
+{
+  "brand": {
+    "name_ja": "凪",
+    "name_en": "NAGI",
+    "tagline_ja": "静けさを、肌へ。",
+    "tagline_en": "Stillness, for the skin.",
+    "origin": "Kyoto, Japan",
+    "founded": 2014
+  },
+  "philosophy": {
+    "quote_ja": "波が引いたあとの、鏡のような水面。私たちはその一瞬を「凪」と呼び、肌が本来の静けさを取り戻す状態として、すべての製品に宿しています。",
+    "lead_ja": "京都の老舗酒蔵に伝わる発酵の技術と、瀬戸内の柑橘。土地の素材と科学を結び、過剰を削ぎ落としたリチュアルを提案します。"
+  },
+  "nav": [
+    { "label_ja": "コレクション", "label_en": "Collections", "href": "products.html" },
+    { "label_ja": "リチュアル", "label_en": "Ritual", "href": "index.html#ritual" },
+    { "label_ja": "ジャーナル", "label_en": "Journal", "href": "journal.html" },
+    { "label_ja": "ブランド", "label_en": "About", "href": "index.html#philosophy" }
+  ],
+  "markets": [
+    { "code": "ja-JP", "label": "日本", "default": true },
+    { "code": "en-US", "label": "Global (EN)" }
+  ],
+  "ritual": [
+    { "step": 1, "title_ja": "鎮める", "title_en": "Calm", "body_ja": "柚子の精油を含むミストで、肌と呼吸を整える最初のひと呼吸。" },
+    { "step": 2, "title_ja": "満たす", "title_en": "Nourish", "body_ja": "米発酵エッセンスが角層のすみずみまで水分を届ける中心の工程。" },
+    { "step": 3, "title_ja": "閉じる", "title_en": "Seal", "body_ja": "椿オイルが薄い膜となり、静けさを一日のあいだ肌にとどめる。" }
+  ]
+}

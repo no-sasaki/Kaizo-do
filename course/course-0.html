@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course 0 ｜ オリエンテーション＆ブリーフ ── 改造道</title>
+<meta name="description" content="ブラウザとチャットAIだけで本物のブランドサイトを動かす。仮想ブランドNAGIの世界観・ステークホルダー・プロジェクト憲章に出会うCourse 0。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/platform.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m4.html" data-page="m4.html">M4 機能要件</a>
+      <a href="../nagi/index.html">NAGI サイト</a>
+      <a class="btn btn--accent" href="m4.html">M4 へ進む <span class="arr">→</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="mod-hero">
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">改造道</a> ／ Phase 0 ・ 方向付け</p>
+    <p class="eyebrow">Course 0 ── オリエンテーション＆ブリーフ｜T1</p>
+    <h1 style="max-width:18ch">ようこそ。まず、<br>「自分で動かせる」を体験する。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">この教材のゴールは、あなたをエンジニアにすることではありません。
+      上流の判断が下流でどう効くかを“体で”理解し、生成AIでそれを速く・広く・深くできるようになること。
+      Course 0 では、その舞台と道具に出会います。</p>
+    <div class="meta-row">
+      <span class="tag tag--core">所要 約25分</span>
+      <span class="tag">必要：ブラウザ＋チャットAI</span>
+      <span class="tag">成果物：なし（与件の理解）</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap layout-rail" style="padding-top:var(--sp-6)">
+  <!-- progress rail -->
+  <nav class="rail" aria-label="目次">
+    <ol>
+      <li><a href="#why">なぜこの教材か</a></li>
+      <li><a href="#proof">制約＝証明</a></li>
+      <li><a href="#setup">作業環境の準備</a></li>
+      <li><a href="#world">舞台：NAGI</a></li>
+      <li><a href="#stakeholders">ステークホルダー</a></li>
+      <li><a href="#charter">プロジェクト憲章</a></li>
+      <li><a href="#backlog">要望バックログ</a></li>
+      <li><a href="#frame">委ねる／握る</a></li>
+      <li><a href="#next">次へ：M4</a></li>
+    </ol>
+  </nav>
+
+  <main class="prose">
+
+    <!-- WHY -->
+    <h2 id="why">なぜこの教材か</h2>
+    <p>あなたはおそらく、戦略や青写真を描くことに長けたコンサルタントです。一方で、プログラミングやコマンドラインに触れたことはないかもしれません。それは弱点ではありません。
+      ただ一つ、補える穴があります ── <strong>上流で決めたことが、下流の実装でどう跳ね返るかが見えない</strong>こと。</p>
+    <p>盲点の残った要件は、最も高くつく場所＝実装フェーズで初めて表面化します。「カテゴリで絞り込めると思っていた」「多言語は後から足せると思っていた」── こうしたズレは、設計図の上では美しく、コードの上で崩れます。</p>
+    <blockquote>この教材が腹落ちさせたいことは、突き詰めるとたった一つ。<br>
+      <strong>要件定義の質は、そのままプロダクトの質になる。そして生成AIは、技術が“見えている”人が使うほど、要件定義を速く・広く・深くする増幅器になる。</strong></blockquote>
+
+    <!-- PROOF -->
+    <h2 id="proof">制約は、弱点ではなく「証明」</h2>
+    <p>あなたが使える道具は、たった二つに限定されています。</p>
+    <ul>
+      <li><strong>ブラウザ</strong> ── GitHub の Web エディタとプレビュー</li>
+      <li><strong>チャット型の生成AI</strong> ── ChatGPT / Claude などの対話型AI</li>
+    </ul>
+    <p>ローカル環境も、コマンドラインも、サーバも要りません。それでも、あなたは本物のブランドサイトを動かし、コンテンツの“型”を定義し、機能を実装し、結果を目で見ます。
+      <strong>それができてしまうこと自体が、「AIが学習コストを極限まで下げる」という主張の、生きた証拠</strong>になります。制約は敵ではなく、最大の説得材料です。</p>
+
+    <!-- SETUP -->
+    <h2 id="setup">作業環境の準備 ── ブラウザだけで完結</h2>
+    <p>あなたの「砂場」は、仮想ブランド <strong>NAGI</strong> のサイトです。まずは触ってみましょう。</p>
+    <div class="card" style="margin:var(--sp-4) 0">
+      <p class="num">STEP 1</p>
+      <h3 style="margin:.2rem 0 .5rem">NAGI サイトを見る</h3>
+      <p style="color:var(--ink-2)">下のボタンから、完成済みのブランドサイトを開きます。製品コレクション、ジャーナル記事 ── これらはすべて、裏側の <code style="font-family:var(--mono);background:var(--accent-tint);padding:.1rem .3rem;border-radius:3px">/data/*.json</code> という構造化データから描画されています。</p>
+      <p style="margin-top:var(--sp-3)"><a class="btn" href="../nagi/index.html" target="_blank" rel="noopener">NAGI サイトを別タブで開く <span class="arr">↗</span></a></p>
+    </div>
+    <div class="card" style="margin:var(--sp-4) 0">
+      <p class="num">STEP 2</p>
+      <h3 style="margin:.2rem 0 .5rem">自分のコピーを持つ（Fork）</h3>
+      <p style="color:var(--ink-2)">本番の演習では、このリポジトリを GitHub 上で <strong>Fork</strong>（または “Use this template”）して、自分のアカウントにコピーします。設定 → Pages を有効にすれば、<strong>あなた専用のNAGIサイト</strong>が数分で公開されます。編集はすべて GitHub の鉛筆アイコン（Webエディタ）から。git のインストールもコマンドも不要です。</p>
+      <p style="color:var(--muted);font-size:.88rem;margin-top:var(--sp-2)">※ この縦切り版では、まず読み進めるだけでも全体像をつかめます。手を動かす準備ができたら Fork してください。</p>
+    </div>
+    <div class="callout">
+      <h4>🧭 唯一の“つまずきポイント”はここだけ</h4>
+      <p>Fork して自分の Pages で公開する、という一度きりのセットアップ。これさえ越えれば、あとはブラウザの中だけで「編集 → 確認 → AIに相談」のループが回り続けます。</p>
+    </div>
+
+    <!-- WORLD -->
+    <h2 id="world">学びの舞台 ──「凪 / NAGI」</h2>
+    <p><strong>NAGI（凪）</strong>は、京都発・グローバル展開中の架空のプレミアム・スキンケア＆ウェルネスブランドです。EC（販売）の複雑さを避け、<strong>ブランド表現とコンテンツ運用というWCMの本丸</strong>に集中するため、あえて非ECのブランドサイトに絞っています。</p>
+    <div class="artifact">
+      <div class="artifact__head"><b>NAGI ブランドブリーフ（抜粋）</b><span class="tag">与件</span></div>
+      <div class="artifact__body stack">
+        <p style="margin:0"><strong>パーパス：</strong>過剰を削ぎ落とし、肌が本来もつ静けさを取り戻す。</p>
+        <p style="margin:0"><strong>世界観：</strong>「凪」＝波が引いたあとの鏡のような水面。静謐・余白・上質。</p>
+        <p style="margin:0"><strong>素材：</strong>京都・伏見の発酵技術と瀬戸内の柑橘。土地の素材 × 科学。</p>
+        <p style="margin:0"><strong>コンテンツ領域：</strong>製品コレクション／成分・科学のストーリー／リチュアル（How-to）／サステナビリティ／ジャーナル（編集記事）／（今後）店舗・キャンペーン・プレスルーム。</p>
+        <p style="margin:0"><strong>市場：</strong>日本（ja-JP）と海外（en-US）。地域差・表現規制の差がガバナンスの論点になる。</p>
+      </div>
+    </div>
+    <p>このブリーフを読んで気づいてほしいのは、<strong>コンテンツの“種類”が豊富である</strong>こと。製品、記事、リチュアル、プレス…… これらはそれぞれ違う「型」を持ちます。WCMの心臓＝コンテンツモデリングが自然に必要になる舞台です。</p>
+
+    <!-- STAKEHOLDERS -->
+    <h2 id="stakeholders">ステークホルダー ── 要望は彼らから来る</h2>
+    <p>舞台には、架空のステークホルダーが配置されています。彼らが「追加要件」を投げてくる存在です。要望は、それぞれの立場の言葉で、しばしば少し曖昧にやってきます。</p>
+    <div class="grid grid--2">
+      <div class="card"><span class="num">CMO</span><h3 style="font-size:1.1rem;margin:.2rem 0 .3rem">佐倉 怜（ブランド起点）</h3><p>「ブランドの世界観を損なわずに、もっと“語れる”サイトにしたい」── 抽象的でブランド寄りの要望を出す。</p></div>
+      <div class="card"><span class="num">DIGITAL</span><h3 style="font-size:1.1rem;margin:.2rem 0 .3rem">三宅 亮（KPI起点）</h3><p>「オーガニック流入と回遊を増やしたい」── 数字とビジネス成果で語る。</p></div>
+      <div class="card"><span class="num">PR / 広報</span><h3 style="font-size:1.1rem;margin:.2rem 0 .3rem">林 美咲（広報起点）</h3><p>「海外の記者に、プレスリリースをちゃんと見せたい」── M4で向き合う相手。</p></div>
+      <div class="card"><span class="num">LEGAL</span><h3 style="font-size:1.1rem;margin:.2rem 0 .3rem">和田 隆（ガバナンス起点）</h3><p>「市場ごとに表現できること・できないことが違う」── 制約とリスクを持ち込む。</p></div>
+    </div>
+
+    <!-- CHARTER -->
+    <h2 id="charter">プロジェクト憲章（T1）── 何のための・誰が決める・どこまで</h2>
+    <p>Phase 0 の役割は、プロジェクトの輪郭を最初に固定することです。ここでは与件として提示します（深く作るのは後のモジュール）。</p>
+    <div class="artifact">
+      <div class="artifact__head"><b>NAGI サイト・リニューアル ｜ プロジェクト憲章（要約）</b><span class="tag">T1 OUT</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>目的</th><td>ブランド世界観を保ちながら、語れる・見つかる・運用できるブランドサイトへ。海外市場での発見性とガバナンスを強化する。</td></tr>
+          <tr><th>背景</th><td>現行サイトは静的でコンテンツ追加が属人的。海外PR・多言語の要望が増加。</td></tr>
+          <tr><th>スコープ仮説</th><td>WCM（コンテンツ管理・表現・情報設計）に集中。EC機能は対象外。</td></tr>
+          <tr><th>体制（RACI抜粋）</th><td>意思決定：CMO（A）／要件：コンサル＝あなた（R）／承認：CMO・法務（C/A）／運用：デジタル（R）</td></tr>
+          <tr><th>制約</th><td>技術前提として静的配信（GitHub Pages 相当）＋構造化データ駆動。多言語・ガバナンス必須。</td></tr>
+          <tr><th>進め方</th><td>要件定義の15タスクを5フェーズで。各機能は「依頼→要件→実装→結果」の体験ループで検証する。</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- BACKLOG -->
+    <h2 id="backlog">要望バックログ ── 難度は徐々に上がる</h2>
+    <p>ステークホルダーからの要望はバックログ化され、モジュールが進むごとに難度が上がります。あなたが最初に取り組むのは <strong>PR・林さんからの依頼</strong>です。</p>
+    <div class="artifact">
+      <div class="artifact__head"><b>Requirements Backlog</b><span class="tag">起点</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>#</th><th>起案</th><th>要望（生の言葉）</th><th>扱うモジュール</th></tr>
+          <tr><td>R-01</td><td>PR・林</td><td>「海外の記者に、プレスリリースをちゃんと見せたい」</td><td><strong style="color:var(--accent)">M4（次）</strong></td></tr>
+          <tr><td>R-02</td><td>デジタル・三宅</td><td>「ジャーナルを成分・効能で探せるようにしたい」</td><td>M5</td></tr>
+          <tr><td>R-03</td><td>CMO・佐倉</td><td>「店舗・スパを地図から探せると体験が締まる」</td><td>M5 / M7</td></tr>
+          <tr><td>R-04</td><td>法務・和田</td><td>「市場ごとに出していい表現を制御したい」</td><td>M8</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- FRAME -->
+    <h2 id="frame">常設フレーム ──「AIに委ねる／人が握る」</h2>
+    <p>これから全モジュールで、この線引きを反復します。最初に頭に入れておいてください。</p>
+    <div class="split">
+      <div class="split__card split__card--delegate">
+        <h4>▷ AIに委ねる</h4>
+        <ul>
+          <li>選択肢・草案・たたき台の<strong>量産</strong></li>
+          <li>エッジケース・抜け漏れの洗い出し</li>
+          <li>定型の構造化（表・リスト・JSON）</li>
+          <li>実装コードの生成</li>
+        </ul>
+      </div>
+      <div class="split__card split__card--hold">
+        <h4>● 人が握る</h4>
+        <ul>
+          <li><strong>成功の定義</strong>（何をもって良しとするか）</li>
+          <li>体験原則・ブランド制約との整合</li>
+          <li><strong>合意可能性</strong>（関係者が揉めないか）</li>
+          <li>優先度のトレードオフと十分性の判断</li>
+        </ul>
+      </div>
+    </div>
+    <p>AIは速い。だが「速く間違える」こともできます。だからこそ、判断＝握りの部分が人の価値になる。これがAI時代のコンサルタントの筋力です。</p>
+
+    <!-- NEXT -->
+    <h2 id="next">次へ ── M4「機能要件」で、ループを1周まわす</h2>
+    <p>準備は整いました。次のモジュールでは、PR・林さんの曖昧な依頼を、ユーザーストーリーと受け入れ条件へと締め上げ、実際に NAGI サイトへ実装します。そして ── <strong>わざと一度、浅いやり方で失敗します。</strong>その品質差が、この教材で一番伝えたいことです。</p>
+    <div class="center" style="margin:var(--sp-5) 0">
+      <a class="btn btn--accent" href="m4.html" style="font-size:1rem;padding:.9rem 1.8rem">M4 機能要件モジュールへ進む <span class="arr">→</span></a>
+    </div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="fine">© 2026 改造道 Kaizō-dō ── 教育目的の架空教材。「凪 / NAGI」は架空のブランドです。 ｜ <a href="../index.html">トップへ</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/platform.js"></script>
+</body>
+</html>

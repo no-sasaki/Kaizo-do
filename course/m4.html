@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M4 機能要件 ｜ 体験ループを1周まわす ── 改造道</title>
+<meta name="description" content="曖昧な依頼を、ユーザーストーリーと受け入れ条件へ。わざと浅く失敗し、観点を足して締め直す。要件の質が実装の質を決めることを、自分のNAGIサイトで食らうM4モジュール。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/platform.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m4.html" data-page="m4.html">M4 機能要件</a>
+      <a href="../nagi/index.html">NAGI サイト</a>
+      <a class="btn btn--accent" href="../nagi/index.html" target="_blank" rel="noopener">砂場を開く <span class="arr">↗</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="mod-hero">
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">改造道</a> ／ <a href="course-0.html">Course 0</a> ／ Phase 4 ・ 要件への落とし込み</p>
+    <p class="eyebrow">M4 ── 機能要件（T9）｜ ◎ 深く</p>
+    <h1 style="max-width:20ch">体験ループを、1周まわす。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">PR・林さんの曖昧な依頼を、テストできる受け入れ条件へと締め上げる。
+      そして<strong>わざと一度、浅いやり方で失敗</strong>します。同じAI・同じあなたでも、要件の質で結果がここまで変わる ── それを自分のサイトで食らうのが、このモジュールです。</p>
+    <div class="meta-row">
+      <span class="tag tag--core">所要 約60分</span>
+      <span class="tag">対応タスク T9</span>
+      <span class="tag">成果物：ユーザーストーリー＋受け入れ条件＋優先度</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap layout-rail" style="padding-top:var(--sp-6)">
+  <nav class="rail" aria-label="目次">
+    <ol>
+      <li><a href="#brief">① 依頼を受ける</a></li>
+      <li><a href="#spar">② AIと壁打ち</a></li>
+      <li><a href="#artifact">③ 成果物をつくる</a></li>
+      <li><a href="#fork">わざと失敗する</a></li>
+      <li><a href="#build">④ AIに実装させる</a></li>
+      <li><a href="#result">⑤ 結果と振り返り</a></li>
+      <li><a href="#check">十分性チェック</a></li>
+      <li><a href="#next">次へ</a></li>
+    </ol>
+  </nav>
+
+  <main class="prose">
+
+    <!-- ===================================================== STEP 1 -->
+    <h2 id="brief">① 依頼を受ける</h2>
+    <p>あなたのSlackに、広報の林さんからメッセージが届きました。</p>
+    <div class="callout">
+      <h4>💬 PR・林 美咲 からの依頼</h4>
+      <p>「お疲れさまです。来月、海外向けに大きな発表があって、<strong>記者にプレスリリースをちゃんと見せられるページ</strong>がサイトに欲しいんです。今はジャーナルに混ぜて載せてるんですけど、報道の人が探しにくいみたいで……。いい感じにお願いできますか？」</p>
+    </div>
+    <p>典型的な、現実の依頼です。悪気なく曖昧で、判断材料が足りない。ここで多くの人がやってしまうのが ──「<em>プレスリリース一覧ページを作る</em>」とだけ理解して、すぐ手を動かすこと。<strong>この理解の粗さが、後で実装を壊します。</strong></p>
+    <p>まず、依頼の裏にある問いを立てます。<em>誰が・何のために・どんな状況で使う？ 既存のジャーナルと何が違う？ 海外向けとは？ 「探しにくい」の正体は？</em></p>
+
+    <!-- ===================================================== STEP 2 -->
+    <h2 id="spar">② AIと壁打ちして要件を定義する</h2>
+    <p>ここからAIの出番です。ただし ── <strong>丸投げではなく、握るべきを握ったうえで委ねる。</strong></p>
+    <div class="split">
+      <div class="split__card split__card--delegate">
+        <h4>▷ AIに委ねる</h4>
+        <ul>
+          <li>ユーザーストーリーの候補出し</li>
+          <li>受け入れ条件のドラフト</li>
+          <li><strong>エッジケースの洗い出し</strong>（多言語・日付・空状態…）</li>
+          <li>必要なコンテンツ項目（フィールド）の提案</li>
+        </ul>
+      </div>
+      <div class="split__card split__card--hold">
+        <h4>● 人が握る</h4>
+        <ul>
+          <li><strong>成功の定義</strong>＝「記者が3分で目的の資料に到達できる」</li>
+          <li>ブランド制約（NAGIの静謐な世界観を壊さない）</li>
+          <li>MoSCoW の優先度づけ</li>
+          <li>「これで関係者が揉めないか」の判定</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>まずは“発散”。AIにペルソナと利用文脈から考えさせ、抜けを潰します。下のプロンプトをコピーして、あなたのチャットAIに貼ってください。</p>
+
+    <div class="prompt">
+      <div class="prompt__bar"><span>Prompt ─ 発散：要件の洗い出し</span><button class="prompt__copy" data-copy="#p1">コピー</button></div>
+      <pre id="p1">あなたは経験豊富なWCM（Webコンテンツ管理）のコンサルタントです。
+京都発の架空ウェルネスブランド「NAGI」のブランドサイト（静的・JSON駆動）に、
+新しいコンテンツタイプ「プレスリリース」を追加します。
+
+依頼（広報担当の生の言葉）:
+「海外の記者にプレスリリースをちゃんと見せたい。今はジャーナルに混ざっていて探しにくい。」
+
+次を出してください。私が判断するための“発散”が目的です。
+1. 主要な利用者（ペルソナ）と利用文脈を3つ。各ペルソナの「成功＝何ができれば満足か」も。
+2. このページで満たすべきユーザーストーリーの候補を5〜8個（As a / I want / so that 形式）。
+3. プレスリリースが「ジャーナル記事」と決定的に異なる点（コンテンツ項目の違い）を表で。
+4. 見落としがちなエッジケース（多言語、公開日、報道解禁、PDF、空状態、過去アーカイブ等）を列挙。
+最後に、私が必ず自分で決めるべき論点を3つ指摘してください。</pre>
+    </div>
+
+    <p>AIは多くの候補を返します。ここで<strong>あなたが握る</strong>のは取捨選択です。「報道解禁日」は要る？「カテゴリ（製品/企業/サステナ）」は？「言語フィルタ」は最初から必要か、後回しか？ ── 成功の定義（記者が3分で目的に到達）に照らして、入れる/落とすを決めます。</p>
+
+    <p>次に“収束”。決めた方針をAIに渡し、合意可能な形式に整えさせます。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><span>Prompt ─ 収束：受け入れ条件への落とし込み</span><button class="prompt__copy" data-copy="#p2">コピー</button></div>
+      <pre id="p2">先の検討から、以下の方針で確定します。
+- 成功の定義: 海外の記者が、サイトに来てから3分以内に「最新の/目的の」プレスリリース本文とメディア向け資料に到達できる。
+- スコープに入れる: 一覧（新しい順）、カテゴリでの絞り込み（製品/企業/サステナ）、公開日、本文、報道用の問い合わせ先、日英の出し分け。
+- 今回は外す: 全文検索、PDF自動生成、購読通知。
+
+これを、実装とテストができる「ユーザーストーリー＋受け入れ条件（Given/When/Then）」に落としてください。
+各ストーリーに MoSCoW（Must/Should/Could/Won't）の優先度を付けること。
+受け入れ条件は曖昧語（"いい感じに"等）を排し、検証可能な記述にすること。
+さらに、この機能を支えるのに必要な「プレスリリースのコンテンツモデル（フィールド一覧／型／必須・任意／多言語対応の有無）」を表で添えてください。</pre>
+    </div>
+    <div class="callout callout--win">
+      <h4>✦ ここがAI活用の本質</h4>
+      <p>AIは「量」と「網羅」を一瞬で出す。人は「成功の定義」という<strong>軸</strong>を与え、その軸で切る。軸がなければAIの量はノイズになり、軸があればAIの量は<strong>抜け漏れのない要件</strong>になる。技術が見えていると、この軸に「実装で効く観点（型・日付・多言語）」が自然と入る ── それが青写真しか描けない状態との差です。</p>
+    </div>
+
+    <!-- ===================================================== STEP 3 -->
+    <h2 id="artifact">③ 成果物をつくる</h2>
+    <p>AIの出力を、あなたの判断で整えた“合意できる成果物”がこれです。ファイル形式は問いません ── 重要なのは<strong>本質的な観点が網羅され、検証可能であること</strong>。</p>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物A ｜ ユーザーストーリー＋受け入れ条件＋優先度</b><span class="tag tag--core">T9 OUT</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>ID</th><th>ユーザーストーリー</th><th>受け入れ条件（Given/When/Then 抜粋）</th><th>優先度</th></tr>
+          <tr>
+            <td>US-1</td>
+            <td>海外の記者として、最新のプレスリリースを一覧で見たい。最新の発表を逃さないため。</td>
+            <td>プレスルームを開くと、リリースが<strong>公開日の新しい順</strong>で並ぶ。各項目に日付・カテゴリ・見出しが表示される。</td>
+            <td><code>Must</code></td>
+          </tr>
+          <tr>
+            <td>US-2</td>
+            <td>記者として、関心領域（製品/企業/サステナ）で<strong>絞り込みたい</strong>。目的の発表に早く着くため。</td>
+            <td>カテゴリを選ぶと、そのカテゴリのリリースだけが残る。該当0件のとき「該当なし」を表示し、壊れない。</td>
+            <td><code>Must</code></td>
+          </tr>
+          <tr>
+            <td>US-3</td>
+            <td>記者として、本文と<strong>報道用の問い合わせ先</strong>を1ページで読みたい。</td>
+            <td>個別ページに、本文・公開日・カテゴリ・広報連絡先が表示される。</td>
+            <td><code>Must</code></td>
+          </tr>
+          <tr>
+            <td>US-4</td>
+            <td>海外の記者として、<strong>英語の</strong>リリースを読みたい。日本語が読めないため。</td>
+            <td>言語切替で、見出し・本文が当該言語で表示される。未翻訳項目はフォールバック表示し、欠落で崩れない。</td>
+            <td><code>Should</code></td>
+          </tr>
+          <tr>
+            <td>US-5</td>
+            <td>記者として、過去のリリースも辿りたい。</td>
+            <td>年でアーカイブを辿れる。</td>
+            <td><code>Could</code></td>
+          </tr>
+          <tr>
+            <td>US-6</td>
+            <td>（全文検索）</td>
+            <td>──</td>
+            <td><code>Won't</code>（今回）</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <p>受け入れ条件US-2の「該当0件のとき壊れない」、US-4の「欠落で崩れない」── こうした<strong>エッジケースを“先に”言語化できるか</strong>が、技術が見えている要件定義の証拠です。これが抜けると、後で実装が崩れます（次節で実演します）。</p>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物B ｜ コンテンツモデルの種（プレスリリース型）</b><span class="tag">T10 連動</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>フィールド</th><th>型</th><th>必須</th><th>多言語</th><th>なぜ必要か（どの受け入れ条件を支えるか）</th></tr>
+          <tr><td><code>id</code></td><td>文字列（一意）</td><td>必須</td><td>—</td><td>個別ページのURL・参照（US-3）</td></tr>
+          <tr><td><code>category</code></td><td>列挙（product/corporate/sustainability）</td><td>必須</td><td>—</td><td><strong>絞り込み（US-2）</strong> ← これが無いとフィルタが作れない</td></tr>
+          <tr><td><code>date</code></td><td>日付 ISO</td><td>必須</td><td>—</td><td><strong>新しい順の並び替え（US-1）</strong>・アーカイブ（US-5）</td></tr>
+          <tr><td><code>title</code></td><td>テキスト</td><td>必須</td><td><strong>有</strong></td><td>見出し（US-1, US-4）</td></tr>
+          <tr><td><code>body</code></td><td>リッチ/段落配列</td><td>必須</td><td><strong>有</strong></td><td>本文（US-3, US-4）</td></tr>
+          <tr><td><code>media_contact</code></td><td>オブジェクト（氏名/email）</td><td>必須</td><td>—</td><td>報道連絡先（US-3）</td></tr>
+          <tr><td><code>embargo</code></td><td>真偽/日時</td><td>任意</td><td>—</td><td>報道解禁の制御（将来）</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <p>「<strong>なぜ必要か</strong>」の列に注目。各フィールドが特定の受け入れ条件に紐づいています。これが<strong>トレーサビリティ</strong>（要求↔要件の追跡）の芽です。M9/M10で本格的に扱いますが、種はここで蒔かれます。</p>
+
+    <!-- ===================================================== FORK -->
+    <h2 id="fork">⚡ ここで、わざと一度失敗します</h2>
+    <p>主張を本当に信じるには、浅いやり方の失敗を一度、自分で見るのが最短です。同じ依頼を、<strong>2つの要件で</strong>AIに実装させ、結果を比べます。</p>
+
+    <div class="compare">
+      <div class="compare__col compare__col--bad">
+        <h4>✗ 浅い要件で実装させると</h4>
+        <div class="body">
+          <p style="margin-top:0"><strong>渡した指示：</strong>「プレスリリース一覧ページを作って。ジャーナルみたいな感じで。」</p>
+          <p><strong>渡したデータ（型が雑）：</strong></p>
+          <div class="prompt" style="margin:.4rem 0"><pre style="padding:.9rem;font-size:.78rem">{ "title": "新エッセンス発売",
+  "text": "...本文..." }</pre></div>
+          <p><strong>AIの出力：</strong>それっぽい一覧。だが ──</p>
+          <ul style="font-size:.9rem">
+            <li>🔴 <strong>カテゴリで絞り込めない</strong>（型に <code>category</code> が無い）</li>
+            <li>🔴 <strong>新しい順に並ばない</strong>（<code>date</code> が無い／文字列）</li>
+            <li>🔴 英語版を出そうとすると<strong>多言語の置き場所が無く崩れる</strong></li>
+            <li>🔴 報道連絡先が無く、記者が問い合わせ先に辿れない</li>
+            <li>🔴 0件時の表示が未定義で<strong>空白orエラー</strong></li>
+          </ul>
+          <p style="font-size:.9rem;color:#9A3A18"><strong>手戻り発生。</strong>型を直す＝データもコードも作り直し。これが「実装フェーズで初めて表面化する盲点」の正体。</p>
+        </div>
+      </div>
+      <div class="compare__col compare__col--good">
+        <h4>✓ 深い要件で実装させると</h4>
+        <div class="body">
+          <p style="margin-top:0"><strong>渡した指示：</strong>成果物A（受け入れ条件）＋ 成果物B（コンテンツモデル）＋ 構造化データ。</p>
+          <p><strong>渡したデータ（型が効いている）：</strong></p>
+          <div class="prompt" style="margin:.4rem 0"><pre style="padding:.9rem;font-size:.78rem">{ "id":"essence-launch",
+  "category":"product",
+  "date":"2026-06-01",
+  "title":{"ja":"…","en":"…"},
+  "media_contact":{…} }</pre></div>
+          <p><strong>AIの出力：</strong>受け入れ条件を満たす一覧。</p>
+          <ul style="font-size:.9rem">
+            <li>🟢 カテゴリのフィルタが<strong>そのまま作れる</strong></li>
+            <li>🟢 日付で正しく新しい順に並ぶ</li>
+            <li>🟢 言語切替が<strong>破綻しない</strong>（フォールバック付き）</li>
+            <li>🟢 連絡先・0件表示まで定義済み</li>
+          </ul>
+          <p style="font-size:.9rem;color:#2F6F6A"><strong>一発で通る。</strong>滑らかで、品質が高い。差を生んだのはAIの賢さではなく、<strong>あなたの要件の質</strong>。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout--fail">
+      <h4>🔥 食らってほしい瞬間</h4>
+      <p>「カテゴリで絞り込めると思っていたのに、型に <code>category</code> を入れ忘れていたから絞り込みが作れない」── この壁は、設計図の上では決して見えません。<strong>手を動かして、自分のサイトが壊れて、初めて見える</strong>。それを一度経験すると、次からあなたの要件定義には自然と「型」「日付」「多言語」「空状態」が入るようになります。</p>
+    </div>
+
+    <!-- ===================================================== STEP 4 -->
+    <h2 id="build">④ AIに実装させる ── 自分のNAGIサイトに反映する</h2>
+    <p>では“深い方”を、あなたの砂場（Fork した NAGI）に実装します。ブラウザの GitHub Web エディタとチャットAIだけで完結します。</p>
+
+    <h3>4-1. コンテンツ（型のインスタンス）を置く</h3>
+    <p>GitHub の Web エディタで <code>nagi/data/</code> に <code>press.json</code> を新規作成し、下を貼ります。これが成果物Bの「型」に従った実データです。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><span>nagi/data/press.json</span><button class="prompt__copy" data-copy="#pj">コピー</button></div>
+      <pre id="pj">{
+  "type": "press_release",
+  "items": [
+    {
+      "id": "global-launch-2026",
+      "category": "corporate",
+      "category_label": "Corporate",
+      "date": "2026-06-01",
+      "title": { "ja": "NAGI、欧州5カ国での展開を開始", "en": "NAGI Expands to Five European Markets" },
+      "summary": { "ja": "京都発のウェルネスブランドNAGIは、6月より欧州5カ国で販売を開始します。", "en": "Kyoto-born wellness brand NAGI begins sales across five European markets this June." },
+      "body": {
+        "ja": ["凪は、静けさを肌へ届けるという思想のもと、欧州市場への展開を開始します。", "現地のサステナビリティ基準に適合した容器設計を採用しました。"],
+        "en": ["NAGI begins its European expansion under the philosophy of bringing stillness to the skin.", "Packaging has been redesigned to meet local sustainability standards."]
+      },
+      "media_contact": { "name": "Hayashi Misaki / PR", "email": "press@example-nagi.test" }
+    },
+    {
+      "id": "essence-renewal-2026",
+      "category": "product",
+      "category_label": "Product",
+      "date": "2026-05-10",
+      "title": { "ja": "主力美容液「凪 エッセンス」をリニューアル", "en": "NAGI Renews Its Flagship Ferment Essence" },
+      "summary": { "ja": "発酵液の精製工程を刷新し、保湿成分の濃度を高めました。", "en": "An updated fermentation process increases the concentration of hydrating actives." },
+      "body": {
+        "ja": ["米発酵液の精製工程を見直し、肌なじみと保湿力を高めました。"],
+        "en": ["The rice-ferment refining process has been updated to improve absorption and hydration."]
+      },
+      "media_contact": { "name": "Hayashi Misaki / PR", "email": "press@example-nagi.test" }
+    },
+    {
+      "id": "refill-program-2026",
+      "category": "sustainability",
+      "category_label": "Sustainability",
+      "date": "2026-03-01",
+      "title": { "ja": "ガラス容器のリフィルプログラムを全国展開", "en": "NAGI Rolls Out Nationwide Refill Program" },
+      "summary": { "ja": "主要容器をリフィル対応とし、ガラスのリユースを推進します。", "en": "Core containers become refillable to advance glass reuse." },
+      "body": {
+        "ja": ["2026年の環境目標の一環として、リフィルプログラムを全国へ拡大します。"],
+        "en": ["As part of our 2026 environmental goals, the refill program expands nationwide."]
+      },
+      "media_contact": { "name": "Hayashi Misaki / PR", "email": "press@example-nagi.test" }
+    }
+  ]
+}</pre>
+    </div>
+
+    <h3>4-2. 表示層（press.html）をAIに作らせる</h3>
+    <p>あなたは表示層のコードを覚える必要はありません。<strong>仕様（受け入れ条件）と既存の作法</strong>をAIに渡し、生成させます。下のプロンプトを使ってください。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><span>Prompt ─ 実装：press.html を生成</span><button class="prompt__copy" data-copy="#p3">コピー</button></div>
+      <pre id="p3">あなたはフロントエンド実装者です。既存の静的サイト「NAGI」に、プレスルーム機能を追加します。
+このサイトは、各ページが /data/*.json を fetch してDOMに描画する「擬似ヘッドレス」構成です。
+（参考：products.html は data/products.json を、journal.html は data/journal.json を読み、?id= で詳細表示に切り替わる。）
+
+作るもの: nagi/press.html （一覧＋?id=での詳細）。同じ作法・同じデザイントークン(assets/css/nagi.css)を使うこと。
+
+満たす受け入れ条件:
+- 一覧は data/press.json を読み、date の新しい順に並べる。各項目に date・category_label・title を表示。
+- カテゴリ(product/corporate/sustainability)で絞り込むボタンを置く。0件のときは「該当するリリースはありません」と表示し、壊れないこと。
+- ?id=<id> のとき、その詳細（title, date, category, body, media_contact）を表示する。
+- title/summary/body は { "ja":..., "en":... } の多言語。表示言語が無ければ ja にフォールバックし、欠落で崩れないこと。
+- 既存の learner-banner / nav / footer の構造を踏襲すること。
+
+press.html の完全なHTMLと、必要ならpress用の最小JSを出力してください。</pre>
+    </div>
+    <p>生成されたコードを GitHub Web エディタで <code>nagi/press.html</code> として保存。さらに NAGI のナビに「Press」リンクを足せば、記者が辿れます。コミットすると、数十秒〜数分であなたの GitHub Pages に反映されます。</p>
+    <div class="callout">
+      <h4>🧪 動いたら、受け入れ条件で“検収”する</h4>
+      <p>実装が終わったら、開発者ではなく<strong>発注者の目</strong>で確かめます。成果物Aの受け入れ条件を一行ずつ指差し確認：新しい順に並ぶ？ カテゴリで絞れる？ 0件で壊れない？ 英語に切り替わる？ ── これが「Done の共有」。要件があるから、検収が“できる”のです。</p>
+    </div>
+
+    <!-- ===================================================== STEP 5 -->
+    <h2 id="result">⑤ 結果を体験し、振り返る</h2>
+    <p>動いたプレスルームを眺めてください。そして、いちばん大事な作業 ── <strong>言語化</strong>をします。</p>
+    <blockquote>②（要件定義）の質が、⑤（実装の品質）を決めた。<br>
+      AIは賢くなった。だが、AIに渡す<strong>要件の解像度</strong>が、そのまま成果物の解像度になる。技術が見えていると、その解像度に「型・日付・多言語・空状態」が最初から含まれる。</blockquote>
+    <div class="grid grid--2">
+      <div class="card">
+        <span class="num">気づき 1</span>
+        <h3 style="font-size:1.1rem;margin:.3rem 0">盲点は、実装で初めて痛い</h3>
+        <p style="color:var(--ink-2)">「カテゴリ」を型に入れ忘れる程度のことが、絞り込み機能そのものを不可能にした。上流の小さな抜けが、下流で大きな手戻りになる。</p>
+      </div>
+      <div class="card">
+        <span class="num">気づき 2</span>
+        <h3 style="font-size:1.1rem;margin:.3rem 0">AIは“握り”があって増幅する</h3>
+        <p style="color:var(--ink-2)">成功の定義という軸を握ってから委ねると、AIの「量」が「網羅」に変わる。軸が無ければ、同じAIが速くノイズを出す。</p>
+      </div>
+    </div>
+
+    <!-- ===================================================== CHECK -->
+    <h2 id="check">十分性チェック ──「揉めない＝検証可能」</h2>
+    <p>合格ラインは「設計フェーズの担当者が、解釈の余地で手が止まらない」状態です。次に自信を持って“はい”と言えますか。</p>
+    <div class="artifact">
+      <div class="artifact__head"><b>セルフチェック</b><span class="tag">合意の前に</span></div>
+      <div class="artifact__body">
+        <ul style="margin:0">
+          <li>□ 各ストーリーに、<strong>検証可能な</strong>受け入れ条件があるか（"いい感じ"が残っていないか）</li>
+          <li>□ 優先度（MoSCoW）が付き、今回やらないこと（Won't）が明示されているか</li>
+          <li>□ エッジケース（0件・未翻訳・並び順）が条件に含まれているか</li>
+          <li>□ 機能を支える<strong>コンテンツモデルの種</strong>が定義され、各フィールドが受け入れ条件に紐づくか</li>
+          <li>□ 成功の定義（記者が3分で到達）に照らして、過不足がないか</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NEXT -->
+    <h2 id="next">次へ</h2>
+    <p>あなたは体験ループを1周まわしました。曖昧な依頼 → 握って委ねる壁打ち → 検証可能な成果物 → 実装 → 検収と振り返り。これがすべてのモジュールの背骨です。</p>
+    <p>次の <strong>M5（情報設計＆コンテンツモデル）</strong>では、今回「種」として触れたコンテンツモデリングを、サイト全体の情報設計として深く掘ります。型の質が機能の質を決めることを、もう一段大きなスケールで体感します。</p>
+    <div class="pill-row" style="margin:var(--sp-5) 0">
+      <a class="btn btn--ghost" href="course-0.html">← Course 0 へ戻る</a>
+      <a class="btn" href="../nagi/index.html" target="_blank" rel="noopener">砂場（NAGI）を開く ↗</a>
+      <span class="btn btn--ghost is-soon" style="opacity:.5;pointer-events:none">M5 情報設計（近日公開）</span>
+    </div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="fine">© 2026 改造道 Kaizō-dō ── 教育目的の架空教材。「凪 / NAGI」は架空のブランドです。 ｜ <a href="../index.html">トップへ</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/platform.js"></script>
+</body>
+</html>
