@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M5 情報設計＆コンテンツモデル ｜ 型が、発見性を決める ── 改造道</title>
+<meta name="description" content="「成分・効能で探せるように」という依頼を、記事の型と統制語彙（タクソノミー）の設計へ。自由記述と統制語彙を見比べ、型の質が発見性の質になることを自分のNAGIサイトで体感するM5モジュール。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/platform.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a href="m4.html" data-page="m4.html">M4 機能要件</a>
+      <a href="m5.html" data-page="m5.html">M5 情報設計</a>
+      <a href="prompting.html">Appendix</a>
+      <a href="../nagi/journal.html">NAGI サイト</a>
+      <a class="btn btn--accent" href="../nagi/journal.html" target="_blank" rel="noopener">砂場を開く <span class="arr">↗</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="mod-hero">
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">改造道</a> ／ <a href="m4.html">M4</a> ／ Phase 4 ・ 要件への落とし込み</p>
+    <p class="eyebrow">M5 ── 情報設計＆コンテンツモデル（T10）｜ ◎ 深く</p>
+    <h1 style="max-width:22ch">「探せる」の正体は、<br>型と、ことばの統制。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">「成分・効能で探せるようにしたい」── 一見すると絞り込みボタンを足すだけの依頼です。
+      けれど“探せる”を成立させているのは、UIではなく <strong>記事の型</strong>と、その奥にある <strong>ことばの統制（タクソノミー）</strong>。
+      WCMの心臓に、もう一段深く触れます。</p>
+    <div class="meta-row">
+      <span class="tag tag--core">所要 約60分</span>
+      <span class="tag">対応タスク T10</span>
+      <span class="tag">成果物：コンテンツモデル＋統制語彙＋情報設計</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap layout-rail" style="padding-top:var(--sp-6)">
+  <nav class="rail" aria-label="目次">
+    <ol>
+      <li><a href="#brief">① 依頼を受ける</a></li>
+      <li><a href="#spar">② AIと壁打ち</a></li>
+      <li><a href="#artifact">③ 成果物をつくる</a></li>
+      <li><a href="#ia">情報設計と関係</a></li>
+      <li><a href="#fork">型が発見性を決める</a></li>
+      <li><a href="#playground">触って確かめる</a></li>
+      <li><a href="#build">④ AIに実装させる</a></li>
+      <li><a href="#result">⑤ 結果と振り返り</a></li>
+      <li><a href="#check">十分性チェック</a></li>
+      <li><a href="#next">次へ</a></li>
+    </ol>
+  </nav>
+
+  <main class="prose">
+
+    <!-- ===================================================== STEP 1 -->
+    <h2 id="brief">① 依頼を受ける</h2>
+    <p>M4 のプレスルームが好評で、社内の信頼が一段上がりました。今度はデジタルマーケ責任者の三宅さんから、ジャーナル（編集記事）についての相談です。</p>
+    <div class="callout">
+      <h4>💬 デジタル・三宅 亮 からの依頼（R-02）</h4>
+      <p>「ジャーナル、記事は増えてきたんですけど、読者が目的の記事にたどり着けてないんですよね。
+        <strong>“成分”とか“効能”で探せる</strong>ようにできませんか？ 『保湿の記事だけ読みたい』『発酵の話を全部読みたい』みたいに。回遊とオーガニック流入を伸ばしたいんです。」</p>
+    </div>
+    <p>M4 で <code>category</code> を型に入れ忘れると絞り込みが作れなかった ── あの感覚を思い出してください。今回はそれが<strong>もう一段大きなスケール</strong>で効きます。「成分・効能で探せる」は、ボタンの話ではなく <strong>記事の型に、何を・どんな構造で持たせるか</strong>の話だからです。</p>
+
+    <!-- ===================================================== STEP 2 -->
+    <h2 id="spar">② AIと壁打ちして要件を定義する</h2>
+    <p>ここでも、握るべきを握ってから委ねます。今回いちばん握るべきは ──「<strong>“成分・効能”を、自由記述で持つのか、統制された語彙（タグ）で持つのか</strong>」という一点です。ここが情報設計の分かれ目になります。</p>
+    <div class="split">
+      <div class="split__card split__card--delegate">
+        <h4>▷ AIに委ねる</h4>
+        <ul>
+          <li>ユーザーストーリー・受け入れ条件の草案</li>
+          <li>記事に必要な<strong>フィールド（型）</strong>の候補出し</li>
+          <li>成分・効能の<strong>統制語彙（タグ一覧）</strong>のたたき台</li>
+          <li>ファセット（絞り込み軸）UIのパターン</li>
+        </ul>
+      </div>
+      <div class="split__card split__card--hold">
+        <h4>● 人が握る</h4>
+        <ul>
+          <li><strong>自由記述ではなく統制語彙にする</strong>判断</li>
+          <li>成功の定義＝「目的の記事に3クリック以内で到達」</li>
+          <li>タグの粒度（細かすぎ／粗すぎを避ける）</li>
+          <li>記事↔成分↔製品を<strong>つなぐ</strong>設計判断</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>まず“発散”。型と語彙の論点を、AIに洗い出させます。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">発散：型と語彙の論点</span></div><button class="prompt__copy" data-copy="#p1">コピー</button></div>
+      <pre id="p1">あなたは経験豊富なWCM（Webコンテンツ管理）／情報設計のコンサルタントです。
+ブランドサイト「NAGI」の編集記事（ジャーナル）を「成分・効能で探せる」ようにします。
+記事は構造化データ(JSON)で管理され、表示はクライアントで描画されます。
+
+私が判断するための“発散”をしてください。
+1. 「成分・効能で探せる」を成立させるために、記事の型(コンテンツモデル)に必要なフィールドは？
+2. 成分・効能を「本文中の自由記述」で持つ場合と「統制語彙(タグID＋表示ラベル)」で持つ場合の、
+   絞り込み・多言語・表記ゆれ・運用・拡張性の観点での違いを表で。
+3. 統制語彙にする場合の、タグIDの設計指針（粒度・命名・i18nラベルの持ち方）。
+4. 記事↔成分↔製品を“つなぐ”ことで広がる価値（回遊・関連表示・SEO）。
+5. 見落としがちなエッジケース（タグ0件の記事、未翻訳ラベル、複数タグ、廃止タグ）。
+最後に、私が必ず自分で決めるべき論点を3つ指摘してください。</pre>
+    </div>
+
+    <p>AIは「自由記述は手軽だが表記ゆれで壊れる」「統制語彙は設計が要るが発見性・多言語・関係性に強い」といった対比を返します。ここで<strong>握る</strong>のは、その対比を<strong>三宅さんの成功の定義（回遊・流入）に照らして判断する</strong>こと。NAGIは多言語・多地域で、記事↔製品の回遊を伸ばしたい ── ならば答えは<strong>統制語彙</strong>です。</p>
+
+    <p>次に“収束”。決めた方針を、検証可能な成果物に落とさせます。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">収束：モデルと受け入れ条件</span></div><button class="prompt__copy" data-copy="#p2">コピー</button></div>
+      <pre id="p2">方針を確定します。
+- 成分・効能は「統制語彙(タグ)」で持つ。タグはID(不変)＋表示ラベル(ja/en)を taxonomies に集約。
+- 成功の定義：読者が目的の記事に3クリック以内で到達でき、関連製品にも回遊できる。
+- スコープに入れる：成分での絞り込み、効能での絞り込み、複数選択、0件表示、ja/enラベル、記事↔製品の関連表示。
+- 今回は外す：全文検索、タグの自動推定、タグ管理画面。
+
+これを、実装とテストができる「ユーザーストーリー＋受け入れ条件(Given/When/Then)」に落とし、MoSCoWで優先度を付けてください。
+あわせて、記事の型(コンテンツモデル)の追加フィールド一覧（名前／型／必須・任意／多言語の有無／なぜ必要か＝どの受け入れ条件を支えるか）と、
+成分・効能の統制語彙(タクソノミー)の初版（タグID と ja/en ラベル）を表で出してください。</pre>
+    </div>
+    <p><span class="example-tag">● 出力は一例</span> AIの結果は実行ごとに変わります。大事なのは、返ってきた草案を<strong>成功の定義と照らして取捨する</strong>こと ── それが「握る」です。<a href="prompting.html">プロンプトを自分で書けるようになるには →（Appendix）</a></p>
+
+    <!-- ===================================================== STEP 3 -->
+    <h2 id="artifact">③ 成果物をつくる</h2>
+    <p>AIの草案を判断で整えた、合意できる成果物です。</p>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物A ｜ ユーザーストーリー＋受け入れ条件＋優先度</b><span class="tag tag--core">T10 OUT</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>ID</th><th>ユーザーストーリー</th><th>受け入れ条件（抜粋）</th><th>優先度</th></tr>
+          <tr><td>US-1</td><td>読者として、<strong>成分</strong>で記事を絞り込みたい。関心のある成分の話をまとめて読むため。</td><td>成分タグを選ぶと、そのタグを持つ記事だけが残る。各タグに件数が出る。</td><td><code>Must</code></td></tr>
+          <tr><td>US-2</td><td>読者として、<strong>効能</strong>で絞り込みたい。「保湿の記事だけ」を読むため。</td><td>効能タグで同様に絞れる。成分×効能の<strong>複数選択</strong>でAND絞り込みできる。</td><td><code>Must</code></td></tr>
+          <tr><td>US-3</td><td>読者として、絞った結果が0件でも<strong>迷子にならない</strong>。</td><td>0件のとき「該当なし」と、絞り込み解除の導線を表示する。</td><td><code>Must</code></td></tr>
+          <tr><td>US-4</td><td>海外の読者として、タグを<strong>英語で</strong>見たい。</td><td>言語切替でタグの表示ラベルが ja/en で切り替わる（タグIDは不変）。</td><td><code>Should</code></td></tr>
+          <tr><td>US-5</td><td>読者として、記事から<strong>関連製品</strong>へ回遊したい。</td><td>記事に紐づく成分タグを持つ製品を「関連製品」として表示する。</td><td><code>Should</code></td></tr>
+          <tr><td>US-6</td><td>（全文検索）</td><td>──</td><td><code>Won't</code>（今回）</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物B ｜ コンテンツモデル拡張（journal_article の型）</b><span class="tag">型の種</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>フィールド</th><th>型</th><th>必須</th><th>多言語</th><th>なぜ必要か（支える受け入れ条件）</th></tr>
+          <tr><td><code>ingredients</code></td><td>タグIDの配列（統制語彙 ingredient）</td><td>任意</td><td>ラベルのみ（taxonomies側）</td><td><strong>成分での絞り込み（US-1）</strong>・関連製品（US-5）</td></tr>
+          <tr><td><code>benefits</code></td><td>タグIDの配列（統制語彙 benefit）</td><td>任意</td><td>ラベルのみ</td><td><strong>効能での絞り込み（US-2）</strong></td></tr>
+          <tr><td><code>related_products</code></td><td>製品IDの配列</td><td>任意</td><td>—</td><td>関連製品の明示的な紐づけ（US-5）</td></tr>
+          <tr><td><code>taxonomies</code><br>（型の外・共有）</td><td>タグID → {ja, en} ラベル</td><td>必須</td><td><strong>有</strong></td><td>表示ラベルと多言語（US-4）。タグIDを安定させ、表記ゆれを防ぐ</td></tr>
+        </table>
+        <p style="font-size:.88rem;color:var(--muted);margin:.8rem 0 0">ポイント：<strong>記事は「タグID」だけを持ち、表示ラベル(ja/en)は taxonomies に一元化</strong>。これで表記ゆれが原理的に起きず、多言語も1か所で管理できる。</p>
+      </div>
+    </div>
+
+    <!-- IA -->
+    <h2 id="ia">成果物C ｜ 情報設計 ── 語彙・関係・ナビ</h2>
+    <p>コンテンツモデルは「点」、情報設計は「つながり」です。T10 の核心は、型を<strong>サイト全体の見つけやすさ</strong>に接続すること。</p>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>統制語彙（タクソノミー）初版</b><span class="tag">controlled vocabulary</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>軸</th><th>タグID（不変）</th><th>ja</th><th>en</th></tr>
+          <tr><td rowspan="3">ingredient（成分）</td><td><code>rice-ferment</code></td><td>米発酵液</td><td>Rice Ferment</td></tr>
+          <tr><td><code>yuzu</code></td><td>柚子</td><td>Yuzu</td></tr>
+          <tr><td><code>camellia</code></td><td>椿オイル</td><td>Camellia Oil</td></tr>
+          <tr><td rowspan="3">benefit（効能）</td><td><code>hydration</code></td><td>保湿</td><td>Hydration</td></tr>
+          <tr><td><code>calming</code></td><td>鎮静</td><td>Calming</td></tr>
+          <tr><td><code>barrier</code></td><td>バリア機能</td><td>Barrier Care</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>関係マップ ── 同じタグが、コンテンツをつなぐ</b><span class="tag">relationships</span></div>
+      <div class="artifact__body">
+        <pre style="font-family:var(--mono);font-size:.82rem;line-height:1.9;white-space:pre-wrap;margin:0;color:var(--ink-2)">  記事「酒蔵の発酵が…」 ──[rice-ferment]──┐
+                                          ├──→ タグ <code>rice-ferment</code> ←──┐
+  記事「三工程でつくる…」──[rice-ferment]──┘                            │
+                                                                        │
+  製品「凪 エッセンス」 ──[key_ingredient: rice-ferment]────────────────┘
+
+  → 同じ統制タグを共有するから、<strong>記事 ⇄ 製品</strong>の関連表示が自動で作れる
+  → 「発酵の記事を読んだ人に、発酵のエッセンスを薦める」＝回遊・流入（三宅さんのKPI）</pre>
+      </div>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>ナビゲーション方針（論理サイトマップ抜粋）</b><span class="tag">IA</span></div>
+      <div class="artifact__body">
+        <ul style="margin:0">
+          <li>ジャーナル一覧の上部に<strong>ファセット（成分／効能）</strong>を置く。グローバルナビは据え置き（増やさない）。</li>
+          <li>選択状態は<strong>URLに持つ</strong>（例 <code>?ingredient=rice-ferment</code>）。共有・ブックマーク・SEO・計測のため。</li>
+          <li>記事詳細の末尾に<strong>関連製品</strong>（同タグ）を表示し、回遊を作る。</li>
+          <li>タグの<strong>ラベルは多言語、IDは不変</strong>。市場が増えてもURL・データは壊れない。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===================================================== FORK -->
+    <h2 id="fork">なぜ「統制語彙」にこだわるのか ── 型の質は、発見性の質になる</h2>
+    <p>③で決めた「自由記述ではなく統制語彙」という判断 ── これが発見性をどれだけ左右するかを、実装に入る前に見ておきましょう。同じ「成分で探す」でも、<strong>持ち方が違うだけで結果が割れます</strong>。</p>
+    <p><span class="example-tag">● 以下は一例</span> 見るべきは「壊れ方の傾向」です（このあと自分でも触れます）。</p>
+
+    <div class="compare">
+      <div class="compare__col compare__col--bad">
+        <h4>✗ 自由記述で持つと</h4>
+        <div class="body">
+          <p style="margin-top:0"><strong>記事の持ち方：</strong>成分を本文や自由テキストで記述。</p>
+          <div class="prompt" style="margin:.4rem 0"><pre style="padding:.9rem;font-size:.78rem">A: "米発酵液"
+B: "発酵液"
+C: "ライス発酵エキス"</pre></div>
+          <ul style="font-size:.9rem">
+            <li>🔴 同じ成分が<strong>3つの別物</strong>に分裂（表記ゆれ）</li>
+            <li>🔴 「発酵で絞る」と一部の記事が<strong>取りこぼれる</strong></li>
+            <li>🔴 効能の軸が無く、保湿で探せない</li>
+            <li>🔴 ラベルの置き場が無く<strong>多言語化できない</strong></li>
+            <li>🔴 製品の成分と<strong>突き合わせられず</strong>回遊が作れない</li>
+          </ul>
+          <p style="font-size:.9rem;color:#9A3A18"><strong>発見性が壊れる。</strong>UIをいくら作り込んでも、土台の語彙がばらつくと“探せない”。</p>
+        </div>
+      </div>
+      <div class="compare__col compare__col--good">
+        <h4>✓ 統制語彙（タグ）で持つと</h4>
+        <div class="body">
+          <p style="margin-top:0"><strong>記事の持ち方：</strong>タグID＋taxonomies のラベル。</p>
+          <div class="prompt" style="margin:.4rem 0"><pre style="padding:.9rem;font-size:.78rem">A: ["rice-ferment"]
+B: ["rice-ferment"]
+C: ["rice-ferment"]
+taxonomies.rice-ferment
+  = {ja:"米発酵液", en:"Rice Ferment"}</pre></div>
+          <ul style="font-size:.9rem">
+            <li>🟢 同じ成分は<strong>1つのファセット</strong>に統一</li>
+            <li>🟢 取りこぼしなく絞り込める</li>
+            <li>🟢 効能タグも同じ仕組みで追加できる</li>
+            <li>🟢 ラベルだけ差し替えて<strong>ja/en対応</strong></li>
+            <li>🟢 製品の同タグと<strong>関連表示</strong>が作れる</li>
+          </ul>
+          <p style="font-size:.9rem;color:#2F6F6A"><strong>発見性が育つ。</strong>差を生んだのはUIではなく、上流の<strong>語彙の設計</strong>。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAYGROUND -->
+    <h3 id="playground">自分で触って確かめる ── インタラクティブ</h3>
+    <p>左の記事データの <code>ingredients</code> を書き換えると、右のファセット絞り込みがその場で再描画されます。
+      「統制語彙（タグ）」と「自由記述（表記ゆれ）」のプリセットを切り替えて、<strong>同じ「米発酵液」の記事がいくつのファセットに分裂するか</strong>を見比べてください。English に切り替えると、自由記述ではラベルが崩れます。</p>
+    <div class="pg">
+      <div class="pg__panel">
+        <div class="pg__bar"><b>記事データ ＜journal_article＞</b><div class="pg__presets"><button class="pg__preset" data-preset="good">統制語彙（タグ）</button><button class="pg__preset" data-preset="bad">自由記述</button></div></div>
+        <textarea class="pg__editor" id="editor" spellcheck="false" aria-label="JSONエディタ"></textarea>
+      </div>
+      <div class="pg__panel">
+        <div class="pg__bar"><b>ジャーナル（表示層・成分で絞り込み）</b><span style="font-size:.74rem;color:var(--muted)">data → DOM</span></div>
+        <div class="pg__controls"><button class="pg__toggle" id="t-lang" aria-pressed="false">🌐 English</button><span style="font-size:.74rem;color:var(--muted);align-self:center">成分ファセットをクリックで絞り込み</span></div>
+        <div class="pg__out" id="out"></div>
+      </div>
+    </div>
+    <div class="pg__diag"><h4>情報設計の充足チェック（語彙が発見性を支えているか）</h4><ul id="diag"></ul></div>
+
+    <div class="callout callout--win">
+      <h4>✦ ここに、レバレッジが見える</h4>
+      <p>「米発酵液」「発酵液」「ライス発酵」── 人が書けば必ずゆれる表記が、絞り込みを静かに壊します。上流で<strong>タグIDを一つに統制する</strong>という小さな判断が、下流の発見性・多言語・回遊をまとめて決めている。情報設計とは、この<strong>ことばの統制</strong>のことです。</p>
+    </div>
+
+    <!-- ===================================================== STEP 4 -->
+    <h2 id="build">④ AIに実装させる ── 自分のNAGIサイトに反映する</h2>
+    <p>“統制語彙の方”を、自分の砂場（Fork した NAGI）に実装します。ブラウザの GitHub Web エディタとチャットAIだけで完結します。</p>
+
+    <h3>4-1. コンテンツ（型のインスタンス）は、もう用意されている</h3>
+    <p>ジャーナルのデータは、すでにタグ付きで用意されています ── <a href="../nagi/data/journal.json" target="_blank" rel="noopener"><code>nagi/data/journal.json</code> を見る ↗</a>。
+      各記事に <code>ingredients</code> / <code>benefits</code>（タグID）と <code>related_products</code> が入り、表示ラベルは <code>taxonomies</code> に ja/en で集約されています。<strong>中身は触らず</strong>、これを「探せる表示層」にします。</p>
+    <div class="callout">
+      <h4>📦 型を見れば、設計が読める</h4>
+      <p><code>journal.json</code> の <code>taxonomies</code> と各記事の <code>ingredients</code> を見比べると、③で設計した「ID＋ラベル分離」がそのまま実データになっているのが分かります。設計＝データ＝実装が一直線につながります。</p>
+    </div>
+
+    <h3>4-2. 表示層（ファセット絞り込み）をAIに作らせる</h3>
+    <p>表示層のコードを覚える必要はありません。仕様（受け入れ条件）と既存の作法をAIに渡し、生成させます。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--copy">⚙️ 開発体験用・コピペでOK</span><span class="label">実装：ジャーナルに成分・効能の絞り込みを追加</span></div><button class="prompt__copy" data-copy="#p3">コピー</button></div>
+      <pre id="p3">あなたはフロントエンド実装者です。既存の静的サイト「NAGI」のジャーナルに、ファセット絞り込みを追加します。
+このサイトは各ページが /data/*.json を fetch してDOMに描画する「擬似ヘッドレス」構成です。
+（参考：journal.html は data/journal.json を読み、一覧と ?id= の詳細を描画している。）
+
+データ仕様：journal.json は items[] と taxonomies を持つ。
+- 各記事は ingredients[]・benefits[]（taxonomies のタグID）、related_products[] を持つ。
+- taxonomies.ingredient / .benefit は タグID → { ja, en } ラベル。
+
+journal.html の一覧に、次を満たすファセット絞り込みを追加してください：
+- 一覧の上部に「成分」「効能」のタグ群を、件数つきで表示（taxonomies のラベルを使用）。
+- タグをクリックで絞り込み、成分×効能は複数選択でAND。選択状態は URL クエリに持つ。
+- 0件のときは「該当する記事はありません」と絞り込み解除リンクを表示し、壊れないこと。
+- 言語切替でタグの表示ラベルが ja/en で切り替わる（タグIDは不変）。タグの無い記事(空配列)で壊れないこと。
+- 既存の learner-banner / nav / footer / デザイントークン(assets/css/nagi.css)を踏襲。
+
+変更後の journal.html の完全なコードと、必要なら最小の追加JSを出力してください。</pre>
+    </div>
+    <p>生成コードを <code>nagi/journal.html</code> に保存してコミット。数十秒で自分の GitHub Pages に反映されます。動いたら、開発者ではなく<strong>三宅さんの目</strong>で検収します ── 成分で絞れる？ 効能でも？ 複数選択は？ 0件で壊れない？ 英語ラベルは？</p>
+
+    <!-- ===================================================== STEP 5 -->
+    <h2 id="result">⑤ 結果を体験し、振り返る</h2>
+    <p>絞り込めるジャーナルを眺めて、言語化します。</p>
+    <blockquote>型（タクソノミー）の質が、そのまま<strong>発見性</strong>の質になった。<br>
+      UIは最後の見た目にすぎない。探せるかどうかは、上流で<strong>ことばを統制したか</strong>で決まっていた。</blockquote>
+    <div class="grid grid--2">
+      <div class="card">
+        <span class="num">気づき 1</span>
+        <h3 style="font-size:1.1rem;margin:.3rem 0">表記ゆれは、静かに壊す</h3>
+        <p style="color:var(--ink-2)">「発酵液」と「米発酵液」を別物にした瞬間、絞り込みは取りこぼす。エラーは出ない。だから設計図上は気づけない。</p>
+      </div>
+      <div class="card">
+        <span class="num">気づき 2</span>
+        <h3 style="font-size:1.1rem;margin:.3rem 0">同じタグが、回遊を生む</h3>
+        <p style="color:var(--ink-2)">記事と製品が同じ統制タグを共有するから、関連表示が自動で成立する。情報設計は、KPI（回遊・流入）に直結する。</p>
+      </div>
+    </div>
+
+    <!-- ===================================================== CHECK -->
+    <h2 id="check">十分性チェック</h2>
+    <div class="artifact">
+      <div class="artifact__head"><b>セルフチェック</b><span class="tag">合意の前に</span></div>
+      <div class="artifact__body">
+        <ul style="margin:0">
+          <li>□ 成分・効能を<strong>統制語彙（タグID＋ラベル分離）</strong>で定義したか</li>
+          <li>□ 各フィールドが受け入れ条件に紐づいているか（なぜ必要かが言えるか）</li>
+          <li>□ エッジケース（0件・タグ無し記事・未翻訳ラベル・複数選択）が条件にあるか</li>
+          <li>□ 記事↔成分↔製品の<strong>関係</strong>と、ファセットの<strong>置き場（ナビ）</strong>を決めたか</li>
+          <li>□ 成功の定義（3クリックで到達・回遊）に照らして過不足がないか</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- UX bridge (light) -->
+    <div class="callout">
+      <h4>✦ となりのUX要件（M2で深掘り）</h4>
+      <p>ファセットUIは UX 要件の宝庫です ── 選択中タグの明示、件数表示、「すべて解除」、0件のときの導線、複数選択の操作感。これらは<strong>状態と振る舞い</strong>で、実装して触って初めて良し悪しが分かります。本格的な扱いは M2 で。</p>
+    </div>
+
+    <!-- NEXT -->
+    <h2 id="next">次へ</h2>
+    <p>型を「点」から「つながり」へ広げ、ことばの統制が発見性を決めることを体感しました。要件定義の解像度に、いまや「タクソノミー」「ファセット」「関係」「IDとラベルの分離」が自然に入っているはずです。</p>
+    <div class="callout">
+      <h4>📨 次の依頼が、もう届いている</h4>
+      <p>CMO・佐倉から R-03：「<strong>店舗・スパを地図から探せる</strong>と体験が締まる」。これは“作るか・買うか” ── 地図サービスを自前で作るのか、外部サービスを連携するのかという<strong>方式の判断</strong>を含みます。自分で擬似ヘッドレスを建てた経験が、ここで効いてきます。<strong>M7（方式／CMS／連携／移行）</strong>で向き合います。</p>
+    </div>
+    <div class="pill-row" style="margin:var(--sp-5) 0">
+      <a class="btn btn--ghost" href="m4.html">← M4 へ戻る</a>
+      <a class="btn" href="../nagi/journal.html" target="_blank" rel="noopener">砂場（ジャーナル）を開く ↗</a>
+      <span class="btn btn--ghost is-soon" style="opacity:.5;pointer-events:none">M7 方式・連携（近日公開）</span>
+    </div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="fine">© 2026 改造道 Kaizō-dō ── 教育目的の架空教材。「凪 / NAGI」は架空のブランドです。 ｜ <a href="../index.html">トップへ</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/platform.js"></script>
+<script>
+/* Embedded playground ─ 自由記述 vs 統制語彙でファセット絞り込みがどう変わるか */
+(function () {
+  "use strict";
+  if (!document.getElementById("editor")) return;
+  var VOCAB = {
+    "rice-ferment": { ja: "米発酵液", en: "Rice Ferment" },
+    "yuzu": { ja: "柚子", en: "Yuzu" },
+    "camellia": { ja: "椿オイル", en: "Camellia Oil" }
+  };
+  var PRESETS = {
+    good: [
+      { title: "酒蔵の発酵が、肌にもたらすもの", ingredients: ["rice-ferment"] },
+      { title: "三工程でつくる、朝の静けさ", ingredients: ["yuzu", "rice-ferment", "camellia"] },
+      { title: "発酵液 Q&A", ingredients: ["rice-ferment"] }
+    ],
+    bad: [
+      { title: "酒蔵の発酵が、肌にもたらすもの", ingredients: ["米発酵液"] },
+      { title: "三工程でつくる、朝の静けさ", ingredients: ["柚子", "発酵液", "椿オイル"] },
+      { title: "発酵液 Q&A", ingredients: ["ライス発酵エキス"] }
+    ]
+  };
+  var editor = document.getElementById("editor"), out = document.getElementById("out"), diag = document.getElementById("diag");
+  var tLang = document.getElementById("t-lang");
+  var activeTag = null;
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function load(p){ editor.value = JSON.stringify(PRESETS[p], null, 2); activeTag=null; render(); }
+  function label(tag, lang){ return VOCAB[tag] ? VOCAB[tag][lang] : tag; }
+  function render(){
+    var data;
+    try { data = JSON.parse(editor.value); }
+    catch (e) { out.innerHTML = '<p class="pg__err">⚠ JSON が壊れています：\n'+esc(e.message)+"</p>"; diag.innerHTML='<li class="ng">🔴 JSON 構文エラー</li>'; return; }
+    if (!Array.isArray(data)) { out.innerHTML='<p class="pg__err">配列（[ ]）で渡してください。</p>'; diag.innerHTML=""; return; }
+    var lang = tLang.getAttribute("aria-pressed")==="true" ? "en" : "ja";
+
+    // build facets from distinct ingredient strings
+    var counts = {};
+    data.forEach(function(a){ (a.ingredients||[]).forEach(function(t){ counts[t] = (counts[t]||0)+1; }); });
+    var tags = Object.keys(counts);
+    var controlled = tags.length>0 && tags.every(function(t){ return VOCAB[t]; });
+
+    var facetHTML = '<div class="pg__cat">' +
+      '<button class="pg__catbtn" data-tag="__all" aria-pressed="'+(activeTag===null)+'">すべて</button>' +
+      tags.map(function(t){ return '<button class="pg__catbtn" data-tag="'+esc(t)+'" aria-pressed="'+(activeTag===t)+'">'+esc(label(t,lang))+' ('+counts[t]+')</button>'; }).join("") +
+      "</div>";
+
+    var rows = data.filter(function(a){ return activeTag===null || (a.ingredients||[]).indexOf(activeTag)>=0; });
+    var list = rows.length ? rows.map(function(a){
+      var tagstr = (a.ingredients||[]).map(function(t){ return label(t,lang); }).join("・") || "（タグなし）";
+      return '<div class="pg__rel"><div class="meta"><span class="c">'+esc(tagstr)+'</span></div><h4>'+esc(a.title)+"</h4></div>";
+    }).join("") : '<p style="color:var(--muted)">該当する記事はありません。<button class="pg__catbtn" data-tag="__all" style="margin-left:.5rem">絞り込みを解除</button></p>';
+
+    out.innerHTML = facetHTML + list;
+    out.querySelectorAll(".pg__catbtn").forEach(function(b){ b.addEventListener("click", function(){ var t=b.getAttribute("data-tag"); activeTag = (t==="__all")?null:t; render(); }); });
+
+    function row(ok,o,n){ return '<li class="'+(ok?"ok":"ng")+'">'+(ok?"🟢 ":"🔴 ")+(ok?o:n)+"</li>"; }
+    diag.innerHTML =
+      row(controlled, "統制語彙：すべての成分がタグIDで、表記ゆれが起きない", "統制語彙：自由記述のため、同じ成分が表記ゆれで別ファセットに分裂する") +
+      row(controlled, "多言語：タグIDに ja/en ラベルを持て、言語切替に耐える", "多言語：ラベルの置き場が無く、英語に切り替えられない") +
+      '<li class="'+(controlled && tags.length<=3 ? "ok":"ng")+'">'+(controlled && tags.length<=3?"🟢 ":"🔴 ")+"検出された成分ファセット："+tags.length+" 種（意図は 3 種）</li>";
+  }
+  tLang.addEventListener("click", function(){ tLang.setAttribute("aria-pressed", String(tLang.getAttribute("aria-pressed")!=="true")); render(); });
+  document.querySelectorAll(".pg__preset").forEach(function(b){ b.addEventListener("click", function(){ load(b.getAttribute("data-preset")); }); });
+  var ti; editor.addEventListener("input", function(){ clearTimeout(ti); ti=setTimeout(render,250); });
+  load("good");
+})();
+</script>
+</body>
+</html>

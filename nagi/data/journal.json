@@ -1,5 +1,20 @@
 {
   "type": "journal_article",
+  "schema_note": "M5で扱う。記事を『成分・効能』で探せるようにするため、自由記述ではなく統制語彙(taxonomies)のタグIDで facet を持つ。タグIDは安定・不変、表示ラベルは ja/en を taxonomies 側に持つ（i18n対応）。",
+  "taxonomies": {
+    "ingredient": {
+      "rice-ferment": { "ja": "米発酵液", "en": "Rice Ferment" },
+      "yuzu": { "ja": "柚子", "en": "Yuzu" },
+      "camellia": { "ja": "椿オイル", "en": "Camellia Oil" },
+      "clay": { "ja": "クレイ", "en": "Clay" }
+    },
+    "benefit": {
+      "hydration": { "ja": "保湿", "en": "Hydration" },
+      "calming": { "ja": "鎮静", "en": "Calming" },
+      "barrier": { "ja": "バリア機能", "en": "Barrier Care" },
+      "clarifying": { "ja": "毛穴ケア", "en": "Clarifying" }
+    }
+  },
   "items": [
     {
       "id": "fermentation-kyoto",
@@ -10,6 +25,9 @@
       "date": "2026-05-20",
       "glyph": "発",
       "read_min": 6,
+      "ingredients": ["rice-ferment"],
+      "benefits": ["hydration", "barrier"],
+      "related_products": ["nagi-essence-02", "nagi-mask-05"],
       "body": [
         { "h2": "千年の発酵、数十年の研究" },
         { "p": "京都・伏見では、千年以上にわたって米を発酵させ、酒を醸してきました。その過程で生まれる発酵液には、アミノ酸・ビタミン・有機酸が豊かに含まれています。NAGIはこの伝統的な発酵プロセスに着目し、肌のためのエッセンスへと再設計しました。" },
@@ -27,6 +45,9 @@
       "date": "2026-04-12",
       "glyph": "朝",
       "read_min": 4,
+      "ingredients": ["yuzu", "rice-ferment", "camellia"],
+      "benefits": ["calming", "hydration"],
+      "related_products": ["nagi-mist-01", "nagi-essence-02", "nagi-oil-03"],
       "body": [
         { "h2": "鎮める ── ミストでひと呼吸" },
         { "p": "目覚めた肌に凪ミストを。柚子の香りが立ちのぼる数秒のあいだ、ゆっくりと呼吸を整えます。スキンケアの前に、まず気持ちを鎮めることがリチュアルの起点です。" },
@@ -45,6 +66,9 @@
       "date": "2026-03-01",
       "glyph": "環",
       "read_min": 5,
+      "ingredients": [],
+      "benefits": [],
+      "related_products": [],
       "body": [
         { "h2": "つくる責任、とどめる責任" },
         { "p": "私たちは、肌に静けさをもたらすブランドである前に、土地の素材を預かるブランドでありたいと考えています。2026年、NAGIは三つの環境目標を掲げます。" },
