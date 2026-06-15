@@ -1,0 +1,5 @@
+# 作業用の一時ファイル・共有スクリーンショット（サイトには含めない）
+Screenshot*.png
+Screenshot*.jpg
+*.tmp
+.DS_Store
