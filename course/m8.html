@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M8 非機能要件 ｜ 形容詞を、数値と基準に ── 改造道</title>
+<meta name="description" content="「速く・アクセシブルに・SEOに強く」という形容詞を、Core Web Vitals目標やWCAG/JIS X 8341の準拠基準といった検証可能な非機能要件へ。本物のコントラスト測定器で“測る”を体感するM8モジュール。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/platform.css">
+<style>
+  /* M8 コントラスト測定器 */
+  .cm { display:grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
+  @media (max-width:720px){ .cm{ grid-template-columns:1fr; } }
+  .cm__panel { border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .cm__bar { padding:.6rem .9rem; background:var(--surface-2); border-bottom:1px solid var(--line); font-size:.86rem; font-weight:600; }
+  .cm__sample { padding:1.6rem; background:#F3EFE7; }
+  .cm__sample .big { font-family:"Shippori Mincho B1",serif; font-size:1.5rem; margin-bottom:.4rem; }
+  .cm__sample .body { font-size:.95rem; line-height:1.8; }
+  .cm__presets { display:flex; flex-wrap:wrap; gap:.4rem; padding:.8rem .9rem; border-top:1px solid var(--line); }
+  .cm__preset { font-size:.76rem; border:1px solid var(--line-strong); background:var(--surface); border-radius:100px; padding:.3rem .7rem; display:flex; gap:.4rem; align-items:center; }
+  .cm__preset[aria-pressed="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .cm__sw { width:.9rem; height:.9rem; border-radius:50%; border:1px solid rgba(0,0,0,.15); }
+  .cm__read { padding:1.2rem; display:flex; flex-direction:column; gap:.7rem; justify-content:center; }
+  .cm__ratio { font-family:var(--mono); font-size:2.4rem; line-height:1; }
+  .cm__ratio small { font-size:1rem; color:var(--muted); }
+  .cm__rows { display:flex; flex-direction:column; gap:.4rem; }
+  .cm__row { display:flex; align-items:center; gap:.6rem; font-size:.9rem; }
+  .cm__badge { font-family:var(--mono); font-size:.72rem; padding:.15rem .5rem; border-radius:100px; }
+  .cm__badge.ok { background:var(--delegate-soft); color:var(--delegate); border:1px solid color-mix(in srgb,var(--delegate) 30%,transparent); }
+  .cm__badge.ng { background:#FBEEEC; color:#C0392B; border:1px solid rgba(192,57,43,.3); }
+  .cm__note { font-size:.84rem; color:var(--muted); border-top:1px solid var(--line); padding:.8rem .9rem; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m2.html" data-page="m2.html">M2</a>
+      <a href="m3.html" data-page="m3.html">M3</a>
+      <a href="m4.html" data-page="m4.html">M4</a>
+      <a href="m5.html" data-page="m5.html">M5</a>
+      <a href="m8.html" data-page="m8.html">M8</a>
+      <a href="prompting.html" data-page="prompting.html">Appendix</a>
+      <a class="btn btn--accent" href="../nagi-legacy/index.html" target="_blank" rel="noopener">現行サイトを開く <span class="arr">↗</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="mod-hero">
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">改造道</a> ／ <a href="m3.html">M3</a> ／ Phase 4 ・ 要件への落とし込み</p>
+    <p class="eyebrow">M8 ── 非機能要件（T11）｜ 測る側</p>
+    <h1 style="max-width:22ch">「速く・きれいに」を、<br>数値と基準に変える。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">「速く・アクセシブルに・SEOに強く」── 形容詞のままでは、実装者は迷い、検収では揉めます。
+      品質の合格ラインは、<strong>数値（Core Web Vitals）と準拠基準（WCAG／JIS X 8341）</strong>で固定して初めて成立する。
+      M3で“言葉”で見つけた課題を、ここで“測れる要件”にします。</p>
+    <div class="meta-row">
+      <span class="tag tag--core">所要 約55分</span>
+      <span class="tag">対応タスク T11</span>
+      <span class="tag">成果物：非機能要件一覧（数値・基準つき）</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap layout-rail" style="padding-top:var(--sp-6)">
+  <nav class="rail" aria-label="目次">
+    <ol>
+      <li><a href="#brief">① 依頼を受ける</a></li>
+      <li><a href="#spar">② AIと壁打ち</a></li>
+      <li><a href="#translate">③ 形容詞 → 数値・基準</a></li>
+      <li><a href="#meter">触って測る</a></li>
+      <li><a href="#artifact">④ 非機能要件一覧</a></li>
+      <li><a href="#result">⑤ 振り返り</a></li>
+      <li><a href="#check">十分性チェック</a></li>
+      <li><a href="#next">次へ</a></li>
+    </ol>
+  </nav>
+
+  <main class="prose">
+
+    <!-- ===================================================== STEP 1 -->
+    <h2 id="brief">① 依頼を受ける</h2>
+    <p>M3 で課題が言語化され、リニューアルが本格化します。すると品質と統制の話で、二人のステークホルダーが動きます。</p>
+    <div class="callout">
+      <h4>💬 デジタル・三宅 ＆ 法務・和田 からの依頼</h4>
+      <p>三宅「品質の<strong>合格ライン</strong>を先に決めておきたい。速さもアクセシビリティもSEOも、『いい感じ』だと検収で揉めるので。」<br>
+        和田「法務として、<strong>市場ごとに出していい表現を制御</strong>したい。日本でOKでも、欧州では言えない効能表現がある（R-04）。」</p>
+    </div>
+    <p>機能要件（M4）が「何ができるか」なら、非機能要件は<strong>「どの品質で・何を守って」</strong>。ここを形容詞で書くと、実装も検収も崩れます。M8のゴールは、品質を<strong>数値と準拠基準</strong>に、統制を<strong>承認フロー</strong>に落とすことです。</p>
+
+    <!-- ===================================================== STEP 2 -->
+    <h2 id="spar">② AIと壁打ちして要件を定義する</h2>
+    <p>非機能はカテゴリが広く、抜けが致命傷になります。<strong>網羅はAIに委ね、合格ラインの数値と優先は人が握る</strong>。</p>
+    <div class="split">
+      <div class="split__card split__card--delegate">
+        <h4>▷ AIに委ねる</h4>
+        <ul>
+          <li>非機能カテゴリの<strong>チェックリスト網羅</strong></li>
+          <li>各項目の<strong>指標と測り方</strong>の候補</li>
+          <li>準拠基準（WCAG／JIS X 8341）の条文の要約</li>
+          <li>見落としがちな非機能の洗い出し</li>
+        </ul>
+      </div>
+      <div class="split__card split__card--hold">
+        <h4>● 人が握る</h4>
+        <ul>
+          <li><strong>合格ラインの数値</strong>（このサイトでLCP何秒か）</li>
+          <li>ビジネス影響に応じた<strong>優先度</strong></li>
+          <li>ガバナンス（誰が・何を承認するか）</li>
+          <li>「測れる言葉になっているか」の判定</li>
+        </ul>
+      </div>
+    </div>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">発散：非機能チェックリスト</span></div><button class="prompt__copy" data-copy="#p1">コピー</button></div>
+      <pre id="p1">あなたは経験豊富な非機能要件／Web品質のコンサルタントです。
+多言語・多地域のブランドサイトの非機能要件を、次のカテゴリで漏れなくチェックリスト化してください：
+性能(Core Web Vitals)／可用性・SLA／セキュリティ／アクセシビリティ(WCAG／JIS X 8341)／SEO／
+運用・ガバナンス・承認フロー／i18n／拡張性／プライバシー(同意管理)。
+各項目は「形容詞(速い等)」ではなく「指標・準拠基準・測り方」で書ける雛形を添えること。
+最後に、ブランドサイトで見落とされがちな非機能を3つ指摘してください。</pre>
+    </div>
+
+    <!-- ===================================================== STEP 3 -->
+    <h2 id="translate">③ 形容詞を、数値と基準に変える</h2>
+    <p>M8 の核心は翻訳です。同じ要望でも、<strong>形容詞のままか、測れる言葉にしたか</strong>で、実装も検収もまるで変わります。</p>
+    <div class="compare">
+      <div class="compare__col compare__col--bad">
+        <h4>✗ 形容詞のままだと</h4>
+        <div class="body">
+          <ul style="font-size:.92rem;margin-top:0">
+            <li>「速いサイト」</li>
+            <li>「アクセシブルに」</li>
+            <li>「SEOに強く」</li>
+            <li>「多言語対応」</li>
+          </ul>
+          <p style="font-size:.9rem;color:#9A3A18"><strong>合格か分からない。</strong>実装者は解釈で迷い、検収は主観で揉め、設計が止まる。</p>
+        </div>
+      </div>
+      <div class="compare__col compare__col--good">
+        <h4>✓ 数値・基準にすると</h4>
+        <div class="body">
+          <ul style="font-size:.92rem;margin-top:0">
+            <li>LCP ≤ 2.5s／CLS ≤ 0.1／INP ≤ 200ms</li>
+            <li>WCAG 2.1 <strong>AA</strong>準拠・コントラスト ≥ 4.5:1</li>
+            <li>全ページ固有の title・meta description・構造化データ</li>
+            <li>hreflang で言語別配信・タグIDは不変（M5と整合）</li>
+          </ul>
+          <p style="font-size:.9rem;color:#2F6F6A"><strong>合格が一意に決まる。</strong>数値だから、誰が見ても同じ判定。検収できる。</p>
+        </div>
+      </div>
+    </div>
+    <p><span class="example-tag">● 出力は一例</span> 数値は“このサイトの事情”で握るもの。AIの提案を、ビジネス影響と現実性で取捨します。<a href="prompting.html">プロンプトを自分で書けるようになるには →（Appendix）</a></p>
+
+    <!-- PLAYGROUND -->
+    <h3 id="meter">触って測る ── コントラスト測定器</h3>
+    <p>M3 で「現行サイトの本文が、なんだか薄い」と感じた、その正体を<strong>実際に測り</strong>ます。下は本物のWCAGコントラスト計算です。<strong>“読めるのに基準では不合格”</strong>が、数値で一目で分かります。</p>
+    <div class="cm">
+      <div class="cm__panel">
+        <div class="cm__bar">表示（NAGIの背景色の上）</div>
+        <div class="cm__sample" id="cm-sample">
+          <div class="big" id="cm-big">凪 エッセンス</div>
+          <div class="body" id="cm-body">米発酵液を主役にした保湿美容液。角層のすみずみまで水分を届けます。</div>
+        </div>
+        <div class="cm__presets" role="group" aria-label="文字色">
+          <button class="cm__preset" data-color="#8c857a" aria-pressed="true"><span class="cm__sw" style="background:#8c857a"></span>現行サイトの本文</button>
+          <button class="cm__preset" data-color="#6f6a61" aria-pressed="false"><span class="cm__sw" style="background:#6f6a61"></span>少し濃く</button>
+          <button class="cm__preset" data-color="#2b2824" aria-pressed="false"><span class="cm__sw" style="background:#2b2824"></span>NAGI本来の本文</button>
+        </div>
+      </div>
+      <div class="cm__panel">
+        <div class="cm__bar">測定（WCAG コントラスト比）</div>
+        <div class="cm__read">
+          <div class="cm__ratio"><span id="cm-ratio">–</span><small> : 1</small></div>
+          <div class="cm__rows">
+            <div class="cm__row">通常テキスト AA（≥ 4.5）<span class="cm__badge" id="cm-aa">–</span></div>
+            <div class="cm__row">大きな文字 AA（≥ 3.0）<span class="cm__badge" id="cm-aal">–</span></div>
+            <div class="cm__row">最高基準 AAA（≥ 7.0）<span class="cm__badge" id="cm-aaa">–</span></div>
+          </div>
+        </div>
+        <div class="cm__note" id="cm-note"></div>
+      </div>
+    </div>
+
+    <div class="callout callout--win">
+      <h4>✦ ここに、“測る”の力がある</h4>
+      <p>「薄い気がする」は主観で、揉めます。「<strong>4.5:1 を下回る＝WCAG AA不合格</strong>」は事実で、合格ラインになる。非機能要件とは、品質を<strong>誰が見ても同じ判定にできる言葉</strong>にすることです。</p>
+    </div>
+
+    <!-- ===================================================== STEP 4 -->
+    <h2 id="artifact">④ 非機能要件一覧にする</h2>
+    <p>翻訳の結果を、検収できる成果物にまとめます。ガバナンス（R-04）も“承認フロー”という非機能として書きます。</p>
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物 ｜ 非機能要件一覧（抜粋・数値と基準つき）</b><span class="tag tag--core">T11 OUT</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>カテゴリ</th><th>要件（合格ライン）</th><th>測り方</th><th>優先</th></tr>
+          <tr><td>性能（CWV）</td><td>LCP ≤ 2.5s／CLS ≤ 0.1／INP ≤ 200ms（モバイル中央値）</td><td>Lighthouse／実測（RUM）</td><td><code>High</code></td></tr>
+          <tr><td>アクセシビリティ</td><td>WCAG 2.1 AA・JIS X 8341 準拠。コントラスト ≥ 4.5:1、全画像に代替テキスト、キーボード操作可、見出し階層が正しい</td><td>自動チェック＋手動・実機読み上げ</td><td><code>High</code></td></tr>
+          <tr><td>SEO</td><td>全ページ固有の title／meta description、構造化データ（Product等）、正しい見出し階層</td><td>クロール・リッチリザルトテスト</td><td><code>Mid</code></td></tr>
+          <tr><td>i18n</td><td>hreflang で言語別配信、タグIDは不変・ラベルのみ翻訳（M5整合）</td><td>言語切替・検索の言語別表示</td><td><code>Mid</code></td></tr>
+          <tr><td>ガバナンス（R-04）</td><td>市場別に出してよい表現を制御。効能表現は<strong>公開前に法務承認</strong>。市場ごとの可否を管理</td><td>承認フロー・公開前チェック</td><td><code>High</code></td></tr>
+          <tr><td>可用性／プライバシー</td><td>SLA目標を定義。Cookie同意（地域別の同意管理）</td><td>監視・同意ログ</td><td><code>Mid</code></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="callout">
+      <h4>✦ M3 の課題が、ここで“合格ライン”になる</h4>
+      <p>M3 で見つけた「薄い本文」「CLS」「同一title」は、いま <strong>≥4.5:1 / CLS≤0.1 / 固有title</strong> という検収可能な数値になりました。診断（M3）→ 測定・基準化（M8）は一本の線です。</p>
+    </div>
+
+    <!-- ===================================================== STEP 5 -->
+    <h2 id="result">⑤ 振り返り</h2>
+    <blockquote>形容詞は、検収できない。<strong>数値と準拠基準</strong>にして初めて、品質は合格ラインになる。<br>
+      技術が見えると、「速く・きれいに」を測れる言葉に翻訳でき、実装者とも法務とも同じ土俵で話せる。</blockquote>
+    <div class="grid grid--2">
+      <div class="card"><span class="num">気づき 1</span><h3 style="font-size:1.1rem;margin:.3rem 0">主観は揉め、数値は決まる</h3><p style="color:var(--ink-2)">「薄い」は揉める。「4.5:1未満」は決まる。非機能は“誰が見ても同じ判定”にする技術。</p></div>
+      <div class="card"><span class="num">気づき 2</span><h3 style="font-size:1.1rem;margin:.3rem 0">ガバナンスも非機能</h3><p style="color:var(--ink-2)">「市場別の表現規制」は、承認フローという非機能要件に落ちる。法務の懸念も、要件として握れる。</p></div>
+    </div>
+
+    <!-- ===================================================== CHECK -->
+    <h2 id="check">十分性チェック</h2>
+    <div class="artifact">
+      <div class="artifact__head"><b>セルフチェック</b><span class="tag">合意の前に</span></div>
+      <div class="artifact__body">
+        <ul style="margin:0">
+          <li>□ 各要件が<strong>形容詞でなく数値・準拠基準</strong>になっているか</li>
+          <li>□ それぞれに<strong>測り方</strong>（指標・ツール）が紐づくか</li>
+          <li>□ 性能・a11y・SEO・i18n・ガバナンス・プライバシーに<strong>抜け</strong>がないか</li>
+          <li>□ ガバナンス（市場別の承認）を承認フローとして書けたか</li>
+          <li>□ M3 の課題が、合格ラインに翻訳されているか</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NEXT -->
+    <h2 id="next">次へ</h2>
+    <p>品質と統制を、測れる言葉に変えました。これで Why（M1）・体験（M2）・As-Is（M3）・機能（M4）・情報設計（M5）・非機能（M8）の要件が出そろってきます。残るは「何の上に作るか」。</p>
+    <div class="callout">
+      <h4>📨 次の依頼が、もう届いている</h4>
+      <p>CMO・佐倉 R-03：「店舗・スパを地図から探せるように」。これは“作るか・買うか” ── 地図を自作するか、外部サービスを連携するかの<strong>方式の判断</strong>。自分で擬似ヘッドレスを建てた経験が効いてきます。<strong>M7（方式／CMS／連携／移行）</strong>へ。</p>
+    </div>
+    <div class="pill-row" style="margin:var(--sp-5) 0">
+      <a class="btn btn--ghost" href="m3.html">← M3 へ戻る</a>
+      <a class="btn" href="../nagi-legacy/product.html" target="_blank" rel="noopener">現行サイトで測ってみる ↗</a>
+      <span class="btn btn--ghost is-soon" style="opacity:.5;pointer-events:none">M7 方式・連携（近日公開）</span>
+    </div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="fine">© 2026 改造道 Kaizō-dō ── 教育目的の架空教材。「凪 / NAGI」は架空のブランドです。 ｜ <a href="../index.html">トップへ</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/platform.js"></script>
+<script>
+/* M8 コントラスト測定器 ─ 本物のWCAG計算 */
+(function () {
+  var sample = document.getElementById("cm-sample");
+  if (!sample) return;
+  var BG = "#F3EFE7";
+  function lin(c) { c = c / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+  function lum(hex) {
+    var m = hex.replace("#", "");
+    var r = parseInt(m.substr(0, 2), 16), g = parseInt(m.substr(2, 2), 16), b = parseInt(m.substr(4, 2), 16);
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+  }
+  function ratio(a, b) {
+    var l1 = lum(a), l2 = lum(b), hi = Math.max(l1, l2), lo = Math.min(l1, l2);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+  function badge(elId, pass) {
+    var el = document.getElementById(elId);
+    el.textContent = pass ? "合格" : "不合格";
+    el.className = "cm__badge " + (pass ? "ok" : "ng");
+  }
+  function apply(color) {
+    document.getElementById("cm-big").style.color = color;
+    document.getElementById("cm-body").style.color = color;
+    var r = ratio(color, BG);
+    document.getElementById("cm-ratio").textContent = r.toFixed(2);
+    badge("cm-aa", r >= 4.5);
+    badge("cm-aal", r >= 3.0);
+    badge("cm-aaa", r >= 7.0);
+    document.getElementById("cm-note").textContent = r >= 4.5
+      ? "通常テキストのAA基準（4.5:1）を満たしています。"
+      : "読めても、通常テキストのAA基準（4.5:1）に届いていません ── これが“測る”と見える事実です。";
+  }
+  var btns = document.querySelectorAll(".cm__preset");
+  btns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      btns.forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+      b.setAttribute("aria-pressed", "true");
+      apply(b.getAttribute("data-color"));
+    });
+  });
+  apply("#8c857a");
+})();
+</script>
+</body>
+</html>
