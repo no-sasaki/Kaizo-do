@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M7 方式／CMS／連携／移行 ｜ 作るか、買うか ── 改造道</title>
+<meta name="description" content="店舗マップを自作するか地図サービスを連携するか。ヘッドレス/従来型/DXPの方式判断、外部連携、レガシーからの移行リスクを、建てた擬似ヘッドレスの肌感覚で握る。判断マトリクスで“答えは重み次第”を体感するM7モジュール。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/platform.css">
+<style>
+  /* M7 判断マトリクス */
+  .mx { border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .mx__head { display:grid; grid-template-columns: 1fr 90px 90px; gap:.5rem; padding:.6rem .9rem; background:var(--surface-2); border-bottom:1px solid var(--line); font-family:var(--mono); font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  .mx__row { display:grid; grid-template-columns: 1fr 90px 90px; gap:.5rem; align-items:center; padding:.55rem .9rem; border-bottom:1px solid var(--line); font-size:.9rem; }
+  .mx__row select { font:inherit; font-size:.82rem; padding:.25rem .4rem; border:1px solid var(--line-strong); border-radius:4px; background:#fff; }
+  .mx__sc { font-family:var(--mono); text-align:center; color:var(--muted); }
+  .mx__result { padding:1.2rem .9rem; }
+  .mx__bar { margin:.5rem 0; }
+  .mx__bar .lab { display:flex; justify-content:space-between; font-size:.84rem; margin-bottom:.25rem; }
+  .mx__track { height:14px; border-radius:100px; background:var(--paper-deep); overflow:hidden; }
+  .mx__fill { height:100%; border-radius:100px; transition:width .3s; }
+  .mx__fill.own { background:var(--accent); }
+  .mx__fill.buy { background:var(--delegate); }
+  .mx__rec { margin-top:.8rem; font-size:.95rem; }
+  .mx__note { font-size:.84rem; color:var(--muted); border-top:1px solid var(--line); padding:.8rem .9rem; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m2.html" data-page="m2.html">M2</a>
+      <a href="m3.html" data-page="m3.html">M3</a>
+      <a href="m4.html" data-page="m4.html">M4</a>
+      <a href="m5.html" data-page="m5.html">M5</a>
+      <a href="m7.html" data-page="m7.html">M7</a>
+      <a href="m8.html" data-page="m8.html">M8</a>
+      <a href="prompting.html" data-page="prompting.html">Appendix</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="mod-hero">
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">改造道</a> ／ Phase 4 ・ 要件への落とし込み</p>
+    <p class="eyebrow">M7 ── 方式／CMS／連携／移行（T12）｜ 参考</p>
+    <h1 style="max-width:22ch">作るか、買うか。<br>何の上に、作るか。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">「店舗を地図から探せるように」── 自作する？ 地図サービスを連携する？
+      ヘッドレスか従来型かDXPか。<strong>何の上に作るか</strong>の判断は、ベンダーの提案資料では決まりません。
+      M4・M5で建てた擬似ヘッドレスの肌感覚が、ここで実現可能性と移行リスクの“嗅覚”になります。</p>
+    <div class="meta-row">
+      <span class="tag tag--core">所要 約45分</span>
+      <span class="tag">対応タスク T12</span>
+      <span class="tag">成果物：方式方針／選定基準／連携・移行方針</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap layout-rail" style="padding-top:var(--sp-6)">
+  <nav class="rail" aria-label="目次">
+    <ol>
+      <li><a href="#brief">① 依頼を受ける</a></li>
+      <li><a href="#method">② 方式の土台</a></li>
+      <li><a href="#buildbuy">③ 作るか・買うか</a></li>
+      <li><a href="#matrix">触って判断する</a></li>
+      <li><a href="#integ">④ 連携と移行</a></li>
+      <li><a href="#result">⑤ 振り返り</a></li>
+      <li><a href="#check">十分性チェック</a></li>
+      <li><a href="#next">次へ</a></li>
+    </ol>
+  </nav>
+
+  <main class="prose">
+
+    <!-- ===================================================== STEP 1 -->
+    <h2 id="brief">① 依頼を受ける</h2>
+    <div class="callout">
+      <h4>💬 CMO・佐倉 怜 からの依頼（R-03）</h4>
+      <p>「<strong>店舗・スパを地図から探せる</strong>と、体験が締まると思うの。あと、ついでにCMSも新しくしたくて。
+        ベンダーさんから色々提案が来てるんだけど、<strong>ヘッドレス？ DXP？ どれがうちに合うのか正直分からなくて</strong>。判断してもらえる？」</p>
+    </div>
+    <p>ここで効くのが、M4・M5で<strong>自分の手で擬似ヘッドレス（JSON＋表示層）を建てた経験</strong>です。方式の言葉（ヘッドレス／従来型／DXP）が、資料の用語ではなく<strong>体感を伴って</strong>判断できる。M7のゴールは、「何の上に作るか」を<strong>基準と重みで握る</strong>ことです。</p>
+
+    <!-- ===================================================== STEP 2 -->
+    <h2 id="method">② 方式の土台 ── 建てた経験が、判断になる</h2>
+    <p>M5 で作ったのは、コンテンツ（JSON）と表示（JS）が分離した小さなヘッドレスCMSでした。だから方式の違いが、抽象論でなく分かります。</p>
+    <div class="grid grid--3">
+      <div class="card"><span class="num">ヘッドレス</span><h3 style="font-size:1.02rem;margin:.3rem 0">中身と表示を分離</h3><p>多チャネル・多言語・自由な表現に強い。表示は自前。NAGIで建てたのがこれ。</p></div>
+      <div class="card"><span class="num">従来型</span><h3 style="font-size:1.02rem;margin:.3rem 0">中身と表示が一体</h3><p>立ち上げが速く運用も楽。だが表現やチャネル拡張で窮屈になりやすい。</p></div>
+      <div class="card"><span class="num">DXP</span><h3 style="font-size:1.02rem;margin:.3rem 0">統合プラットフォーム</h3><p>解析・MA・パーソナライズ込み。高機能だが重く・高コスト・ロックインも。</p></div>
+    </div>
+    <p style="margin-top:var(--sp-4)">網羅と比較はAIに委ね、<strong>このブランドにとっての重み</strong>は人が握ります。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">発散：方式・選定基準・連携・移行</span></div><button class="prompt__copy" data-copy="#p1">コピー</button></div>
+      <pre id="p1">あなたは経験豊富なWCM／プラットフォーム選定のコンサルタントです。
+多言語・多地域のブランドサイト（非EC・ブランド表現重視・複数コンテンツタイプ）のリニューアルで「何の上に作るか」を決めます。
+1) ヘッドレス／従来型／DXP を、このサイトの特性で比較し、向き不向きを表に。
+2) CMS選定の評価基準（10項目程度）と、重みの付け方の考え方。
+3) 必要になりうる外部連携（CRM／MA／CDP／DAM／解析／翻訳／CDN 等）と、各々が要る理由・要らない条件。
+4) レガシーから新モデルへのコンテンツ移行で起きがちな問題（表記ゆれ・欠損・対応関係）。
+最後に、私が必ず自分で握るべき判断軸を3つ。</pre>
+    </div>
+    <p><span class="example-tag">● 出力は一例</span> 返ってくる比較は出発点。このブランドにとっての重みは、このあと自分で握ります。<a href="prompting.html">プロンプトを自分で書けるようになるには →（Appendix）</a></p>
+
+    <!-- ===================================================== STEP 3 -->
+    <h2 id="buildbuy">③ 作るか・買うか ── 店舗マップの判断</h2>
+    <p>「地図から探せる」を、ゼロから自作するのは大仕事です（地図タイル・現在地・経路・住所検索…）。多くの場合は<strong>地図サービスを連携</strong>します。でも常にそうとは限らない ── 判断は<strong>何を重視するか</strong>で変わります。</p>
+    <div class="compare">
+      <div class="compare__col compare__col--bad">
+        <h4>自作する場合</h4>
+        <div class="body">
+          <ul style="font-size:.92rem;margin-top:0">
+            <li>🟢 データもデザインも完全に自社管理</li>
+            <li>🟢 ブランド体験を細部まで作り込める</li>
+            <li>🔴 地図・経路・現在地を一から実装＝重い</li>
+            <li>🔴 保守も自分たち。立ち上げが遅い</li>
+          </ul>
+        </div>
+      </div>
+      <div class="compare__col compare__col--good">
+        <h4>地図サービスを連携する場合</h4>
+        <div class="body">
+          <ul style="font-size:.92rem;margin-top:0">
+            <li>🟢 成熟した機能を即利用・立ち上げが速い</li>
+            <li>🟢 実装・保守コストが小さい</li>
+            <li>🔴 デザインや規約はサービス側に従う</li>
+            <li>🔴 外部にデータ送信・ベンダー依存</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p>どちらが正解か、ではありません。<strong>基準と重み</strong>で決まります。下で実際に動かしてみてください。</p>
+
+    <!-- PLAYGROUND -->
+    <h3 id="matrix">触って判断する ── build-vs-buy マトリクス</h3>
+    <p>各基準の<strong>重み</strong>を、このブランドにとっての重要度で変えてみてください。重みを変えると、<strong>おすすめが入れ替わる</strong>のが分かります。判断とは、この重みを握ることです。</p>
+    <div class="mx" id="mx">
+      <div class="mx__head"><span>判断基準（重みを選ぶ）</span><span style="text-align:center">自作</span><span style="text-align:center">連携</span></div>
+      <div id="mx-rows"></div>
+      <div class="mx__result">
+        <div class="mx__bar"><div class="lab"><span>自作</span><span id="mx-own-v">–</span></div><div class="mx__track"><div class="mx__fill own" id="mx-own" style="width:0"></div></div></div>
+        <div class="mx__bar"><div class="lab"><span>地図サービス連携</span><span id="mx-buy-v">–</span></div><div class="mx__track"><div class="mx__fill buy" id="mx-buy" style="width:0"></div></div></div>
+        <div class="mx__rec" id="mx-rec"></div>
+      </div>
+      <div class="mx__note">店舗マップは多くの場合「連携」が優勢です。けれど<strong>データの自社管理やブランド体験</strong>を最重視するブランドでは、自作が伸びる ── 答えは“重み次第”。これを言語化して合意するのが、方式判断です。</div>
+    </div>
+
+    <!-- ===================================================== STEP 4 -->
+    <h2 id="integ">④ 連携と、移行の地雷</h2>
+    <p>方式が決まると、次は「何とつなぐか」と「どう移すか」。とくに<strong>移行</strong>は、建てた経験がないと地雷が見えません。</p>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>外部連携要件（抜粋）</b><span class="tag">integrations</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>連携先</th><th>用途</th><th>このサイトで</th></tr>
+          <tr><td>地図サービス（Maps）</td><td>店舗・スパ検索（R-03）</td><td><strong>要</strong></td></tr>
+          <tr><td>翻訳／TMS</td><td>多言語コンテンツの運用</td><td><strong>要</strong>（M5の i18n と整合）</td></tr>
+          <tr><td>解析（GA4等）</td><td>KPI計測（M1で定義）</td><td><strong>要</strong></td></tr>
+          <tr><td>CDN</td><td>性能・可用性（M8の目標）</td><td><strong>要</strong></td></tr>
+          <tr><td>MA／CRM／CDP</td><td>顧客管理・配信</td><td>段階導入（非ECのため当初は最小）</td></tr>
+          <tr><td>DAM</td><td>画像・動画の一元管理</td><td>コンテンツ量で判断</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>コンテンツ移行方針 ── レガシーの自由記述 → 新モデルの統制タグ</b><span class="tag">migration</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>レガシー値（自由記述）</th><th>新モデル（統制タグ）</th><th>移行の判断</th></tr>
+          <tr><td>米発酵液</td><td><code>rice-ferment</code></td><td>自動マップ可</td></tr>
+          <tr><td>発酵エキス</td><td><code>rice-ferment ?</code></td><td><strong>曖昧 ── 人の確認が必要</strong></td></tr>
+          <tr><td>ライス発酵成分</td><td><code>rice-ferment</code></td><td>表記ゆれ・要名寄せ</td></tr>
+          <tr><td>（成分が空欄の記事）</td><td>—</td><td><strong>欠損 ── 補完が必要</strong></td></tr>
+        </table>
+        <p style="font-size:.88rem;color:var(--muted);margin:.8rem 0 0">移行は機械的に終わりません。<strong>表記ゆれ・曖昧・欠損を人が裁く</strong>工程が必ず残る。M3で読んだレガシーと、M5で設計した統制語彙の“差”が、そのまま移行コストになります。建てた経験があると、この地雷が事前に見えます。</p>
+      </div>
+    </div>
+
+    <!-- ===================================================== STEP 5 -->
+    <h2 id="result">⑤ 振り返り</h2>
+    <blockquote>方式に「唯一の正解」はない。あるのは、<strong>基準と重みの判断</strong>。<br>
+      自分で建てた経験があるから、実現可能性と移行リスクが“嗅げる” ── ベンダーの提案を、鵜呑みにせず評価できる。</blockquote>
+    <div class="grid grid--2">
+      <div class="card"><span class="num">気づき 1</span><h3 style="font-size:1.1rem;margin:.3rem 0">作らない判断も価値</h3><p style="color:var(--ink-2)">「自作しない＝負け」ではない。立ち上げ速度や保守を重視するなら、買う方が正しい。どこで作るのをやめるかを握る。</p></div>
+      <div class="card"><span class="num">気づき 2</span><h3 style="font-size:1.1rem;margin:.3rem 0">移行はプロジェクトの地雷</h3><p style="color:var(--ink-2)">移行は機械作業ではなく、表記ゆれ・欠損を裁く判断の連続。ここを軽く見ると、最後に火を噴く。</p></div>
+    </div>
+
+    <!-- ===================================================== CHECK -->
+    <h2 id="check">十分性チェック</h2>
+    <div class="artifact">
+      <div class="artifact__head"><b>セルフチェック</b><span class="tag">合意の前に</span></div>
+      <div class="artifact__body">
+        <ul style="margin:0">
+          <li>□ 方式（ヘッドレス／従来型／DXP）の方向性を、このサイトの特性で説明できるか</li>
+          <li>□ 作るか・買うかを、<strong>基準と重み</strong>で判断・言語化したか</li>
+          <li>□ 必要な外部連携と、それぞれが<strong>要る理由</strong>を挙げたか</li>
+          <li>□ レガシー→新モデルの<strong>移行リスク</strong>（表記ゆれ・曖昧・欠損）を見込んだか</li>
+          <li>□ 「ベンダーの提案」をそのまま受けず、評価できているか</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NEXT -->
+    <h2 id="next">次へ</h2>
+    <p>「何の上に作るか」も握れました。これで How（体験・機能・情報設計・非機能・方式）がひととおり揃います。残るは一番上 ── <strong>そもそも、なぜ作るのか</strong>。</p>
+    <div class="callout">
+      <h4>📨 一番上に戻る ── Why と、測れる成功</h4>
+      <p>ここまでの判断はすべて、「成功とは何か」に支えられています。次は <strong>M1（Why＆ブランド）</strong>で、ビジネスゴールとKPIを<strong>測れる形</strong>に定義します（M8の計測と接続）。それが揃えば、すべてを束ねて合意する <strong>M9</strong> へ。</p>
+    </div>
+    <div class="pill-row" style="margin:var(--sp-5) 0">
+      <a class="btn btn--ghost" href="m8.html">← M8 へ戻る</a>
+      <a class="btn" href="../nagi/index.html" target="_blank" rel="noopener">NAGI（To-Be）を開く ↗</a>
+      <span class="btn btn--ghost is-soon" style="opacity:.5;pointer-events:none">M1 Why＆ブランド（近日公開）</span>
+    </div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="fine">© 2026 改造道 Kaizō-dō ── 教育目的の架空教材。「凪 / NAGI」は架空のブランドです。 ｜ <a href="../index.html">トップへ</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/platform.js"></script>
+<script>
+/* M7 build-vs-buy 判断マトリクス */
+(function () {
+  var root = document.getElementById("mx-rows");
+  if (!root) return;
+  var CRIT = [
+    { label: "立ち上げスピード", own: 2, buy: 5 },
+    { label: "実装・保守コストの低さ", own: 2, buy: 4 },
+    { label: "地図機能の充足（経路・現在地）", own: 2, buy: 5 },
+    { label: "データの自社管理・独立性", own: 5, buy: 2 },
+    { label: "ブランド体験の作り込み自由度", own: 5, buy: 3 },
+    { label: "プライバシー／規約の自由度", own: 4, buy: 2 }
+  ];
+  var weights = CRIT.map(function () { return 2; });
+  CRIT.forEach(function (c, i) {
+    var row = document.createElement("div");
+    row.className = "mx__row";
+    row.innerHTML = '<span>' + c.label +
+      ' <select data-i="' + i + '"><option value="1">低</option><option value="2" selected>中</option><option value="3">高</option></select></span>' +
+      '<span class="mx__sc">' + c.own + '</span><span class="mx__sc">' + c.buy + '</span>';
+    root.appendChild(row);
+  });
+  function calc() {
+    var own = 0, buy = 0;
+    CRIT.forEach(function (c, i) { own += weights[i] * c.own; buy += weights[i] * c.buy; });
+    var max = Math.max(own, buy);
+    document.getElementById("mx-own").style.width = (own / max * 100) + "%";
+    document.getElementById("mx-buy").style.width = (buy / max * 100) + "%";
+    document.getElementById("mx-own-v").textContent = own;
+    document.getElementById("mx-buy-v").textContent = buy;
+    var rec = document.getElementById("mx-rec");
+    if (own === buy) { rec.innerHTML = "⚖ 互角です。重みをもう一段はっきりさせましょう。"; }
+    else if (buy > own) { rec.innerHTML = "おすすめ：<strong style='color:var(--delegate)'>地図サービスを連携</strong>（" + buy + " 対 " + own + "）"; }
+    else { rec.innerHTML = "おすすめ：<strong style='color:var(--accent)'>自作</strong>（" + own + " 対 " + buy + "）"; }
+  }
+  root.querySelectorAll("select").forEach(function (s) {
+    s.addEventListener("change", function () { weights[+s.getAttribute("data-i")] = +s.value; calc(); });
+  });
+  calc();
+})();
+</script>
+</body>
+</html>
