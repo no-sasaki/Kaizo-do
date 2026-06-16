@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M3 As-Is 理解 ｜ 「なんとなく」を、名指せる課題に ── 改造道</title>
+<meta name="description" content="現行サイトを実際に歩いて読み、漠然とした“使いにくさ”を、原因と証拠つきの課題一覧へ。診断レンズと、AIにコードを読ませる技で、非技術コンサルが実装レベルの課題を名指せるようになるM3モジュール。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/platform.css">
+<style>
+  /* M3 診断オーバーレイ専用の最小スタイル */
+  .diag { border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .diag__bar { display:flex; gap:.5rem; align-items:center; padding:.7rem .9rem; background:var(--surface-2); border-bottom:1px solid var(--line); }
+  .diag__bar b { font-size:.86rem; margin-right:auto; }
+  .diag__tg { font-size:.78rem; border:1px solid var(--line-strong); background:var(--surface); border-radius:100px; padding:.35rem .8rem; }
+  .diag__tg[aria-pressed="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .diag__stage { padding:1.4rem; display:grid; grid-template-columns: 240px 1fr; gap:1.4rem; align-items:start; }
+  @media (max-width:680px){ .diag__stage{ grid-template-columns:1fr; } }
+  /* faux legacy product block ── 一見きれい */
+  .diag__block { font-family: var(--sans); }
+  .diag__img { aspect-ratio:4/3; border-radius:2px; background:linear-gradient(150deg,#E9E3D6,#DFE6DD); display:grid; place-items:center; font-family:"Shippori Mincho B1",serif; font-size:2.6rem; color:rgba(94,117,103,.4); position:relative; }
+  .diag__name { font-family:"Shippori Mincho B1",serif; font-size:1.3rem; margin:.7rem 0 .2rem; position:relative; }
+  .diag__price, .diag__info, .diag__ing { color:#8c857a; font-size:.9rem; margin:.35rem 0; position:relative; }
+  .diag__cta { background:#7C9082; color:#fff; border:0; border-radius:3px; padding:.35rem .8rem; font-size:.82rem; margin-top:.7rem; position:relative; }
+  /* badges hidden until 診断 */
+  .diag-badge { display:none; }
+  .is-diag .diag-badge { display:inline-grid; place-items:center; width:1.3rem; height:1.3rem; border-radius:50%; background:var(--accent); color:#fff; font-size:.72rem; font-family:var(--mono); margin-left:.4rem; vertical-align:middle; }
+  .diag__img .diag-badge { position:absolute; top:.5rem; right:.5rem; margin:0; }
+  .diag__ann { display:none; }
+  .is-diag .diag__ann { display:block; }
+  .diag__ann ul { list-style:none; margin:0; padding:0; }
+  .diag__ann li { display:grid; grid-template-columns:1.4rem 1fr; gap:.6rem; padding:.5rem 0; border-bottom:1px solid var(--line); font-size:.88rem; }
+  .diag__ann li:last-child{ border-bottom:0; }
+  .diag__ann .n { width:1.3rem; height:1.3rem; border-radius:50%; background:var(--accent); color:#fff; display:grid; place-items:center; font-size:.72rem; font-family:var(--mono); }
+  .diag__ann .lens { font-family:var(--mono); font-size:.68rem; letter-spacing:.06em; color:var(--accent); }
+  .diag__hint { padding:.8rem .9rem; border-top:1px solid var(--line); font-size:.84rem; color:var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m2.html" data-page="m2.html">M2</a>
+      <a href="m3.html" data-page="m3.html">M3</a>
+      <a href="m4.html" data-page="m4.html">M4</a>
+      <a href="m5.html" data-page="m5.html">M5</a>
+      <a href="prompting.html" data-page="prompting.html">Appendix</a>
+      <a class="btn btn--accent" href="../nagi-legacy/index.html" target="_blank" rel="noopener">現行サイトを開く <span class="arr">↗</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="mod-hero">
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">改造道</a> ／ Phase 2 ・ As-Is 理解と課題</p>
+    <p class="eyebrow">M3 ── As-Is 理解（T5）｜ 課題特定は ◎</p>
+    <h1 style="max-width:22ch">「なんとなく良くない」を、<br>名指せる課題に変える。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">現行サイトを開いて「なんか使いにくい」と感じるのは、誰にでもできます。
+      けれど価値になるのは、その<strong>正体を実装レベルで名指し、原因と証拠をつけて課題にする</strong>こと。
+      ここが、技術が“見える”ことの価値が最も出る場所です。</p>
+    <div class="meta-row">
+      <span class="tag tag--core">所要 約60分</span>
+      <span class="tag">対応タスク T5</span>
+      <span class="tag">成果物：課題一覧（原因・証拠つき）＋コンテンツ監査</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap layout-rail" style="padding-top:var(--sp-6)">
+  <nav class="rail" aria-label="目次">
+    <ol>
+      <li><a href="#brief">① 依頼を受ける</a></li>
+      <li><a href="#lenses">② 診断レンズをそろえる</a></li>
+      <li><a href="#walk">③ As-Is を歩いて読む</a></li>
+      <li><a href="#name">④ 正体を名指す</a></li>
+      <li><a href="#diag">触って診断する</a></li>
+      <li><a href="#artifact">⑤ 課題一覧にする</a></li>
+      <li><a href="#result">⑥ 振り返り</a></li>
+      <li><a href="#check">十分性チェック</a></li>
+      <li><a href="#next">次へ</a></li>
+    </ol>
+  </nav>
+
+  <main class="prose">
+
+    <!-- ===================================================== STEP 1 -->
+    <h2 id="brief">① 依頼を受ける</h2>
+    <p>リニューアルの話が動き出しました。けれど起点は、機能の追加依頼ではなく、もっと漠然とした相談です。</p>
+    <div class="callout">
+      <h4>💬 デジタル・三宅 亮 からの依頼</h4>
+      <p>「現行サイト、感覚的に“良くない”のは分かるんです。でも、<strong>何が・なぜ悪いのかを言葉にできない</strong>。
+        経営にリニューアルの予算を通すにも、『なんとなく古い』じゃ通らなくて。<strong>課題を、根拠つきで言語化</strong>してもらえませんか。」</p>
+    </div>
+    <p>クライアントが「肌感覚はあるが核心を持てない」── これは現場で最も多い状態で、<strong>その違和感を名指してあげるのがコンサルの価値の核心</strong>です。M3のゴールは、「なんとなく」を<strong>原因と証拠のついた課題一覧</strong>に変えること。そのために、現行サイトを“眺める”のではなく“読み”ます。</p>
+
+    <!-- ===================================================== STEP 2 -->
+    <h2 id="lenses">② 診断レンズをそろえる</h2>
+    <p>枠組みなしで見ると「なんか嫌い」で終わります。プロは<strong>レンズ</strong>を通して見るから、漏れなく・再現性をもって診断できる。このモジュールで、持ち運べる<strong>6つの診断レンズ</strong>を手に入れます。</p>
+    <div class="grid grid--3">
+      <div class="card"><span class="num">LENS 1</span><h3 style="font-size:1.02rem;margin:.3rem 0">振る舞い</h3><p>状態・フィードバック・流れ。空／読み込み中／エラーの扱い。</p></div>
+      <div class="card"><span class="num">LENS 2</span><h3 style="font-size:1.02rem;margin:.3rem 0">知覚・構造</h3><p>階層・可読性・密度・アフォーダンス。「見やすい・操作しやすい」。</p></div>
+      <div class="card"><span class="num">LENS 3</span><h3 style="font-size:1.02rem;margin:.3rem 0">性能</h3><p>CWV・知覚速度。レイアウトのガタつき・初期表示の重さ。</p></div>
+      <div class="card"><span class="num">LENS 4</span><h3 style="font-size:1.02rem;margin:.3rem 0">アクセシビリティ</h3><p>WCAG／JIS X 8341。コントラスト・代替テキスト・キーボード・見出し構造。</p></div>
+      <div class="card"><span class="num">LENS 5</span><h3 style="font-size:1.02rem;margin:.3rem 0">SEO（発見性）</h3><p>タイトル・メタ・見出し・構造化データ・リンク文言。</p></div>
+      <div class="card"><span class="num">LENS 6</span><h3 style="font-size:1.02rem;margin:.3rem 0">コンテンツモデル健全性</h3><p>型・統制語彙・関係。拡張・多言語・運用に耐えるか。</p></div>
+    </div>
+
+    <p style="margin-top:var(--sp-4)">発散はAIに委ね、現行サイトでの観察と判断は人が握ります。下のプロンプトで、レンズ別の「見るべき手がかり」を量産させます。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">発散：診断チェックリスト</span></div><button class="prompt__copy" data-copy="#p1">コピー</button></div>
+      <pre id="p1">あなたは経験豊富なUX／Web品質のコンサルタントです。ブランドサイトの現状（As-Is）を診断します。
+次のレンズごとに「ブランドサイトでありがちな問題」と「それを見つける手がかり（どこを見る／どう操作する／コードの何を読む）」を
+チェックリストで出してください：振る舞い（状態）／知覚・構造／性能／アクセシビリティ／SEO／コンテンツモデル。
+最後に、私が現場で「症状（ユーザーが感じること）」と「原因（実装）」を取り違えないための問いを3つ。</pre>
+    </div>
+
+    <!-- ===================================================== STEP 3 -->
+    <h2 id="walk">③ As-Is を歩いて、読む</h2>
+    <p>いよいよ現行サイトです。まず<strong>ペルソナ（M2の美和：成分を調べてから買う慎重派）</strong>になりきって歩きます。</p>
+    <div class="card" style="margin:var(--sp-4) 0">
+      <p class="num">STEP A ── 歩く</p>
+      <h3 style="margin:.2rem 0 .5rem">現行サイトを、美和として使ってみる</h3>
+      <p style="color:var(--ink-2)">商品を探し、成分を確かめ、お知らせを見る。<strong>引っかかった瞬間にメモ</strong>します ── 「価格が探しにくい」「成分で絞れない」「押したのに反応がない」。</p>
+      <p style="margin-top:var(--sp-3)"><a class="btn" href="../nagi-legacy/index.html" target="_blank" rel="noopener">現行サイト（As-Is）を別タブで開く <span class="arr">↗</span></a></p>
+    </div>
+    <div class="card" style="margin:var(--sp-4) 0">
+      <p class="num">STEP B ── 読む</p>
+      <h3 style="margin:.2rem 0 .5rem">引っかかった部分の“裏側”を開く</h3>
+      <p style="color:var(--ink-2)">GitHub で <code style="font-family:var(--mono);background:var(--accent-tint);padding:.1rem .3rem;border-radius:3px">nagi-legacy/</code> のコードや <code style="font-family:var(--mono);background:var(--accent-tint);padding:.1rem .3rem;border-radius:3px">data/*.json</code> を開き、引っかかった画面の“裏側”を見ます。コードが読めなくて大丈夫 ── 次の一手は、<strong>AIに読ませること</strong>です。</p>
+    </div>
+    <div class="callout callout--win">
+      <h4>✦ コードは、AIに読ませて理解する</h4>
+      <p>非技術者が実装を理解する近道は、暗記でも独学でもなく、<strong>気になったコードをそのままAIに渡して「何が問題で、なぜか」を聞く</strong>こと。握りどころは、返ってきた説明を<strong>コンサルの判断で課題に翻訳する</strong>ところです。</p>
+    </div>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">コードを読ませて、原因を知る</span></div><button class="prompt__copy" data-copy="#p2">コピー</button></div>
+      <pre id="p2">現行サイトのコード（またはデータ）の一部を貼ります。
+UX・アクセシビリティ・SEO・コンテンツモデルの観点で、何が問題で、その「原因」と「直す方向」を、
+コードを書かない人にも分かる言葉で説明してください。必ず「症状（ユーザーが感じること）」と
+「原因（実装でこうなっている）」を分けて書くこと。
+
+（ここに nagi-legacy のコードや data/products.json の一部を貼る）</pre>
+    </div>
+    <p><span class="example-tag">● 出力は一例</span> 返ってくる説明を鵜呑みにせず、現行サイトの実際の挙動と突き合わせて確かめます。<a href="prompting.html">プロンプトを自分で書けるようになるには →（Appendix）</a></p>
+
+    <!-- ===================================================== STEP 4 -->
+    <h2 id="name">④ 症状を、原因まで名指す</h2>
+    <p>ここが M3 の山場です。<strong>素人は症状で止まり、プロは原因まで降りる</strong>。同じ画面を見ても、言えることがこれだけ違います。</p>
+    <div class="compare">
+      <div class="compare__col compare__col--bad">
+        <h4>✗ 症状で止まる（素人の指摘）</h4>
+        <div class="body">
+          <ul style="font-size:.92rem;margin-top:0">
+            <li>「商品ページがなんか見づらい」</li>
+            <li>「成分で探せなくて不便」</li>
+            <li>「ボタンを押しても反応がない気がする」</li>
+          </ul>
+          <p style="font-size:.9rem;color:#9A3A18"><strong>直せない・揉める。</strong>何を・どう直すか決まらず、優先度もつかない。検収もできない。</p>
+        </div>
+      </div>
+      <div class="compare__col compare__col--good">
+        <h4>✓ 原因まで降りる（プロの指摘）</h4>
+        <div class="body">
+          <ul style="font-size:.92rem;margin-top:0">
+            <li>価格・CTAが本文と同じ強さで<strong>視覚的階層がない</strong>（知覚・構造）</li>
+            <li>成分が<strong>自由記述で表記ゆれ</strong>、統制語彙が無く絞り込めない（コンテンツモデル）</li>
+            <li>カート押下後の<strong>状態（完了/失敗）が未設計</strong>（振る舞い）</li>
+          </ul>
+          <p style="font-size:.9rem;color:#2F6F6A"><strong>直せる・合意できる。</strong>原因が分かるから、直し方・優先度・検収条件まで言える。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAYGROUND -->
+    <h3 id="diag">触って診断する ── 「ぱっと見」と「プロの目」</h3>
+    <p>下は現行サイトの商品ページの一部です。最初は<strong>ぱっと見、そんなに悪くない</strong>。「プロの目で診断」に切り替えると、隠れていた問題が、原因とレンズつきで浮かび上がります。</p>
+    <div class="diag" id="diag">
+      <div class="diag__bar">
+        <b>現行サイト・商品の一部</b>
+        <button class="diag__tg" id="d-plain" aria-pressed="true">👁 ぱっと見</button>
+        <button class="diag__tg" id="d-diag" aria-pressed="false">🔍 プロの目で診断</button>
+      </div>
+      <div class="diag__stage">
+        <div class="diag__block">
+          <div class="diag__img">満<span class="diag-badge">5</span></div>
+          <div class="diag__name">凪 エッセンス<span class="diag-badge">2</span></div>
+          <div class="diag__price">¥9600<span class="diag-badge">1</span></div>
+          <div class="diag__info">乾燥が気になる肌に。米発酵液・発酵エキス配合。朝晩のスキンケアに。保湿。整肌。ハリ。<span class="diag-badge">4</span></div>
+          <div class="diag__ing">成分：米発酵液、発酵エキス、ライス発酵成分<span class="diag-badge">3</span></div>
+          <button class="diag__cta">カートに入れる<span class="diag-badge">5</span></button>
+        </div>
+        <div class="diag__ann">
+          <ul>
+            <li><span class="n">1</span><span>価格もCTAも本文と同じ強さで、<strong>視覚的階層がない</strong>。CTAが埋もれて行動につながらない。<br><span class="lens">LENS 2 知覚・構造</span></span></li>
+            <li><span class="n">2</span><span>「凪 エッセンス」は<strong>見出しに見えるが、見出しではない</strong>（div）。読み上げ・検索に構造が伝わらない。<br><span class="lens">LENS 4 a11y ／ LENS 5 SEO</span></span></li>
+            <li><span class="n">3</span><span>成分が<strong>自由記述</strong>。「米発酵液／発酵エキス／ライス発酵成分」が別物扱いになり、絞り込み・関連づけができない。<br><span class="lens">LENS 6 コンテンツモデル</span></span></li>
+            <li><span class="n">4</span><span>効能・用途・成分が<strong>一塊のテキスト</strong>。構造化されておらず、再利用・多言語・並べ替えに弱い。<br><span class="lens">LENS 6 コンテンツモデル</span></span></li>
+            <li><span class="n">5</span><span>画像に<strong>代替テキスト無し</strong>、CTAは<strong>領域が小さく押下後も無反応</strong>。<br><span class="lens">LENS 4 a11y ／ LENS 1 振る舞い</span></span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="diag__hint" id="d-hint">「プロの目で診断」を押すと、同じ画面の“正体”が見えます。</div>
+    </div>
+
+    <div class="callout callout--win">
+      <h4>✦ ここに、技術が見えることの価値がある</h4>
+      <p>「ぱっと見そんなに悪くない」を、原因とレンズで5つの課題に分解できた ── これが、画面を眺めるだけでは決して届かない深さです。クライアントの違和感に、<strong>名前と根拠</strong>を与えられる。</p>
+    </div>
+
+    <!-- ===================================================== STEP 5 -->
+    <h2 id="artifact">⑤ 課題一覧にする</h2>
+    <p>観察を、合意・検収できる成果物に落とします。収束はAIに整えさせ、優先度と十分性は握ります。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">収束：課題一覧へ</span></div><button class="prompt__copy" data-copy="#p3">コピー</button></div>
+      <pre id="p3">観察した症状を、課題一覧に落とします。各課題を次の列で表にしてください：
+症状（ユーザーが感じること）／根本原因（実装レベル）／証拠（どの挙動・どのコード・どのデータ）／レンズ／優先度。
+症状の言い換えで終わらせず、必ず「原因」まで言うこと。優先度は、ビジネス影響と修正コストで判断できるよう材料を添える。</pre>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物A ｜ 課題一覧（症状→原因→証拠）</b><span class="tag tag--core">T5 OUT</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>症状</th><th>根本原因（実装）</th><th>証拠</th><th>レンズ</th><th>優先</th></tr>
+          <tr><td>商品ページが見づらい・CTAに気づかない</td><td>視覚的階層がない（価格/CTA/本文が同強度）</td><td>product 画面・legacy.css の一様なスタイル</td><td>知覚・構造</td><td><code>High</code></td></tr>
+          <tr><td>成分で記事・製品を探せない</td><td>成分が自由記述で表記ゆれ（統制語彙なし）</td><td>products.json の <code>ingredients</code> 文字列</td><td>コンテンツモデル</td><td><code>High</code></td></tr>
+          <tr><td>カート操作が不安（押せた？）</td><td>送信中/完了の状態が未設計</td><td>「カートに入れる」押下後に無反応</td><td>振る舞い</td><td><code>Mid</code></td></tr>
+          <tr><td>読み込み時に画面がガタつく</td><td>後差し要素に高さ予約がない</td><td>ホームの販促バナー挿入時のCLS</td><td>性能</td><td><code>Mid</code></td></tr>
+          <tr><td>検索結果で見分けがつかない</td><td>全ページ同一 title・meta なし</td><td>各ページの <code>&lt;title&gt;NAGI&lt;/title&gt;</code></td><td>SEO</td><td><code>Low</code></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物B ｜ コンテンツ監査（抜粋）</b><span class="tag">インベントリ＆評価</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>コンテンツ</th><th>評価</th><th>判断</th></tr>
+          <tr><td>商品（products.json）</td><td>型が浅い・成分が自由記述</td><td><strong>作り直す</strong>（M5でモデル設計）</td></tr>
+          <tr><td>お知らせ（news.json）</td><td>カテゴリはあるが活用されず、空状態なし</td><td><strong>直す</strong></td></tr>
+          <tr><td>ブランドの世界観・ヒーロー</td><td>美しく、資産価値が高い</td><td><strong>引き継ぐ</strong></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===================================================== STEP 6 -->
+    <h2 id="result">⑥ 振り返り</h2>
+    <blockquote>「なんとなく良くない」は、レンズと実装で<strong>名指せる課題</strong>に変わった。<br>
+      技術が見えると、症状の先にある<strong>原因・証拠・直し方</strong>まで言える。これがリニューアルの“根拠”になる。</blockquote>
+    <div class="grid grid--2">
+      <div class="card"><span class="num">気づき 1</span><h3 style="font-size:1.1rem;margin:.3rem 0">症状と原因は違う</h3><p style="color:var(--ink-2)">「見づらい」は症状。「階層がない」は原因。原因まで降りて初めて、直し方と優先度が決まる。</p></div>
+      <div class="card"><span class="num">気づき 2</span><h3 style="font-size:1.1rem;margin:.3rem 0">コードはAIと読めばいい</h3><p style="color:var(--ink-2)">実装を暗記する必要はない。気になった箇所をAIに読ませ、判断を自分が握れば、非技術者でも原因に届く。</p></div>
+    </div>
+
+    <!-- ===================================================== CHECK -->
+    <h2 id="check">十分性チェック</h2>
+    <div class="artifact">
+      <div class="artifact__head"><b>セルフチェック</b><span class="tag">合意の前に</span></div>
+      <div class="artifact__body">
+        <ul style="margin:0">
+          <li>□ 各課題が<strong>症状でなく原因（実装レベル）</strong>まで言えているか</li>
+          <li>□ 各課題に<strong>証拠</strong>（挙動・コード・データ）が紐づいているか</li>
+          <li>□ 6つのレンズで<strong>漏れ</strong>を潰したか（特定の軸に偏っていないか）</li>
+          <li>□ コンテンツ監査で「引き継ぐ／直す／作り直す」を仕分けたか</li>
+          <li>□ 優先度の根拠（ビジネス影響×修正コスト）があるか</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NEXT -->
+    <h2 id="next">次へ</h2>
+    <p>「なんとなく」を、原因と証拠のついた課題一覧に変えました。この一覧が、これから作る要件すべての<strong>出発点</strong>になります ── 体験(M2)・機能(M4)・情報設計(M5)・非機能(M8)へ、課題が分かれて流れていきます。</p>
+    <div class="callout">
+      <h4>📨 診断した“知覚・性能”の問題を、次は「測る」</h4>
+      <p>M3で見つけた知覚・構造や性能の課題（コントラスト・CLS・CTA の弱さ）は、まだ言葉のまま。次は<strong>数値と準拠基準</strong>に変えます ── UXの軸2「測る側」と、法務・和田 R-04 のガバナンスを扱う <strong>M8（非機能要件）</strong>へ。</p>
+    </div>
+    <div class="pill-row" style="margin:var(--sp-5) 0">
+      <a class="btn btn--ghost" href="m2.html">← M2 へ戻る</a>
+      <a class="btn" href="../nagi-legacy/index.html" target="_blank" rel="noopener">現行サイト（As-Is）を開く ↗</a>
+      <span class="btn btn--ghost is-soon" style="opacity:.5;pointer-events:none">M8 非機能要件（近日公開）</span>
+    </div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="fine">© 2026 改造道 Kaizō-dō ── 教育目的の架空教材。「凪 / NAGI」は架空のブランドです。 ｜ <a href="../index.html">トップへ</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/platform.js"></script>
+<script>
+/* M3 診断オーバーレイ ─ ぱっと見 / プロの目 を切り替える */
+(function () {
+  var diag = document.getElementById("diag");
+  if (!diag) return;
+  var plain = document.getElementById("d-plain");
+  var pro = document.getElementById("d-diag");
+  var hint = document.getElementById("d-hint");
+  function set(mode) {
+    var on = mode === "diag";
+    diag.classList.toggle("is-diag", on);
+    plain.setAttribute("aria-pressed", String(!on));
+    pro.setAttribute("aria-pressed", String(on));
+    hint.textContent = on
+      ? "同じ画面に、原因とレンズつきで5つの課題が隠れていました。"
+      : "「プロの目で診断」を押すと、同じ画面の“正体”が見えます。";
+  }
+  plain.addEventListener("click", function () { set("plain"); });
+  pro.addEventListener("click", function () { set("diag"); });
+})();
+</script>
+</body>
+</html>
