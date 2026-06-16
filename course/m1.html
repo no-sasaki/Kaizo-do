@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M1 Why＆ブランド ｜ 測れない成功は、決めていないのと同じ ── 改造道</title>
+<meta name="description" content="「回遊を増やす」を、測れるKPIと必要なシグナル（計測イベント）に。ブランド要求を北極星として言語化する。経営の言葉を検証可能な成功の定義に翻訳するM1モジュール。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/platform.css">
+<style>
+  /* M1 「測れる？」チェッカー */
+  .kpi__modes { display:flex; gap:.4rem; margin:.4rem 0 1rem; }
+  .kpi__mode { font-size:.8rem; border:1px solid var(--line-strong); background:var(--surface); border-radius:100px; padding:.35rem .9rem; }
+  .kpi__mode[aria-pressed="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .kpi__grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-3); }
+  @media (max-width:760px){ .kpi__grid{ grid-template-columns:1fr; } }
+  .kpi__card { border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); padding:var(--sp-4); }
+  .kpi__goal { font-size:1.02rem; font-weight:650; min-height:3.2em; }
+  .kpi__verdict { font-family:var(--mono); font-size:.74rem; padding:.2rem .6rem; border-radius:100px; display:inline-block; margin-top:.6rem; }
+  .kpi__verdict.ok { background:var(--delegate-soft); color:var(--delegate); border:1px solid color-mix(in srgb,var(--delegate) 30%,transparent); }
+  .kpi__verdict.ng { background:#FBEEEC; color:#C0392B; border:1px solid rgba(192,57,43,.3); }
+  .kpi__sig { font-size:.84rem; color:var(--ink-2); margin-top:.7rem; padding-top:.7rem; border-top:1px solid var(--line); }
+  .kpi__sig code { font-family:var(--mono); font-size:.78rem; background:var(--accent-tint); color:var(--accent-deep); padding:.1rem .3rem; border-radius:3px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m1.html" data-page="m1.html">M1</a>
+      <a href="m2.html" data-page="m2.html">M2</a>
+      <a href="m3.html" data-page="m3.html">M3</a>
+      <a href="m4.html" data-page="m4.html">M4</a>
+      <a href="m5.html" data-page="m5.html">M5</a>
+      <a href="m7.html" data-page="m7.html">M7</a>
+      <a href="m8.html" data-page="m8.html">M8</a>
+      <a href="prompting.html" data-page="prompting.html">Appendix</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="mod-hero">
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">改造道</a> ／ Phase 1 ・ ビジネス要求（Why）</p>
+    <p class="eyebrow">M1 ── Why ＆ ブランド（T2／T3／T8）｜ 最小</p>
+    <h1 style="max-width:22ch">測れない成功は、<br>決めていないのと同じ。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">「回遊を増やす」── 聞こえはいいけれど、後で「増えた／増えてない」で必ず揉めます。
+      成功は、<strong>測れる形（KPIと、必要なシグナル）</strong>にして初めて約束になる。
+      そして数字だけでは NAGI ではない ── <strong>ブランドの軸（北極星）</strong>も、ここで握ります。</p>
+    <div class="meta-row">
+      <span class="tag tag--core">所要 約45分</span>
+      <span class="tag">対応タスク T2／T3／T8</span>
+      <span class="tag">成果物：KPIツリー＋成功の定義／ブランド要求書</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap layout-rail" style="padding-top:var(--sp-6)">
+  <nav class="rail" aria-label="目次">
+    <ol>
+      <li><a href="#brief">① 依頼を受ける</a></li>
+      <li><a href="#spar">② AIと壁打ち</a></li>
+      <li><a href="#measure">③ 成功を、測れる形に</a></li>
+      <li><a href="#checker">触って確かめる</a></li>
+      <li><a href="#brand">④ ブランドの北極星</a></li>
+      <li><a href="#artifact">成果物</a></li>
+      <li><a href="#result">⑤ 振り返り</a></li>
+      <li><a href="#check">十分性チェック</a></li>
+      <li><a href="#next">次へ</a></li>
+    </ol>
+  </nav>
+
+  <main class="prose">
+
+    <!-- ===================================================== STEP 1 -->
+    <h2 id="brief">① 依頼を受ける</h2>
+    <div class="callout">
+      <h4>💬 デジタル・三宅 ＆ CMO・佐倉 からの依頼</h4>
+      <p>三宅「経営に<strong>リニューアルの“成功”を約束</strong>しないといけないんです。でも『回遊を増やす』みたいなフワッとした目標だと、後で揉める。<strong>測れる成功の定義</strong>がほしい。」<br>
+        佐倉「数字だけじゃ NAGI じゃないわ。<strong>伝えたい価値とトーン</strong>も、ブレない軸にしておきたい。」</p>
+    </div>
+    <p>Why は、すべての要件の出発点です。ここが曖昧だと、機能(M4)も情報設計(M5)も非機能(M8)も、何を優先すべきか決まらない。M1のゴールは、<strong>成功を測れる形に</strong>、<strong>ブランドを北極星に</strong>固定することです。</p>
+
+    <!-- ===================================================== STEP 2 -->
+    <h2 id="spar">② AIと壁打ちして要件を定義する</h2>
+    <p>KPIツリーやブランド価値の言語化は草案をAIに委ね、<strong>成功の定義とブランドの軸は人が握ります</strong>。</p>
+    <div class="split">
+      <div class="split__card split__card--delegate">
+        <h4>▷ AIに委ねる</h4>
+        <ul>
+          <li>KGI/KPI ツリーの草案</li>
+          <li>各KPIの<strong>測り方・必要なシグナル</strong>の候補</li>
+          <li>ブランド価値・トーンの言語化のたたき台</li>
+          <li>ROI／投資仮説の観点</li>
+        </ul>
+      </div>
+      <div class="split__card split__card--hold">
+        <h4>● 人が握る</h4>
+        <ul>
+          <li><strong>成功の定義</strong>（何をもって成功とするか）</li>
+          <li>KPIが<strong>測れる言葉</strong>になっているか</li>
+          <li>ブランドの<strong>北極星</strong>（伝える価値・トーン）</li>
+          <li>体験原則＝設計を縛る制約</li>
+        </ul>
+      </div>
+    </div>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">発散：KPIツリー＋ブランド要求</span></div><button class="prompt__copy" data-copy="#p1">コピー</button></div>
+      <pre id="p1">あなたは経験豊富なデジタル戦略／ブランド戦略のコンサルタントです。
+京都発のウェルネスブランド「NAGI」のサイトリニューアルで、Why（なぜ作るか）を固めます。
+1) 経営の期待 → KGI → KPI → 先行指標 の KPIツリー草案。
+2) 各KPIを「測れる」形にするために必要なシグナル（どんなイベント／データが要るか）。
+3) ブランド要求の言語化：伝える価値・トーン&マナー・体験原則の素（＝設計を縛る北極星）。
+曖昧語（"高める""増やす"だけ等）は、必ず「何を・どこから・いつまでに・どれだけ」に展開すること。
+最後に、私が必ず自分で握るべき「成功の定義」の論点を3つ。</pre>
+    </div>
+    <p><span class="example-tag">● 出力は一例</span> 返ってきた草案を、経営の言葉と現実に照らして握り直します。<a href="prompting.html">プロンプトを自分で書けるようになるには →（Appendix）</a></p>
+
+    <!-- ===================================================== STEP 3 -->
+    <h2 id="measure">③ 成功を、測れる形に変える</h2>
+    <p>M1 の核心は、ここです。同じ目標でも、<strong>経営の言葉のままか、操作的なKPIにしたか</strong>で、後の運命が分かれます。</p>
+    <div class="compare">
+      <div class="compare__col compare__col--bad">
+        <h4>✗ 経営の言葉のままだと</h4>
+        <div class="body">
+          <ul style="font-size:.92rem;margin-top:0">
+            <li>「回遊を増やす」</li>
+            <li>「ブランド理解を高める」</li>
+            <li>「お客様との関係を継続」</li>
+          </ul>
+          <p style="font-size:.9rem;color:#9A3A18"><strong>後で揉める。</strong>「増えた／増えてない」が水掛け論。施策の優先もつかず、検収もできない。</p>
+        </div>
+      </div>
+      <div class="compare__col compare__col--good">
+        <h4>✓ 操作的なKPIにすると</h4>
+        <div class="body">
+          <ul style="font-size:.92rem;margin-top:0">
+            <li>記事→製品の遷移率を四半期で +15%</li>
+            <li>主要ジャーナルの読了率 ≥ 40%</li>
+            <li>ニュースレター登録完了率 +20%</li>
+          </ul>
+          <p style="font-size:.9rem;color:#2F6F6A"><strong>約束になる。</strong>測れるから揉めない。さらに「測るのに必要なシグナル」まで言える。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAYGROUND -->
+    <h3 id="checker">触って確かめる ──「測れる？」チェッカー</h3>
+    <p>下の3つの目標を、<strong>「経営の言葉」</strong>と<strong>「操作的KPI」</strong>で切り替えてみてください。操作的にすると測れるようになり、しかも<strong>「測るのに必要なシグナル（計測イベント）」</strong>まで見えます ── それがそのまま、M8の計装要件になります。</p>
+    <div class="kpi__modes" role="group" aria-label="表示モード">
+      <button class="kpi__mode" id="k-vague" aria-pressed="true">経営の言葉</button>
+      <button class="kpi__mode" id="k-op" aria-pressed="false">操作的KPI（測れる）</button>
+    </div>
+    <div class="kpi__grid" id="kpi-grid"></div>
+
+    <div class="callout callout--win">
+      <h4>✦ 「測れる」が、Why と計測をつなぐ</h4>
+      <p>操作的KPIにすると、必要なシグナル（クリック・スクロール深度・送信成功）が見える。それは <strong>M8の計測基準</strong>と、サイトに仕込む <code style="font-family:var(--mono);background:var(--accent-tint);padding:.1rem .3rem;border-radius:3px">data-analytics</code> の設計に直結します。Why が、下流の計装まで貫きます。</p>
+    </div>
+
+    <!-- ===================================================== STEP 4 -->
+    <h2 id="brand">④ ブランドの北極星 ── 数字でない軸</h2>
+    <p>成功はKPIだけではありません。NAGIが<strong>伝える価値とトーン</strong>がブレると、設計は一生迷います。ブランド要求を、判断の北極星として言語化します。</p>
+    <div class="artifact">
+      <div class="artifact__head"><b>ブランド要求書（要約）</b><span class="tag">T3 ／ 北極星</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>伝える価値</th><td>過剰を削ぎ落とし、肌本来の静けさを取り戻す。発酵×柑橘、京都のヘリテージ。</td></tr>
+          <tr><th>トーン&マナー</th><td>静謐・余白・正直。派手に売らない。急かさない。</td></tr>
+          <tr><th>北極星</th><td>「静けさを、肌へ」── 迷ったらここに戻る。</td></tr>
+          <tr><th>体験原則</th><td>待たせない／迷わせない／急かさない／隠さない。<strong>＝設計を縛る制約</strong>（M2で“振る舞い”に翻訳済み）。</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ARTIFACT -->
+    <h2 id="artifact">成果物 ｜ KPIツリーと成功の定義</h2>
+    <div class="artifact">
+      <div class="artifact__head"><b>KGI/KPIツリー＋必要なシグナル</b><span class="tag tag--core">T2 OUT</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>階層</th><th>指標（測れる成功の定義）</th><th>必要なシグナル</th></tr>
+          <tr><td>KGI</td><td>ブランドサイト経由の指名検索・来店意向の向上（半期）</td><td>指名検索数・来店意向アンケート</td></tr>
+          <tr><td>KPI</td><td>記事→製品の遷移率 +15%（四半期）</td><td><code>article_to_product</code> クリックイベント</td></tr>
+          <tr><td>KPI</td><td>主要ジャーナルの読了率 ≥ 40%</td><td><code>read_complete</code> スクロール深度</td></tr>
+          <tr><td>先行指標</td><td>ニュースレター登録完了率 +20%</td><td><code>newsletter_signup</code> 送信成功</td></tr>
+        </table>
+        <p style="font-size:.88rem;color:var(--muted);margin:.8rem 0 0">「必要なシグナル」の列がある＝<strong>測れる成功の定義</strong>。これが無いKPIは、約束できない目標です。</p>
+      </div>
+    </div>
+
+    <!-- ===================================================== STEP 5 -->
+    <h2 id="result">⑤ 振り返り</h2>
+    <blockquote>測れない成功の定義は、決めていないのと同じ。<br>
+      経営の言葉を、<strong>操作的KPIと必要なシグナル</strong>に翻訳できると、Why が下流の計測まで貫く。ブランドの北極星が、設計の迷いを断つ。</blockquote>
+    <div class="grid grid--2">
+      <div class="card"><span class="num">気づき 1</span><h3 style="font-size:1.1rem;margin:.3rem 0">KPIは“測れて初めて”KPI</h3><p style="color:var(--ink-2)">「増やす」では揉める。「何を・どれだけ・どう測る」まで言えて、初めて約束になる。技術が見えると、シグナルまで設計できる。</p></div>
+      <div class="card"><span class="num">気づき 2</span><h3 style="font-size:1.1rem;margin:.3rem 0">ブランドは判断の軸</h3><p style="color:var(--ink-2)">北極星が無いと、設計の意思決定が毎回ブレる。数字と価値、両方を握るのが Why。</p></div>
+    </div>
+
+    <!-- ===================================================== CHECK -->
+    <h2 id="check">十分性チェック</h2>
+    <div class="artifact">
+      <div class="artifact__head"><b>セルフチェック</b><span class="tag">合意の前に</span></div>
+      <div class="artifact__body">
+        <ul style="margin:0">
+          <li>□ 各KPIが<strong>測れる形</strong>（何を・どれだけ・いつまでに）になっているか</li>
+          <li>□ 各KPIに<strong>必要なシグナル</strong>（計測イベント／データ）が紐づくか</li>
+          <li>□ 「成功の定義」を相手（経営）の言葉で固定したか</li>
+          <li>□ ブランド要求（価値・トーン・北極星）が言語化され合意できるか</li>
+          <li>□ 体験原則が、設計を縛る制約として書けているか</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NEXT -->
+    <h2 id="next">次へ ── すべてを束ねる</h2>
+    <p>Why が固まり、これで要件のすべてが出そろいました ── 体験(M2)・As-Is(M3)・機能(M4)・情報設計(M5)・方式(M7)・非機能(M8)、そして Why と ブランド(M1)。</p>
+    <div class="callout">
+      <h4>📨 最後は、見せて合意する</h4>
+      <p>残るは統合です。バラバラの成果物を<strong>トレーサビリティ表</strong>で束ね、<strong>動く NAGI を見せてサインオフ</strong>する。十分性を判断し、AIには“厳しいステークホルダー”を演じさせて穴を突かせる ── <strong>M9（統合・合意）</strong>へ。</p>
+    </div>
+    <div class="pill-row" style="margin:var(--sp-5) 0">
+      <a class="btn btn--ghost" href="m7.html">← M7 へ戻る</a>
+      <a class="btn" href="../nagi/index.html" target="_blank" rel="noopener">NAGI（To-Be）を開く ↗</a>
+      <span class="btn btn--ghost is-soon" style="opacity:.5;pointer-events:none">M9 統合・合意（近日公開）</span>
+    </div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="fine">© 2026 改造道 Kaizō-dō ── 教育目的の架空教材。「凪 / NAGI」は架空のブランドです。 ｜ <a href="../index.html">トップへ</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/platform.js"></script>
+<script>
+/* M1 「測れる？」チェッカー ─ 経営の言葉 / 操作的KPI を切り替える */
+(function () {
+  var grid = document.getElementById("kpi-grid");
+  if (!grid) return;
+  var GOALS = [
+    { vague: "回遊を増やす", op: "記事 → 製品への遷移率を、四半期で +15%", signal: "article_to_product のクリックイベント" },
+    { vague: "ブランド理解を高める", op: "主要ジャーナルの読了率 ≥ 40%", signal: "read_complete のスクロール深度" },
+    { vague: "お客様との関係を継続したい", op: "ニュースレター登録の完了率 +20%", signal: "newsletter_signup の送信成功" }
+  ];
+  var mode = "vague";
+  function render() {
+    grid.innerHTML = GOALS.map(function (g) {
+      if (mode === "vague") {
+        return '<div class="kpi__card"><div class="kpi__goal">' + g.vague +
+          '</div><span class="kpi__verdict ng">🔴 測れない</span>' +
+          '<div class="kpi__sig">「何を・どこから・いつまでに・どれだけ」が無く、後で揉める。</div></div>';
+      }
+      return '<div class="kpi__card"><div class="kpi__goal">' + g.op +
+        '</div><span class="kpi__verdict ok">🟢 測れる</span>' +
+        '<div class="kpi__sig">必要なシグナル：<code>' + g.signal + '</code><br>→ M8 の計測基準と <code>data-analytics</code> 設計に直結。</div></div>';
+    }).join("");
+    document.getElementById("k-vague").setAttribute("aria-pressed", String(mode === "vague"));
+    document.getElementById("k-op").setAttribute("aria-pressed", String(mode === "op"));
+  }
+  document.getElementById("k-vague").addEventListener("click", function () { mode = "vague"; render(); });
+  document.getElementById("k-op").addEventListener("click", function () { mode = "op"; render(); });
+  render();
+})();
+</script>
+</body>
+</html>
