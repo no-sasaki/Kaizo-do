@@ -3,33 +3,39 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>M2 誰の・どんな体験 ｜ 体験原則は、振る舞いに宿る ── 改造道</title>
-<meta name="description" content="ペルソナ・ジャーニーから体験原則を導き、それを“状態と振る舞い”の検証可能な要件へ翻訳する。言語化しにくいUXを、状態シミュレータで触って体感するM2モジュール。">
+<title>M2 As-Is 理解 ｜ 「なんとなく」を、名指せる課題に ── 改造道</title>
+<meta name="description" content="現行サイトを実際に歩いて読み、漠然とした“使いにくさ”を、原因と証拠つきの課題一覧へ。診断レンズと、AIにコードを読ませる技で、非技術コンサルが実装レベルの課題を名指せるようになるM2モジュール。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/platform.css">
 <style>
-  /* M2 状態シミュレータ専用の最小スタイル（platformトークンを使用） */
-  .sim-form { display:flex; gap:.5rem; flex-wrap:wrap; }
-  .sim-form input { flex:1; min-width:180px; padding:.6rem .8rem; border:1px solid var(--line-strong); border-radius:var(--radius); font:inherit; background:#fff; }
-  .sim-form input.bad { border-color:#C0392B; background:#FBEEEC; }
-  .sim-btn { padding:.6rem 1.2rem; border-radius:100px; background:var(--ink); color:var(--paper); border:0; font-size:.9rem; }
-  .sim-btn[disabled] { opacity:.6; }
-  .sim-note { font-size:.82rem; color:var(--muted); margin:.6rem 0 0; }
-  .sim-msg { padding:.7rem .9rem; border-radius:var(--radius); font-size:.9rem; margin:.2rem 0 0; }
-  .sim-msg--ok { background:var(--delegate-soft); color:var(--delegate); }
-  .sim-msg--err { background:#FBEEEC; color:#C0392B; }
-  .sim-msg--field { color:#C0392B; font-size:.84rem; margin:.3rem 0 0; }
-  .sim-skel { height:42px; border-radius:var(--radius); background:linear-gradient(90deg,#ECE7DD,#F6F3EC,#ECE7DD); background-size:200% 100%; animation:simsh 1.2s infinite; }
-  @keyframes simsh { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
-  .sim-empty { border:1px dashed var(--line-strong); border-radius:var(--radius); padding:1.4rem; text-align:center; color:var(--muted); font-size:.86rem; }
-  .statebtns { display:flex; flex-wrap:wrap; gap:.4rem; margin:.6rem 0; }
-  .statebtn { font-size:.78rem; border:1px solid var(--line-strong); background:var(--surface); border-radius:100px; padding:.3rem .8rem; }
-  .statebtn[aria-pressed="true"] { background:var(--accent); color:#fff; border-color:var(--accent); }
-  .modebtns { display:flex; gap:.4rem; }
-  .modebtn { font-size:.78rem; border:1px solid var(--line-strong); background:var(--surface); border-radius:100px; padding:.3rem .8rem; }
-  .modebtn[aria-pressed="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  /* M2 診断オーバーレイ専用の最小スタイル */
+  .diag { border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .diag__bar { display:flex; gap:.5rem; align-items:center; padding:.7rem .9rem; background:var(--surface-2); border-bottom:1px solid var(--line); }
+  .diag__bar b { font-size:.86rem; margin-right:auto; }
+  .diag__tg { font-size:.78rem; border:1px solid var(--line-strong); background:var(--surface); border-radius:100px; padding:.35rem .8rem; }
+  .diag__tg[aria-pressed="true"] { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .diag__stage { padding:1.4rem; display:grid; grid-template-columns: 240px 1fr; gap:1.4rem; align-items:start; }
+  @media (max-width:680px){ .diag__stage{ grid-template-columns:1fr; } }
+  /* faux legacy product block ── 一見きれい */
+  .diag__block { font-family: var(--sans); }
+  .diag__img { aspect-ratio:4/3; border-radius:2px; background:linear-gradient(150deg,#E9E3D6,#DFE6DD); display:grid; place-items:center; font-family:"Shippori Mincho B1",serif; font-size:2.6rem; color:rgba(94,117,103,.4); position:relative; }
+  .diag__name { font-family:"Shippori Mincho B1",serif; font-size:1.3rem; margin:.7rem 0 .2rem; position:relative; }
+  .diag__price, .diag__info, .diag__ing { color:#8c857a; font-size:.9rem; margin:.35rem 0; position:relative; }
+  .diag__cta { background:#7C9082; color:#fff; border:0; border-radius:3px; padding:.35rem .8rem; font-size:.82rem; margin-top:.7rem; position:relative; }
+  /* badges hidden until 診断 */
+  .diag-badge { display:none; }
+  .is-diag .diag-badge { display:inline-grid; place-items:center; width:1.3rem; height:1.3rem; border-radius:50%; background:var(--accent); color:#fff; font-size:.72rem; font-family:var(--mono); margin-left:.4rem; vertical-align:middle; }
+  .diag__img .diag-badge { position:absolute; top:.5rem; right:.5rem; margin:0; }
+  .diag__ann { display:none; }
+  .is-diag .diag__ann { display:block; }
+  .diag__ann ul { list-style:none; margin:0; padding:0; }
+  .diag__ann li { display:grid; grid-template-columns:1.4rem 1fr; gap:.6rem; padding:.5rem 0; border-bottom:1px solid var(--line); font-size:.88rem; }
+  .diag__ann li:last-child{ border-bottom:0; }
+  .diag__ann .n { width:1.3rem; height:1.3rem; border-radius:50%; background:var(--accent); color:#fff; display:grid; place-items:center; font-size:.72rem; font-family:var(--mono); }
+  .diag__ann .lens { font-family:var(--mono); font-size:.68rem; letter-spacing:.06em; color:var(--accent); }
+  .diag__hint { padding:.8rem .9rem; border-top:1px solid var(--line); font-size:.84rem; color:var(--muted); }
 </style>
 </head>
 <body>
@@ -44,11 +50,10 @@
       <a href="m3.html" data-page="m3.html">M3</a>
       <a href="m4.html" data-page="m4.html">M4</a>
       <a href="m5.html" data-page="m5.html">M5</a>
+      <a href="m6.html" data-page="m6.html">M6</a>
       <a href="m7.html" data-page="m7.html">M7</a>
-      <a href="m8.html" data-page="m8.html">M8</a>
       <a href="prompting.html" data-page="prompting.html">Appendix</a>
-      <a href="../nagi/index.html">NAGI サイト</a>
-      <a class="btn btn--accent" href="../nagi/index.html" target="_blank" rel="noopener">砂場を開く <span class="arr">↗</span></a>
+      <a class="btn btn--accent" href="../nagi-legacy/index.html" target="_blank" rel="noopener">現行サイトを開く <span class="arr">↗</span></a>
     </nav>
   </div>
 </header>
@@ -56,16 +61,16 @@
 <!-- ============================================================ HERO -->
 <section class="mod-hero">
   <div class="wrap">
-    <p class="crumb"><a href="../index.html">改造道</a> ／ Phase 3 ・ To-Be 体験定義</p>
-    <p class="eyebrow">M2 ── 誰の・どんな体験（T4／T7／T8）｜ 体験原則は深く</p>
-    <h1 style="max-width:22ch">「親切さ」は、<br>状態と振る舞いに宿る。</h1>
-    <p class="lede read" style="margin-top:var(--sp-3)">体験原則（design principles）は、壁に貼ったポスターのままだと何も変えません。
-      原則が本物になるのは、<strong>読み込み中・空・エラー</strong>といった“状態”の振る舞いに翻訳されたとき。
-      言語化しにくいUXを、検証できる要件に落とす回です。</p>
+    <p class="crumb"><a href="../index.html">改造道</a> ／ Phase 2 ・ As-Is 理解と課題</p>
+    <p class="eyebrow">M2 ── As-Is 理解（T5）｜ 課題特定は ◎</p>
+    <h1 style="max-width:22ch">「なんとなく良くない」を、<br>名指せる課題に変える。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">現行サイトを開いて「なんか使いにくい」と感じるのは、誰にでもできます。
+      けれど価値になるのは、その<strong>正体を実装レベルで名指し、原因と証拠をつけて課題にする</strong>こと。
+      ここが、技術が“見える”ことの価値が最も出る場所です。</p>
     <div class="meta-row">
-      <span class="tag tag--core">所要 約55分</span>
-      <span class="tag">対応タスク T4／T7／T8</span>
-      <span class="tag">成果物：ペルソナ／ジャーニー／体験原則→振る舞い</span>
+      <span class="tag tag--core">所要 約60分</span>
+      <span class="tag">対応タスク T5</span>
+      <span class="tag">成果物：課題一覧（原因・証拠つき）＋コンテンツ監査</span>
     </div>
   </div>
 </section>
@@ -74,13 +79,12 @@
   <nav class="rail" aria-label="目次">
     <ol>
       <li><a href="#brief">① 依頼を受ける</a></li>
-      <li><a href="#spar">② AIと壁打ち</a></li>
-      <li><a href="#artifact">③ 成果物をつくる</a></li>
-      <li><a href="#ux">UX＝状態と振る舞い</a></li>
-      <li><a href="#fork">原則を振る舞いに翻訳</a></li>
-      <li><a href="#playground">触って確かめる</a></li>
-      <li><a href="#build">④ AIに実装させる</a></li>
-      <li><a href="#result">⑤ 結果と振り返り</a></li>
+      <li><a href="#lenses">② 診断レンズをそろえる</a></li>
+      <li><a href="#walk">③ As-Is を歩いて読む</a></li>
+      <li><a href="#name">④ 正体を名指す</a></li>
+      <li><a href="#diag">触って診断する</a></li>
+      <li><a href="#artifact">⑤ 課題一覧にする</a></li>
+      <li><a href="#result">⑥ 振り返り</a></li>
       <li><a href="#check">十分性チェック</a></li>
       <li><a href="#next">次へ</a></li>
     </ol>
@@ -90,233 +94,170 @@
 
     <!-- ===================================================== STEP 1 -->
     <h2 id="brief">① 依頼を受ける</h2>
-    <p>M4・M5 で機能と発見性が整い、サイトは見違えました。すると今度は、ブランドを預かる CMO・佐倉さんから、つかみどころのない相談が来ます。</p>
+    <p>リニューアルの話が動き出しました。けれど起点は、機能の追加依頼ではなく、もっと漠然とした相談です。</p>
     <div class="callout">
-      <h4>💬 CMO・佐倉 怜 からの依頼</h4>
-      <p>「見た目はすごく綺麗になったの。でもね、実際に使うと“親切さ”が足りない気がするのよ。
-        うちのブランドって『静けさ』でしょう？ その世界観が、<strong>細かい体験のところで裏切られてる</strong>瞬間がある。ちゃんと“体験”を設計したいの。」</p>
+      <h4>💬 デジタル・三宅 亮 からの依頼</h4>
+      <p>「現行サイト、感覚的に“良くない”のは分かるんです。でも、<strong>何が・なぜ悪いのかを言葉にできない</strong>。
+        経営にリニューアルの予算を通すにも、『なんとなく古い』じゃ通らなくて。<strong>課題を、根拠つきで言語化</strong>してもらえませんか。」</p>
     </div>
-    <p>機能要件（M4）のように「何ができるか」を言えばいい依頼ではありません。これは <strong>体験（UX）の依頼</strong>。曖昧で、言語化しにくく、放っておくと「いい感じにします」で終わってしまう。M2 のゴールは、この曖昧さを<strong>検証できる体験要件</strong>に変えることです。</p>
+    <p>クライアントが「肌感覚はあるが核心を持てない」── これは現場で最も多い状態で、<strong>その違和感を名指してあげるのがコンサルの価値の核心</strong>です。M2のゴールは、「なんとなく」を<strong>原因と証拠のついた課題一覧</strong>に変えること。そのために、現行サイトを“眺める”のではなく“読み”ます。</p>
 
     <!-- ===================================================== STEP 2 -->
-    <h2 id="spar">② AIと壁打ちして要件を定義する</h2>
-    <p>ペルソナとジャーニーは“最小”で素早く（AIに広く委ねる）。そのうえで本当に握るのは、<strong>体験原則を「振る舞い」に翻訳する</strong>ところです。ここはAIに丸投げできません ── 実装でどんな状態が起きるかが見えていないと、原則がポスターのまま終わるからです。</p>
-    <div class="split">
-      <div class="split__card split__card--delegate">
-        <h4>▷ AIに委ねる</h4>
-        <ul>
-          <li>優先ペルソナ・ジャーニーの草案</li>
-          <li>タッチポイントと感情の起伏の洗い出し</li>
-          <li>体験原則（design principles）のたたき台</li>
-          <li>各画面で<strong>起こりうる状態</strong>の列挙（loading/empty/error…）</li>
-        </ul>
-      </div>
-      <div class="split__card split__card--hold">
-        <h4>● 人が握る</h4>
-        <ul>
-          <li><strong>効きどころ</strong>（重点モーメント）の特定</li>
-          <li>ペルソナが<strong>意思決定を変える粒度</strong>か</li>
-          <li>体験原則を<strong>検証可能な振る舞い</strong>へ翻訳</li>
-          <li>ブランド（静けさ）との整合</li>
-        </ul>
-      </div>
+    <h2 id="lenses">② 診断レンズをそろえる</h2>
+    <p>枠組みなしで見ると「なんか嫌い」で終わります。プロは<strong>レンズ</strong>を通して見るから、漏れなく・再現性をもって診断できる。このモジュールで、持ち運べる<strong>6つの診断レンズ</strong>を手に入れます。</p>
+    <div class="grid grid--3">
+      <div class="card"><span class="num">LENS 1</span><h3 style="font-size:1.02rem;margin:.3rem 0">振る舞い</h3><p>状態・フィードバック・流れ。空／読み込み中／エラーの扱い。</p></div>
+      <div class="card"><span class="num">LENS 2</span><h3 style="font-size:1.02rem;margin:.3rem 0">知覚・構造</h3><p>階層・可読性・密度・アフォーダンス。「見やすい・操作しやすい」。</p></div>
+      <div class="card"><span class="num">LENS 3</span><h3 style="font-size:1.02rem;margin:.3rem 0">性能</h3><p>CWV・知覚速度。レイアウトのガタつき・初期表示の重さ。</p></div>
+      <div class="card"><span class="num">LENS 4</span><h3 style="font-size:1.02rem;margin:.3rem 0">アクセシビリティ</h3><p>WCAG／JIS X 8341。コントラスト・代替テキスト・キーボード・見出し構造。</p></div>
+      <div class="card"><span class="num">LENS 5</span><h3 style="font-size:1.02rem;margin:.3rem 0">SEO（発見性）</h3><p>タイトル・メタ・見出し・構造化データ・リンク文言。</p></div>
+      <div class="card"><span class="num">LENS 6</span><h3 style="font-size:1.02rem;margin:.3rem 0">コンテンツモデル健全性</h3><p>型・統制語彙・関係。拡張・多言語・運用に耐えるか。</p></div>
     </div>
 
-    <p>まず“発散”。ペルソナ・ジャーニー・原則・状態を一気に出させます。</p>
+    <p style="margin-top:var(--sp-4)">発散はAIに委ね、現行サイトでの観察と判断は人が握ります。下のプロンプトで、レンズ別の「見るべき手がかり」を量産させます。</p>
     <div class="prompt">
-      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">発散：誰の・どんな体験・どの瞬間</span></div><button class="prompt__copy" data-copy="#p1">コピー</button></div>
-      <pre id="p1">あなたは経験豊富なUX／体験設計のコンサルタントです。
-京都発のウェルネスブランド「NAGI」のブランドサイトの体験を設計します（非EC、多言語）。
-CMOの相談は「見た目は綺麗だが“親切さ”が足りない。静けさの世界観が細部で裏切られる」。
-
-私が判断するための“発散”をしてください。
-1. 優先すべきペルソナを1〜2人（意思決定を変える粒度で。属性の羅列でなく、目的・不安・文脈）。
-2. そのペルソナの主要ジャーニーと、感情が動く「重点モーメント（効きどころ）」を1つ。
-3. ブランド「静けさ」を体験に落とす体験原則（design principles）を3〜5個。
-4. サイトの主要なUIで起こりうる“状態”を列挙（入力前/読み込み中/成功/空(0件)/エラー/不正入力/低速回線 等）。
-5. 「綺麗なのに不親切」になりがちな具体例を、状態の観点で3つ。
-最後に、私が必ず自分で決めるべき論点を3つ。</pre>
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">発散：診断チェックリスト</span></div><button class="prompt__copy" data-copy="#p1">コピー</button></div>
+      <pre id="p1">あなたは経験豊富なUX／Web品質のコンサルタントです。ブランドサイトの現状（As-Is）を診断します。
+次のレンズごとに「ブランドサイトでありがちな問題」と「それを見つける手がかり（どこを見る／どう操作する／コードの何を読む）」を
+チェックリストで出してください：振る舞い（状態）／知覚・構造／性能／アクセシビリティ／SEO／コンテンツモデル。
+最後に、私が現場で「症状（ユーザーが感じること）」と「原因（実装）」を取り違えないための問いを3つ。</pre>
     </div>
-
-    <p>ここで<strong>握る</strong>のは、原則を「言葉」で終わらせないこと。「静けさ」を“待たせない・迷わせない・急かさない・隠さない”という<strong>振る舞い</strong>にまで降ろします。次の収束プロンプトで、検証可能な要件に翻訳させます。</p>
-    <div class="prompt">
-      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">収束：体験原則 → 振る舞い要件</span></div><button class="prompt__copy" data-copy="#p2">コピー</button></div>
-      <pre id="p2">方針を確定します。
-- 重点モーメント：見込み客がジャーナルを読んで信頼し、ニュースレター登録で関係を始める瞬間。
-- 体験原則：「待たせない」「迷わせない」「急かさない」「隠さない（正直）」。
-- 成功の定義：どの状態(入力前/送信中/成功/エラー/不正入力)でも、ユーザーが次の一手に迷わない。
-
-各体験原則を、検証可能な「状態ごとの振る舞い要件（受け入れ条件 Given/When/Then）」に翻訳してください。
-特に loading / success / empty / error / invalid の各状態について、
-「何を表示し」「何を案内し（次の一手）」「どんな言葉（マイクロコピー）で」を具体化すること。
-曖昧語（"親切に"等）は禁止し、観察・テストできる記述にすること。MoSCoWで優先度も。</pre>
-    </div>
-    <p><span class="example-tag">● 出力は一例</span> 返ってきた翻訳を、ブランドの「静けさ」と成功の定義に照らして取捨するのが握りです。<a href="prompting.html">プロンプトを自分で書けるようになるには →（Appendix）</a></p>
 
     <!-- ===================================================== STEP 3 -->
-    <h2 id="artifact">③ 成果物をつくる</h2>
-
-    <div class="artifact">
-      <div class="artifact__head"><b>成果物A ｜ 優先ペルソナ（最小・意思決定を変える粒度）</b><span class="tag">T4</span></div>
-      <div class="artifact__body">
-        <table class="req">
-          <tr><th>項目</th><th>内容</th></tr>
-          <tr><td>名前/像</td><td>美和（34）｜敏感肌。成分を調べてから買う慎重派。</td></tr>
-          <tr><td>目的</td><td>刺激が少なく、根拠のある製品を、納得して選びたい。</td></tr>
-          <tr><td>不安</td><td>派手な広告は信用しない。失敗したくない。</td></tr>
-          <tr><td>文脈</td><td>夜、スマホで記事を読み込んでから判断。</td></tr>
-          <tr><td><strong>設計を変える示唆</strong></td><td>「信頼の積み上げ」が鍵。急かす・隠す体験は離脱に直結する。</td></tr>
-        </table>
-      </div>
+    <h2 id="walk">③ As-Is を歩いて、読む</h2>
+    <p>いよいよ現行サイトです。まず<strong>ペルソナ（M3の美和：成分を調べてから買う慎重派）</strong>になりきって歩きます。</p>
+    <div class="card" style="margin:var(--sp-4) 0">
+      <p class="num">STEP A ── 歩く</p>
+      <h3 style="margin:.2rem 0 .5rem">現行サイトを、美和として使ってみる</h3>
+      <p style="color:var(--ink-2)">商品を探し、成分を確かめ、お知らせを見る。<strong>引っかかった瞬間にメモ</strong>します ── 「価格が探しにくい」「成分で絞れない」「押したのに反応がない」。</p>
+      <p style="margin-top:var(--sp-3)"><a class="btn" href="../nagi-legacy/index.html" target="_blank" rel="noopener">現行サイト（As-Is）を別タブで開く <span class="arr">↗</span></a></p>
     </div>
-
-    <div class="artifact">
-      <div class="artifact__head"><b>成果物B ｜ ジャーニーと重点モーメント</b><span class="tag">T7</span></div>
-      <div class="artifact__body">
-        <pre style="font-family:var(--mono);font-size:.82rem;line-height:1.9;white-space:pre-wrap;margin:0;color:var(--ink-2)">  検索流入 → 記事で信頼 → 製品を検討 → <strong>ニュースレター登録（関係の入口）</strong> → 再訪
-                                              ▲
-                                   ★ 効きどころ：ここで“親切さ”が試される
-                                     （送信中・成功・エラー・不正入力の振る舞い）</pre>
-        <p style="font-size:.88rem;color:var(--muted);margin:.8rem 0 0">力を注ぐのは全部ではなく、この1点。慎重派の美和が「このブランドは信頼できる」と判断する瞬間。</p>
-      </div>
+    <div class="card" style="margin:var(--sp-4) 0">
+      <p class="num">STEP B ── 読む</p>
+      <h3 style="margin:.2rem 0 .5rem">引っかかった部分の“裏側”を開く</h3>
+      <p style="color:var(--ink-2)">GitHub で <code style="font-family:var(--mono);background:var(--accent-tint);padding:.1rem .3rem;border-radius:3px">nagi-legacy/</code> のコードや <code style="font-family:var(--mono);background:var(--accent-tint);padding:.1rem .3rem;border-radius:3px">data/*.json</code> を開き、引っかかった画面の“裏側”を見ます。コードが読めなくて大丈夫 ── 次の一手は、<strong>AIに読ませること</strong>です。</p>
     </div>
-
-    <div class="artifact">
-      <div class="artifact__head"><b>成果物C ｜ 体験原則 → 振る舞い要件（M2の核心）</b><span class="tag tag--core">T8</span></div>
-      <div class="artifact__body">
-        <table class="req">
-          <tr><th>体験原則</th><th>状態</th><th>検証可能な振る舞い要件</th></tr>
-          <tr><td rowspan="2">待たせない</td><td>読み込み中</td><td>送信後、即座にボタンを無効化＋「送信中…」を表示（無反応の時間を作らない）。</td></tr>
-          <tr><td>低速回線</td><td>スケルトン/プレースホルダで知覚速度を保つ。</td></tr>
-          <tr><td>迷わせない</td><td>空(0件)</td><td>「該当なし」だけで終わらせず、必ず<strong>次の一手</strong>（解除・別提案）を出す。</td></tr>
-          <tr><td>隠さない（正直）</td><td>エラー</td><td>失敗を隠さず、理由と<strong>再試行</strong>導線を出す。楽観的UIで成功を偽装しない。</td></tr>
-          <tr><td>急かさない</td><td>不正入力</td><td>送信を黙って通さない。インラインで<strong>責めない言葉</strong>のエラー＋該当項目にフォーカス。</td></tr>
-          <tr><td>静けさ（全体）</td><td>成功</td><td>派手に祝わず、静かな確認＋次の体験（記事へ）をそっと差し出す。</td></tr>
-        </table>
-        <p style="font-size:.88rem;color:var(--muted);margin:.8rem 0 0">この表が成果物の心臓。<strong>原則（左）が、テストできる振る舞い（右）になっている</strong>＝設計者が手を止めない。</p>
-      </div>
+    <div class="callout callout--win">
+      <h4>✦ コードは、AIに読ませて理解する</h4>
+      <p>非技術者が実装を理解する近道は、暗記でも独学でもなく、<strong>気になったコードをそのままAIに渡して「何が問題で、なぜか」を聞く</strong>こと。握りどころは、返ってきた説明を<strong>コンサルの判断で課題に翻訳する</strong>ところです。</p>
     </div>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">コードを読ませて、原因を知る</span></div><button class="prompt__copy" data-copy="#p2">コピー</button></div>
+      <pre id="p2">現行サイトのコード（またはデータ）の一部を貼ります。
+UX・アクセシビリティ・SEO・コンテンツモデルの観点で、何が問題で、その「原因」と「直す方向」を、
+コードを書かない人にも分かる言葉で説明してください。必ず「症状（ユーザーが感じること）」と
+「原因（実装でこうなっている）」を分けて書くこと。
 
-    <!-- UX explainer -->
-    <h2 id="ux">UX要件は、ハッピーパスの“あいだ”に宿る</h2>
-    <p>機能要件は「正常に動いたとき」を語ります。けれど実際のユーザーは、その<strong>あいだ</strong>に落ちます ── 読み込み中、結果ゼロ、通信エラー、入力ミス。ここをどう扱うかが「親切さ」の正体で、<strong>実装して画面に出して初めて見える</strong>。だからUXは、座学より“触って体感”が効きます。</p>
-    <blockquote>「綺麗なのに不親切」の多くは、デザインの失敗ではなく <strong>“状態”の設計漏れ</strong>。ハッピーパスだけ作り込み、loading/empty/error/invalid を放置した結果です。</blockquote>
-
-    <!-- 2-axis map -->
-    <p style="margin-top:var(--sp-5)">少しズームアウトすると、UXは大きく<strong>2つの軸</strong>で捉えられます。このモジュールは <strong>軸1（振る舞い）</strong>を深く扱い、<strong>軸2（知覚・構造）</strong>は、それが最も“見える・測れる”場所であとのモジュールで実践します。</p>
-    <div class="grid grid--2" style="margin:var(--sp-3) 0">
-      <div class="card">
-        <span class="num">軸1 ── 振る舞い（時間の中の体験）</span>
-        <h3 style="font-size:1.1rem;margin:.3rem 0">状態・フィードバック・流れ</h3>
-        <p style="color:var(--ink-2)">読み込み中／空／エラー／入力ミスをどう扱うか。粒度にも依らず効く軸で、<strong>このモジュール（M2）で深く扱います</strong>。</p>
-      </div>
-      <div class="card">
-        <span class="num">軸2 ── 知覚・構造（一目で受け取る体験）</span>
-        <h3 style="font-size:1.1rem;margin:.3rem 0">階層・可読性・アフォーダンス・密度・操作のしやすさ</h3>
-        <p style="color:var(--ink-2)">「見やすい・操作しやすい」の正体。<strong>M3 で実装を開いて“診断”し、M8 で“測る”</strong>（コントラスト・フォーカス・タップ領域・知覚速度）。</p>
-      </div>
+（ここに nagi-legacy のコードや data/products.json の一部を貼る）</pre>
     </div>
-    <p>どちらの軸も共通するのは ──「良い体験」という曖昧語を、<strong>検証可能な要件に翻訳する</strong>こと。軸が変わっても、その翻訳の作法は同じです。</p>
+    <p><span class="example-tag">● 出力は一例</span> 返ってくる説明を鵜呑みにせず、現行サイトの実際の挙動と突き合わせて確かめます。<a href="prompting.html">プロンプトを自分で書けるようになるには →（Appendix）</a></p>
 
-    <!-- ===================================================== FORK -->
-    <h2 id="fork">なぜ「振る舞いへの翻訳」にこだわるのか ── 原則だけでは、体験は変わらない</h2>
-    <p>③で書いた「振る舞い要件」が、体験をどれだけ左右するか。実装に入る前に、同じ画面・同じ原則で <strong>状態を要件化した場合としない場合</strong>を見比べます。</p>
-    <p><span class="example-tag">● 以下は一例</span> 見るべきは「不親切がどこで生まれるか」です（このあと自分でも触れます）。</p>
-
+    <!-- ===================================================== STEP 4 -->
+    <h2 id="name">④ 症状を、原因まで名指す</h2>
+    <p>ここが M2 の山場です。<strong>素人は症状で止まり、プロは原因まで降りる</strong>。同じ画面を見ても、言えることがこれだけ違います。</p>
     <div class="compare">
       <div class="compare__col compare__col--bad">
-        <h4>✗ 体験原則を“言葉”で止めると</h4>
+        <h4>✗ 症状で止まる（素人の指摘）</h4>
         <div class="body">
-          <p style="margin-top:0"><strong>要件：</strong>「静けさのある親切なフォームにする」（=ハッピーパスだけ実装）</p>
-          <ul style="font-size:.9rem">
-            <li>🔴 送信中：<strong>無反応</strong>（押せたのか分からず連打）</li>
-            <li>🔴 エラー：<strong>何も起きない</strong>（成功と区別がつかない）</li>
-            <li>🔴 不正入力：<strong>黙って通る</strong>（あとで届かない）</li>
-            <li>🔴 空(0件)：行き止まり、次の一手がない</li>
+          <ul style="font-size:.92rem;margin-top:0">
+            <li>「商品ページがなんか見づらい」</li>
+            <li>「成分で探せなくて不便」</li>
+            <li>「ボタンを押しても反応がない気がする」</li>
           </ul>
-          <p style="font-size:.9rem;color:#9A3A18"><strong>“綺麗なのに不親切”が完成する。</strong>原則は壁のポスターのまま。</p>
+          <p style="font-size:.9rem;color:#9A3A18"><strong>直せない・揉める。</strong>何を・どう直すか決まらず、優先度もつかない。検収もできない。</p>
         </div>
       </div>
       <div class="compare__col compare__col--good">
-        <h4>✓ 原則を“振る舞い”に翻訳すると</h4>
+        <h4>✓ 原因まで降りる（プロの指摘）</h4>
         <div class="body">
-          <p style="margin-top:0"><strong>要件：</strong>状態ごとの受け入れ条件（成果物C）</p>
-          <ul style="font-size:.9rem">
-            <li>🟢 送信中：即フィードバック＋ボタン無効化</li>
-            <li>🟢 エラー：理由＋再試行（隠さない）</li>
-            <li>🟢 不正入力：やさしいインラインエラー＋フォーカス</li>
-            <li>🟢 空/成功：必ず次の一手をそっと提示</li>
+          <ul style="font-size:.92rem;margin-top:0">
+            <li>価格・CTAが本文と同じ強さで<strong>視覚的階層がない</strong>（知覚・構造）</li>
+            <li>成分が<strong>自由記述で表記ゆれ</strong>、統制語彙が無く絞り込めない（コンテンツモデル）</li>
+            <li>カート押下後の<strong>状態（完了/失敗）が未設計</strong>（振る舞い）</li>
           </ul>
-          <p style="font-size:.9rem;color:#2F6F6A"><strong>静けさが、細部まで届く。</strong>差を生んだのは美しさではなく、状態の要件化。</p>
+          <p style="font-size:.9rem;color:#2F6F6A"><strong>直せる・合意できる。</strong>原因が分かるから、直し方・優先度・検収条件まで言える。</p>
         </div>
       </div>
     </div>
 
     <!-- PLAYGROUND -->
-    <h3 id="playground">自分で触って確かめる ── 状態シミュレータ</h3>
-    <p>ニュースレター登録フォームを題材に、<strong>「原則だけ（状態を作り込まない）」</strong>と<strong>「振る舞いまで要件化」</strong>を切り替えながら、各状態を実際に表示してみてください。同じUIでも、状態の扱いで“親切さ”がここまで変わります。</p>
-    <div class="pg">
-      <div class="pg__panel">
-        <div class="pg__bar"><b>操作</b></div>
-        <div style="padding:1rem">
-          <p style="font-size:.78rem;letter-spacing:.08em;color:var(--muted);margin:0 0 .4rem">設計モード</p>
-          <div class="modebtns" role="group" aria-label="設計モード">
-            <button class="modebtn" id="m-naive" aria-pressed="true">原則だけ（状態未定義）</button>
-            <button class="modebtn" id="m-designed" aria-pressed="false">振る舞いまで要件化</button>
-          </div>
-          <p style="font-size:.78rem;letter-spacing:.08em;color:var(--muted);margin:1rem 0 .4rem">状態を切り替える</p>
-          <div class="statebtns" id="states" role="group" aria-label="状態"></div>
-          <p class="sim-note" id="sim-hint"></p>
+    <h3 id="diag">触って診断する ── 「ぱっと見」と「プロの目」</h3>
+    <p>下は現行サイトの商品ページの一部です。最初は<strong>ぱっと見、そんなに悪くない</strong>。「プロの目で診断」に切り替えると、隠れていた問題が、原因とレンズつきで浮かび上がります。</p>
+    <div class="diag" id="diag">
+      <div class="diag__bar">
+        <b>現行サイト・商品の一部</b>
+        <button class="diag__tg" id="d-plain" aria-pressed="true">👁 ぱっと見</button>
+        <button class="diag__tg" id="d-diag" aria-pressed="false">🔍 プロの目で診断</button>
+      </div>
+      <div class="diag__stage">
+        <div class="diag__block">
+          <div class="diag__img">満<span class="diag-badge">5</span></div>
+          <div class="diag__name">凪 エッセンス<span class="diag-badge">2</span></div>
+          <div class="diag__price">¥9600<span class="diag-badge">1</span></div>
+          <div class="diag__info">乾燥が気になる肌に。米発酵液・発酵エキス配合。朝晩のスキンケアに。保湿。整肌。ハリ。<span class="diag-badge">4</span></div>
+          <div class="diag__ing">成分：米発酵液、発酵エキス、ライス発酵成分<span class="diag-badge">3</span></div>
+          <button class="diag__cta">カートに入れる<span class="diag-badge">5</span></button>
+        </div>
+        <div class="diag__ann">
+          <ul>
+            <li><span class="n">1</span><span>価格もCTAも本文と同じ強さで、<strong>視覚的階層がない</strong>。CTAが埋もれて行動につながらない。<br><span class="lens">LENS 2 知覚・構造</span></span></li>
+            <li><span class="n">2</span><span>「凪 エッセンス」は<strong>見出しに見えるが、見出しではない</strong>（div）。読み上げ・検索に構造が伝わらない。<br><span class="lens">LENS 4 a11y ／ LENS 5 SEO</span></span></li>
+            <li><span class="n">3</span><span>成分が<strong>自由記述</strong>。「米発酵液／発酵エキス／ライス発酵成分」が別物扱いになり、絞り込み・関連づけができない。<br><span class="lens">LENS 6 コンテンツモデル</span></span></li>
+            <li><span class="n">4</span><span>効能・用途・成分が<strong>一塊のテキスト</strong>。構造化されておらず、再利用・多言語・並べ替えに弱い。<br><span class="lens">LENS 6 コンテンツモデル</span></span></li>
+            <li><span class="n">5</span><span>画像に<strong>代替テキスト無し</strong>、CTAは<strong>領域が小さく押下後も無反応</strong>。<br><span class="lens">LENS 4 a11y ／ LENS 1 振る舞い</span></span></li>
+          </ul>
         </div>
       </div>
-      <div class="pg__panel">
-        <div class="pg__bar"><b>ニュースレター登録（体験プレビュー）</b><span style="font-size:.74rem;color:var(--muted)" id="sim-statelabel"></span></div>
-        <div class="pg__out" id="out"></div>
-      </div>
+      <div class="diag__hint" id="d-hint">「プロの目で診断」を押すと、同じ画面の“正体”が見えます。</div>
     </div>
-    <div class="pg__diag"><h4>体験要件の充足チェック（状態が要件化されているか）</h4><ul id="diag"></ul></div>
 
     <div class="callout callout--win">
-      <h4>✦ ここに、レバレッジが見える</h4>
-      <p>「原則だけ」モードでエラーや送信中を選ぶと、画面は<strong>静かに不親切</strong>になります ── 無反応、行き止まり、黙殺。原則を<strong>状態の振る舞いに翻訳する</strong>一手間が、ブランドの「静けさ」を細部まで届ける。UXとは、この“あいだ”の設計のことです。</p>
+      <h4>✦ ここに、技術が見えることの価値がある</h4>
+      <p>「ぱっと見そんなに悪くない」を、原因とレンズで5つの課題に分解できた ── これが、画面を眺めるだけでは決して届かない深さです。クライアントの違和感に、<strong>名前と根拠</strong>を与えられる。</p>
     </div>
-
-    <!-- ===================================================== STEP 4 -->
-    <h2 id="build">④ AIに実装させる ── 自分のNAGIサイトに反映する</h2>
-    <p>体験要件（成果物C）を仕様として渡し、状態まで作り込んだニュースレター登録を NAGI に実装させます。今回は“中身データ”ではなく<strong>振る舞いの仕様</strong>が成果物の主役です。</p>
-    <div class="prompt">
-      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--copy">⚙️ 開発体験用・コピペでOK</span><span class="label">実装：状態まで作り込んだニュースレター登録</span></div><button class="prompt__copy" data-copy="#p3">コピー</button></div>
-      <pre id="p3">あなたはフロントエンド実装者です。静的サイト「NAGI」に、ニュースレター登録フォームを追加します。
-送信先は無いので、送信はクライアントで擬似的に処理（成功/失敗をシミュレート）して構いません。
-デザイントークンは assets/css/nagi.css を踏襲し、ブランドの「静けさ」に合う控えめな表現にすること。
-
-次の“状態ごとの振る舞い要件”をすべて満たすこと（ハッピーパスだけにしない）：
-- 入力前：ラベルと、月1回配信である旨の控えめなマイクロコピー。
-- 送信中：送信ボタンを無効化し「送信中…」を表示（aria-busy）。無反応の時間を作らない。
-- 成功：派手に祝わず、静かな確認文＋「最新のジャーナルを読む」への導線。
-- エラー：失敗を隠さず、理由と「再試行」導線を表示。
-- 不正入力（メール形式不正）：送信を通さず、該当項目にインラインの“責めない”エラー文＋フォーカス移動。aria-invalid を付与。
-- アクセシビリティ：ラベルと入力の関連付け、エラーは aria-live で通知。
-
-NAGI に追加する form のHTMLと、状態を扱う最小JSを出力してください。</pre>
-    </div>
-    <p>動いたら、開発者ではなく<strong>慎重派・美和の目</strong>で検収します ── あえて空のまま送信、あえて不正なメール、あえて“エラー”を起こす。どの状態でも迷子にならないか。それが「親切さ」の検収です。</p>
 
     <!-- ===================================================== STEP 5 -->
-    <h2 id="result">⑤ 結果を体験し、振り返る</h2>
-    <blockquote>体験原則は、<strong>振る舞いに翻訳して初めて本物</strong>になった。<br>
-      「親切さ」という曖昧語は、状態ごとの受け入れ条件にした瞬間、検証できる要件に変わる。</blockquote>
+    <h2 id="artifact">⑤ 課題一覧にする</h2>
+    <p>観察を、合意・検収できる成果物に落とします。収束はAIに整えさせ、優先度と十分性は握ります。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">収束：課題一覧へ</span></div><button class="prompt__copy" data-copy="#p3">コピー</button></div>
+      <pre id="p3">観察した症状を、課題一覧に落とします。各課題を次の列で表にしてください：
+症状（ユーザーが感じること）／根本原因（実装レベル）／証拠（どの挙動・どのコード・どのデータ）／レンズ／優先度。
+症状の言い換えで終わらせず、必ず「原因」まで言うこと。優先度は、ビジネス影響と修正コストで判断できるよう材料を添える。</pre>
+    </div>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物A ｜ 課題一覧（症状→原因→証拠）</b><span class="tag tag--core">T5 OUT</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>症状</th><th>根本原因（実装）</th><th>証拠</th><th>レンズ</th><th>優先</th></tr>
+          <tr><td>商品ページが見づらい・CTAに気づかない</td><td>視覚的階層がない（価格/CTA/本文が同強度）</td><td>product 画面・legacy.css の一様なスタイル</td><td>知覚・構造</td><td><code>High</code></td></tr>
+          <tr><td>成分で記事・製品を探せない</td><td>成分が自由記述で表記ゆれ（統制語彙なし）</td><td>products.json の <code>ingredients</code> 文字列</td><td>コンテンツモデル</td><td><code>High</code></td></tr>
+          <tr><td>カート操作が不安（押せた？）</td><td>送信中/完了の状態が未設計</td><td>「カートに入れる」押下後に無反応</td><td>振る舞い</td><td><code>Mid</code></td></tr>
+          <tr><td>読み込み時に画面がガタつく</td><td>後差し要素に高さ予約がない</td><td>ホームの販促バナー挿入時のCLS</td><td>性能</td><td><code>Mid</code></td></tr>
+          <tr><td>検索結果で見分けがつかない</td><td>全ページ同一 title・meta なし</td><td>各ページの <code>&lt;title&gt;NAGI&lt;/title&gt;</code></td><td>SEO</td><td><code>Low</code></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物B ｜ コンテンツ監査（抜粋）</b><span class="tag">インベントリ＆評価</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>コンテンツ</th><th>評価</th><th>判断</th></tr>
+          <tr><td>商品（products.json）</td><td>型が浅い・成分が自由記述</td><td><strong>作り直す</strong>（M5でモデル設計）</td></tr>
+          <tr><td>お知らせ（news.json）</td><td>カテゴリはあるが活用されず、空状態なし</td><td><strong>直す</strong></td></tr>
+          <tr><td>ブランドの世界観・ヒーロー</td><td>美しく、資産価値が高い</td><td><strong>引き継ぐ</strong></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===================================================== STEP 6 -->
+    <h2 id="result">⑥ 振り返り</h2>
+    <blockquote>「なんとなく良くない」は、レンズと実装で<strong>名指せる課題</strong>に変わった。<br>
+      技術が見えると、症状の先にある<strong>原因・証拠・直し方</strong>まで言える。これがリニューアルの“根拠”になる。</blockquote>
     <div class="grid grid--2">
-      <div class="card">
-        <span class="num">気づき 1</span>
-        <h3 style="font-size:1.1rem;margin:.3rem 0">UXは“あいだ”に住む</h3>
-        <p style="color:var(--ink-2)">機能が正常に動く瞬間ではなく、loading/empty/error/invalid の扱いに体験の質が出る。ここは実装を見ないと書けない。</p>
-      </div>
-      <div class="card">
-        <span class="num">気づき 2</span>
-        <h3 style="font-size:1.1rem;margin:.3rem 0">原則は“振る舞い”で測る</h3>
-        <p style="color:var(--ink-2)">「静けさ」を、待たせない・隠さない・急かさないという観察可能な振る舞いに降ろせば、合意も検収もできる。</p>
-      </div>
+      <div class="card"><span class="num">気づき 1</span><h3 style="font-size:1.1rem;margin:.3rem 0">症状と原因は違う</h3><p style="color:var(--ink-2)">「見づらい」は症状。「階層がない」は原因。原因まで降りて初めて、直し方と優先度が決まる。</p></div>
+      <div class="card"><span class="num">気づき 2</span><h3 style="font-size:1.1rem;margin:.3rem 0">コードはAIと読めばいい</h3><p style="color:var(--ink-2)">実装を暗記する必要はない。気になった箇所をAIに読ませ、判断を自分が握れば、非技術者でも原因に届く。</p></div>
     </div>
 
     <!-- ===================================================== CHECK -->
@@ -325,26 +266,26 @@ NAGI に追加する form のHTMLと、状態を扱う最小JSを出力してく
       <div class="artifact__head"><b>セルフチェック</b><span class="tag">合意の前に</span></div>
       <div class="artifact__body">
         <ul style="margin:0">
-          <li>□ ペルソナは<strong>意思決定を変える粒度</strong>か（属性の羅列で終わっていないか）</li>
-          <li>□ 力を注ぐ<strong>重点モーメント</strong>を1つに絞れたか</li>
-          <li>□ 体験原則が<strong>検証可能な振る舞い</strong>に翻訳されているか（"親切に"が残っていないか）</li>
-          <li>□ loading / success / empty / error / invalid の各状態に要件があるか</li>
-          <li>□ 各振る舞いがブランド（静けさ）と整合しているか</li>
+          <li>□ 各課題が<strong>症状でなく原因（実装レベル）</strong>まで言えているか</li>
+          <li>□ 各課題に<strong>証拠</strong>（挙動・コード・データ）が紐づいているか</li>
+          <li>□ 6つのレンズで<strong>漏れ</strong>を潰したか（特定の軸に偏っていないか）</li>
+          <li>□ コンテンツ監査で「引き継ぐ／直す／作り直す」を仕分けたか</li>
+          <li>□ 優先度の根拠（ビジネス影響×修正コスト）があるか</li>
         </ul>
       </div>
     </div>
 
     <!-- NEXT -->
     <h2 id="next">次へ</h2>
-    <p>「誰の・どんな体験」を、ポスターではなく振る舞いの要件にできました。これで要件定義の解像度に「状態」「マイクロコピー」「フォーカス」「知覚速度」が加わったはずです。</p>
+    <p>「なんとなく」を、原因と証拠のついた課題一覧に変えました。現実（As-Is）の正体が見えた ── では次は、その先にある<strong>目指す姿（To-Be）</strong>を描きます。</p>
     <div class="callout">
-      <h4>📨 “親切さ”は、すべての人への親切さへ</h4>
-      <p>状態の設計は、そのまま<strong>アクセシビリティ</strong>（誰一人取り残さない親切さ）に広がります。さらに法務・和田から R-04「市場ごとに出していい表現を制御したい」も届いています。性能・アクセシビリティ（WCAG／JIS X 8341）・SEO・ガバナンスを扱う <strong>M8（非機能要件）</strong>へ。NAGIには JSON-LD・alt・data-analytics の“種”が既に仕込んであります。</p>
+      <h4>📨 現状が見えたら、目指す体験を定義する</h4>
+      <p>課題が分かっただけでは、まだ作れません。<strong>誰のために・どんな体験を</strong>実現するのか。ペルソナとジャーニーから体験原則を導き、それを「状態と振る舞い」の要件に翻訳する ── <strong>M3（誰の・どんな体験）</strong>へ。</p>
     </div>
     <div class="pill-row" style="margin:var(--sp-5) 0">
-      <a class="btn btn--ghost" href="m5.html">← M5 へ戻る</a>
-      <a class="btn" href="../nagi/index.html" target="_blank" rel="noopener">砂場（NAGI）を開く ↗</a>
-      <span class="btn btn--ghost is-soon" style="opacity:.5;pointer-events:none">M8 非機能要件（近日公開）</span>
+      <a class="btn btn--ghost" href="m1.html">← M1 へ戻る</a>
+      <a class="btn" href="../nagi-legacy/index.html" target="_blank" rel="noopener">現行サイト（As-Is）を開く ↗</a>
+      <a class="btn btn--accent" href="m3.html">M3 誰の・どんな体験へ進む <span class="arr">→</span></a>
     </div>
   </main>
 </div>
@@ -357,80 +298,24 @@ NAGI に追加する form のHTMLと、状態を扱う最小JSを出力してく
 
 <script src="../assets/js/platform.js"></script>
 <script>
-/* M2 状態シミュレータ ─ 設計モード×状態 で体験プレビューを描き、要件充足を診断 */
+/* M2 診断オーバーレイ ─ ぱっと見 / プロの目 を切り替える */
 (function () {
-  "use strict";
-  var out = document.getElementById("out");
-  if (!out) return;
-  var STATES = [
-    { id: "idle", label: "入力前" },
-    { id: "submitting", label: "送信中" },
-    { id: "success", label: "成功" },
-    { id: "empty", label: "空(0件)" },
-    { id: "error", label: "通信エラー" },
-    { id: "invalid", label: "不正入力" }
-  ];
-  var HANDLED = { naive: ["idle"], designed: ["idle", "submitting", "success", "empty", "error", "invalid"] };
-  var mode = "naive", state = "idle";
-  var statesWrap = document.getElementById("states");
-  var hint = document.getElementById("sim-hint");
-  var stateLabel = document.getElementById("sim-statelabel");
   var diag = document.getElementById("diag");
-
-  // build state buttons
-  STATES.forEach(function (s) {
-    var b = document.createElement("button");
-    b.className = "statebtn"; b.textContent = s.label; b.setAttribute("data-state", s.id);
-    b.setAttribute("aria-pressed", String(s.id === state));
-    b.addEventListener("click", function () { state = s.id; render(); });
-    statesWrap.appendChild(b);
-  });
-
-  function form(extra) {
-    return '<div class="sim-form"><input type="email" ' + (extra || "") + ' placeholder="メールアドレス" aria-label="メールアドレス"><button class="sim-btn">登録</button></div>';
+  if (!diag) return;
+  var plain = document.getElementById("d-plain");
+  var pro = document.getElementById("d-diag");
+  var hint = document.getElementById("d-hint");
+  function set(mode) {
+    var on = mode === "diag";
+    diag.classList.toggle("is-diag", on);
+    plain.setAttribute("aria-pressed", String(!on));
+    pro.setAttribute("aria-pressed", String(on));
+    hint.textContent = on
+      ? "同じ画面に、原因とレンズつきで5つの課題が隠れていました。"
+      : "「プロの目で診断」を押すと、同じ画面の“正体”が見えます。";
   }
-
-  function viewNaive(s) {
-    switch (s) {
-      case "idle": return form();
-      case "submitting": return form() + '<p class="sim-note">（押しても見た目が変わらない＝無反応に見える）</p>';
-      case "success": return '<p>登録しました</p>';
-      case "empty": return '<div class="sim-empty">（結果なし。画面が空のまま）</div>';
-      case "error": return '<div class="sim-empty">（何も表示されない＝成功と区別できない）</div>';
-      case "invalid": return form() + '<p class="sim-note">（不正なメールでもそのまま送信されてしまう）</p>';
-    }
-  }
-  function viewDesigned(s) {
-    switch (s) {
-      case "idle": return '<label style="font-size:.85rem;color:var(--ink-2);display:block;margin-bottom:.4rem">ニュースレターを購読</label>' + form() + '<p class="sim-note">月に一度、新しいジャーナルを静かにお届けします。</p>';
-      case "submitting": return '<div class="sim-form"><input type="email" value="miwa@example.com" disabled><button class="sim-btn" disabled aria-busy="true">送信中…</button></div>';
-      case "success": return '<div class="sim-msg sim-msg--ok">✓ ご登録ありがとうございます。</div><p class="sim-note">よろしければ <a href="#" style="color:var(--accent)">最新のジャーナルを読む →</a></p>';
-      case "empty": return '<div class="sim-empty">該当する記事はまだありません。<br><a href="#" style="color:var(--accent)">すべてのジャーナルを見る →</a></div>';
-      case "error": return '<div class="sim-msg sim-msg--err">⚠ 送信に失敗しました。通信環境をご確認ください。</div><div style="margin-top:.5rem"><button class="sim-btn">再試行</button></div>';
-      case "invalid": return '<div class="sim-form"><input type="email" class="bad" value="miwa.example" aria-invalid="true"><button class="sim-btn">登録</button></div><p class="sim-msg--field">メールアドレスの形式をご確認ください（例：name@example.com）</p>';
-    }
-  }
-
-  function render() {
-    statesWrap.querySelectorAll(".statebtn").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-state") === state)); });
-    document.getElementById("m-naive").setAttribute("aria-pressed", String(mode === "naive"));
-    document.getElementById("m-designed").setAttribute("aria-pressed", String(mode === "designed"));
-    var sObj = STATES.filter(function (x) { return x.id === state; })[0];
-    stateLabel.textContent = "状態：" + sObj.label;
-    out.innerHTML = (mode === "naive" ? viewNaive(state) : viewDesigned(state));
-    hint.textContent = mode === "naive"
-      ? "「原則だけ」モード：ハッピーパス以外の状態が作り込まれていません。"
-      : "「振る舞いまで要件化」モード：各状態に表示・導線・言葉が定義されています。";
-    // diagnostics: per state handled?
-    diag.innerHTML = STATES.map(function (s) {
-      var ok = HANDLED[mode].indexOf(s.id) >= 0;
-      return '<li class="' + (ok ? "ok" : "ng") + '">' + (ok ? "🟢 " : "🔴 ") + s.label + "：" + (ok ? "要件化されている（次の一手が示される）" : "未定義（無反応・行き止まり・黙殺になりがち）") + "</li>";
-    }).join("");
-  }
-
-  document.getElementById("m-naive").addEventListener("click", function () { mode = "naive"; render(); });
-  document.getElementById("m-designed").addEventListener("click", function () { mode = "designed"; render(); });
-  render();
+  plain.addEventListener("click", function () { set("plain"); });
+  pro.addEventListener("click", function () { set("diag"); });
 })();
 </script>
 </body>

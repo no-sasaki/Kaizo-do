@@ -37,8 +37,8 @@
       <a href="m3.html" data-page="m3.html">M3</a>
       <a href="m4.html" data-page="m4.html">M4</a>
       <a href="m5.html" data-page="m5.html">M5</a>
+      <a href="m6.html" data-page="m6.html">M6</a>
       <a href="m7.html" data-page="m7.html">M7</a>
-      <a href="m8.html" data-page="m8.html">M8</a>
       <a href="prompting.html" data-page="prompting.html">Appendix</a>
     </nav>
   </div>
@@ -85,7 +85,7 @@
       <p>三宅「経営に<strong>リニューアルの“成功”を約束</strong>しないといけないんです。でも『回遊を増やす』みたいなフワッとした目標だと、後で揉める。<strong>測れる成功の定義</strong>がほしい。」<br>
         佐倉「数字だけじゃ NAGI じゃないわ。<strong>伝えたい価値とトーン</strong>も、ブレない軸にしておきたい。」</p>
     </div>
-    <p>Why は、すべての要件の出発点です。ここが曖昧だと、機能(M4)も情報設計(M5)も非機能(M8)も、何を優先すべきか決まらない。M1のゴールは、<strong>成功を測れる形に</strong>、<strong>ブランドを北極星に</strong>固定することです。</p>
+    <p>Why は、すべての要件の出発点です。ここが曖昧だと、機能(M4)も情報設計(M5)も非機能(M6)も、何を優先すべきか決まらない。M1のゴールは、<strong>成功を測れる形に</strong>、<strong>ブランドを北極星に</strong>固定することです。</p>
 
     <!-- ===================================================== STEP 2 -->
     <h2 id="spar">② AIと壁打ちして要件を定義する</h2>
@@ -152,7 +152,7 @@
 
     <!-- PLAYGROUND -->
     <h3 id="checker">触って確かめる ──「測れる？」チェッカー</h3>
-    <p>下の3つの目標を、<strong>「経営の言葉」</strong>と<strong>「操作的KPI」</strong>で切り替えてみてください。操作的にすると測れるようになり、しかも<strong>「測るのに必要なシグナル（計測イベント）」</strong>まで見えます ── それがそのまま、M8の計装要件になります。</p>
+    <p>下の3つの目標を、<strong>「経営の言葉」</strong>と<strong>「操作的KPI」</strong>で切り替えてみてください。操作的にすると測れるようになり、しかも<strong>「測るのに必要なシグナル（計測イベント）」</strong>まで見えます ── それがそのまま、M6の計装要件になります。</p>
     <div class="kpi__modes" role="group" aria-label="表示モード">
       <button class="kpi__mode" id="k-vague" aria-pressed="true">経営の言葉</button>
       <button class="kpi__mode" id="k-op" aria-pressed="false">操作的KPI（測れる）</button>
@@ -161,7 +161,7 @@
 
     <div class="callout callout--win">
       <h4>✦ 「測れる」が、Why と計測をつなぐ</h4>
-      <p>操作的KPIにすると、必要なシグナル（クリック・スクロール深度・送信成功）が見える。それは <strong>M8の計測基準</strong>と、サイトに仕込む <code style="font-family:var(--mono);background:var(--accent-tint);padding:.1rem .3rem;border-radius:3px">data-analytics</code> の設計に直結します。Why が、下流の計装まで貫きます。</p>
+      <p>操作的KPIにすると、必要なシグナル（クリック・スクロール深度・送信成功）が見える。それは <strong>M6の計測基準</strong>と、サイトに仕込む <code style="font-family:var(--mono);background:var(--accent-tint);padding:.1rem .3rem;border-radius:3px">data-analytics</code> の設計に直結します。Why が、下流の計装まで貫きます。</p>
     </div>
 
     <!-- ===================================================== STEP 4 -->
@@ -174,7 +174,7 @@
           <tr><th>伝える価値</th><td>過剰を削ぎ落とし、肌本来の静けさを取り戻す。発酵×柑橘、京都のヘリテージ。</td></tr>
           <tr><th>トーン&マナー</th><td>静謐・余白・正直。派手に売らない。急かさない。</td></tr>
           <tr><th>北極星</th><td>「静けさを、肌へ」── 迷ったらここに戻る。</td></tr>
-          <tr><th>体験原則</th><td>待たせない／迷わせない／急かさない／隠さない。<strong>＝設計を縛る制約</strong>（M2で“振る舞い”に翻訳済み）。</td></tr>
+          <tr><th>体験原則</th><td>待たせない／迷わせない／急かさない／隠さない。<strong>＝設計を縛る制約</strong>（M3で“振る舞い”に翻訳済み）。</td></tr>
         </table>
       </div>
     </div>
@@ -220,16 +220,16 @@
     </div>
 
     <!-- NEXT -->
-    <h2 id="next">次へ ── すべてを束ねる</h2>
-    <p>Why が固まり、これで要件のすべてが出そろいました ── 体験(M2)・As-Is(M3)・機能(M4)・情報設計(M5)・方式(M7)・非機能(M8)、そして Why と ブランド(M1)。</p>
+    <h2 id="next">次へ ── 現実を直視する</h2>
+    <p>なぜ作るのか（成功とブランド）が固まりました。Why が決まると、次に見るべきは<strong>現実</strong>です ── いまのサイトの、どこで価値が壊れているのか。</p>
     <div class="callout">
-      <h4>📨 最後は、見せて合意する</h4>
-      <p>残るは統合です。バラバラの成果物を<strong>トレーサビリティ表</strong>で束ね、<strong>動く NAGI を見せてサインオフ</strong>する。十分性を判断し、AIには“厳しいステークホルダー”を演じさせて穴を突かせる ── <strong>M9（統合・合意）</strong>へ。</p>
+      <h4>📨 「なんとなく良くない」の正体を暴く</h4>
+      <p>現行サイトは、感覚的には“良くない”。でもその<strong>正体</strong>を、原因と証拠つきで名指せるか。実装を開いて読み、課題を言語化する ── 技術が見えることの価値が最も出る <strong>M2（As-Is 理解）</strong>へ。</p>
     </div>
     <div class="pill-row" style="margin:var(--sp-5) 0">
-      <a class="btn btn--ghost" href="m7.html">← M7 へ戻る</a>
+      <a class="btn btn--ghost" href="course-0.html">← Course 0 へ戻る</a>
       <a class="btn" href="../nagi/index.html" target="_blank" rel="noopener">NAGI（To-Be）を開く ↗</a>
-      <span class="btn btn--ghost is-soon" style="opacity:.5;pointer-events:none">M9 統合・合意（近日公開）</span>
+      <a class="btn btn--accent" href="m2.html">M2 As-Is 理解へ進む <span class="arr">→</span></a>
     </div>
   </main>
 </div>
@@ -261,7 +261,7 @@
       }
       return '<div class="kpi__card"><div class="kpi__goal">' + g.op +
         '</div><span class="kpi__verdict ok">🟢 測れる</span>' +
-        '<div class="kpi__sig">必要なシグナル：<code>' + g.signal + '</code><br>→ M8 の計測基準と <code>data-analytics</code> 設計に直結。</div></div>';
+        '<div class="kpi__sig">必要なシグナル：<code>' + g.signal + '</code><br>→ M6 の計測基準と <code>data-analytics</code> 設計に直結。</div></div>';
     }).join("");
     document.getElementById("k-vague").setAttribute("aria-pressed", String(mode === "vague"));
     document.getElementById("k-op").setAttribute("aria-pressed", String(mode === "op"));

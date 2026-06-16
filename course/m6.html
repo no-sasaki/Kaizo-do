@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>M8 非機能要件 ｜ 形容詞を、数値と基準に ── 改造道</title>
-<meta name="description" content="「速く・アクセシブルに・SEOに強く」という形容詞を、Core Web Vitals目標やWCAG/JIS X 8341の準拠基準といった検証可能な非機能要件へ。本物のコントラスト測定器で“測る”を体感するM8モジュール。">
+<title>M6 非機能要件 ｜ 形容詞を、数値と基準に ── 改造道</title>
+<meta name="description" content="「速く・アクセシブルに・SEOに強く」という形容詞を、Core Web Vitals目標やWCAG/JIS X 8341の準拠基準といった検証可能な非機能要件へ。本物のコントラスト測定器で“測る”を体感するM6モジュール。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/css/platform.css">
 <style>
-  /* M8 コントラスト測定器 */
+  /* M6 コントラスト測定器 */
   .cm { display:grid; grid-template-columns: 1fr 1fr; gap: var(--sp-3); }
   @media (max-width:720px){ .cm{ grid-template-columns:1fr; } }
   .cm__panel { border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
@@ -45,8 +45,8 @@
       <a href="m3.html" data-page="m3.html">M3</a>
       <a href="m4.html" data-page="m4.html">M4</a>
       <a href="m5.html" data-page="m5.html">M5</a>
+      <a href="m6.html" data-page="m6.html">M6</a>
       <a href="m7.html" data-page="m7.html">M7</a>
-      <a href="m8.html" data-page="m8.html">M8</a>
       <a href="prompting.html" data-page="prompting.html">Appendix</a>
       <a class="btn btn--accent" href="../nagi-legacy/index.html" target="_blank" rel="noopener">現行サイトを開く <span class="arr">↗</span></a>
     </nav>
@@ -56,12 +56,12 @@
 <!-- ============================================================ HERO -->
 <section class="mod-hero">
   <div class="wrap">
-    <p class="crumb"><a href="../index.html">改造道</a> ／ <a href="m3.html">M3</a> ／ Phase 4 ・ 要件への落とし込み</p>
-    <p class="eyebrow">M8 ── 非機能要件（T11）｜ 測る側</p>
+    <p class="crumb"><a href="../index.html">改造道</a> ／ <a href="m2.html">M2</a> ／ Phase 4 ・ 要件への落とし込み</p>
+    <p class="eyebrow">M6 ── 非機能要件（T11）｜ 測る側</p>
     <h1 style="max-width:22ch">「速く・きれいに」を、<br>数値と基準に変える。</h1>
     <p class="lede read" style="margin-top:var(--sp-3)">「速く・アクセシブルに・SEOに強く」── 形容詞のままでは、実装者は迷い、検収では揉めます。
       品質の合格ラインは、<strong>数値（Core Web Vitals）と準拠基準（WCAG／JIS X 8341）</strong>で固定して初めて成立する。
-      M3で“言葉”で見つけた課題を、ここで“測れる要件”にします。</p>
+      M2で“言葉”で見つけた課題を、ここで“測れる要件”にします。</p>
     <div class="meta-row">
       <span class="tag tag--core">所要 約55分</span>
       <span class="tag">対応タスク T11</span>
@@ -88,13 +88,13 @@
 
     <!-- ===================================================== STEP 1 -->
     <h2 id="brief">① 依頼を受ける</h2>
-    <p>M3 で課題が言語化され、リニューアルが本格化します。すると品質と統制の話で、二人のステークホルダーが動きます。</p>
+    <p>M2 で課題が言語化され、リニューアルが本格化します。すると品質と統制の話で、二人のステークホルダーが動きます。</p>
     <div class="callout">
       <h4>💬 デジタル・三宅 ＆ 法務・和田 からの依頼</h4>
       <p>三宅「品質の<strong>合格ライン</strong>を先に決めておきたい。速さもアクセシビリティもSEOも、『いい感じ』だと検収で揉めるので。」<br>
         和田「法務として、<strong>市場ごとに出していい表現を制御</strong>したい。日本でOKでも、欧州では言えない効能表現がある（R-04）。」</p>
     </div>
-    <p>機能要件（M4）が「何ができるか」なら、非機能要件は<strong>「どの品質で・何を守って」</strong>。ここを形容詞で書くと、実装も検収も崩れます。M8のゴールは、品質を<strong>数値と準拠基準</strong>に、統制を<strong>承認フロー</strong>に落とすことです。</p>
+    <p>機能要件（M4）が「何ができるか」なら、非機能要件は<strong>「どの品質で・何を守って」</strong>。ここを形容詞で書くと、実装も検収も崩れます。M6のゴールは、品質を<strong>数値と準拠基準</strong>に、統制を<strong>承認フロー</strong>に落とすことです。</p>
 
     <!-- ===================================================== STEP 2 -->
     <h2 id="spar">② AIと壁打ちして要件を定義する</h2>
@@ -131,7 +131,7 @@
 
     <!-- ===================================================== STEP 3 -->
     <h2 id="translate">③ 形容詞を、数値と基準に変える</h2>
-    <p>M8 の核心は翻訳です。同じ要望でも、<strong>形容詞のままか、測れる言葉にしたか</strong>で、実装も検収もまるで変わります。</p>
+    <p>M6 の核心は翻訳です。同じ要望でも、<strong>形容詞のままか、測れる言葉にしたか</strong>で、実装も検収もまるで変わります。</p>
     <div class="compare">
       <div class="compare__col compare__col--bad">
         <h4>✗ 形容詞のままだと</h4>
@@ -162,7 +162,7 @@
 
     <!-- PLAYGROUND -->
     <h3 id="meter">触って測る ── コントラスト測定器</h3>
-    <p>M3 で「現行サイトの本文が、なんだか薄い」と感じた、その正体を<strong>実際に測り</strong>ます。下は本物のWCAGコントラスト計算です。<strong>“読めるのに基準では不合格”</strong>が、数値で一目で分かります。</p>
+    <p>M2 で「現行サイトの本文が、なんだか薄い」と感じた、その正体を<strong>実際に測り</strong>ます。下は本物のWCAGコントラスト計算です。<strong>“読めるのに基準では不合格”</strong>が、数値で一目で分かります。</p>
     <div class="cm">
       <div class="cm__panel">
         <div class="cm__bar">表示（NAGIの背景色の上）</div>
@@ -213,8 +213,8 @@
       </div>
     </div>
     <div class="callout">
-      <h4>✦ M3 の課題が、ここで“合格ライン”になる</h4>
-      <p>M3 で見つけた「薄い本文」「CLS」「同一title」は、いま <strong>≥4.5:1 / CLS≤0.1 / 固有title</strong> という検収可能な数値になりました。診断（M3）→ 測定・基準化（M8）は一本の線です。</p>
+      <h4>✦ M2 の課題が、ここで“合格ライン”になる</h4>
+      <p>M2 で見つけた「薄い本文」「CLS」「同一title」は、いま <strong>≥4.5:1 / CLS≤0.1 / 固有title</strong> という検収可能な数値になりました。診断（M2）→ 測定・基準化（M6）は一本の線です。</p>
     </div>
 
     <!-- ===================================================== STEP 5 -->
@@ -236,22 +236,22 @@
           <li>□ それぞれに<strong>測り方</strong>（指標・ツール）が紐づくか</li>
           <li>□ 性能・a11y・SEO・i18n・ガバナンス・プライバシーに<strong>抜け</strong>がないか</li>
           <li>□ ガバナンス（市場別の承認）を承認フローとして書けたか</li>
-          <li>□ M3 の課題が、合格ラインに翻訳されているか</li>
+          <li>□ M2 の課題が、合格ラインに翻訳されているか</li>
         </ul>
       </div>
     </div>
 
     <!-- NEXT -->
     <h2 id="next">次へ</h2>
-    <p>品質と統制を、測れる言葉に変えました。これで Why（M1）・体験（M2）・As-Is（M3）・機能（M4）・情報設計（M5）・非機能（M8）の要件が出そろってきます。残るは「何の上に作るか」。</p>
+    <p>品質と統制を、測れる言葉に変えました。これで Why（M1）・体験（M3）・As-Is（M2）・機能（M4）・情報設計（M5）・非機能（M6）の要件が出そろってきます。残るは「何の上に作るか」。</p>
     <div class="callout">
       <h4>📨 次の依頼が、もう届いている</h4>
       <p>CMO・佐倉 R-03：「店舗・スパを地図から探せるように」。これは“作るか・買うか” ── 地図を自作するか、外部サービスを連携するかの<strong>方式の判断</strong>。自分で擬似ヘッドレスを建てた経験が効いてきます。<strong>M7（方式／CMS／連携／移行）</strong>へ。</p>
     </div>
     <div class="pill-row" style="margin:var(--sp-5) 0">
-      <a class="btn btn--ghost" href="m3.html">← M3 へ戻る</a>
+      <a class="btn btn--ghost" href="m5.html">← M5 へ戻る</a>
       <a class="btn" href="../nagi-legacy/product.html" target="_blank" rel="noopener">現行サイトで測ってみる ↗</a>
-      <span class="btn btn--ghost is-soon" style="opacity:.5;pointer-events:none">M7 方式・連携（近日公開）</span>
+      <a class="btn btn--accent" href="m7.html">M7 方式・連携へ進む <span class="arr">→</span></a>
     </div>
   </main>
 </div>
@@ -264,7 +264,7 @@
 
 <script src="../assets/js/platform.js"></script>
 <script>
-/* M8 コントラスト測定器 ─ 本物のWCAG計算 */
+/* M6 コントラスト測定器 ─ 本物のWCAG計算 */
 (function () {
   var sample = document.getElementById("cm-sample");
   if (!sample) return;
