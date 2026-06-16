@@ -86,7 +86,7 @@
   <div class="grid grid--2" style="align-items:center">
     <div class="read">
       <p class="eyebrow">全タスク共通のフレーム</p>
-      <h2><span style="white-space:nowrap">AIに“委ねる”。</span> <span style="white-space:nowrap">人が“握る”。</span></h2>
+      <h2>AIに「委ねる」。<br>人が「握る」。</h2>
       <p class="lede">生成AIに量産・草案・実装を委ね、人は「成功の定義」「合意可能性」「十分性」を握る。
         各モジュールでこの線引きを反復することで、要件定義フェーズでの生成AIの活用方法を習慣にします。</p>
     </div>
@@ -120,31 +120,41 @@
 <!-- ============================================================ CURRICULUM -->
 <section class="wrap reveal">
   <p class="eyebrow">カリキュラム ── 15タスク × 深さ × AI役割分担</p>
-  <h2>要件定義の5フェーズを、モジュールで歩く</h2>
-  <p class="lede read" style="margin-top:var(--sp-3)">0 方向付け → 1 Why → 2 As-Is → 3 To-Be → 4 What → 5 統合・合意。
-    依存関係の背骨はこの順です。<strong>● 印は、現在体験できるモジュール</strong>です。</p>
+  <h2>この教材では、要件定義をこの流れで学ぶ</h2>
+  <p class="lede read" style="margin-top:var(--sp-3)">要件定義を、次の流れで歩きます ── 0 方向付け → 1 ビジネス要求(Why) → 2 As-Is理解と課題 → 3 To-Be体験定義 → 4 要件への落とし込み(What) → 5 統合・合意・設計引き渡し。
+    各フェーズを、下のモジュールで体験します。<strong>● は現在体験できるモジュール</strong>です。</p>
 
   <div class="modules" style="margin-top:var(--sp-5)">
+
+    <div class="mod-phase"><span class="ph-n">PHASE 0</span><b>方向付け</b></div>
     <a class="mod is-live" href="course/course-0.html">
       <div class="mod__code">Course 0</div>
       <div class="mod__body"><h3>オリエン＆ブリーフ <span class="tag tag--live">公開中</span></h3><p>主張の提示・ブラウザだけで回る環境・NAGIの世界観とステークホルダーに出会う。T1。</p></div>
       <div class="mod__depth">与件</div>
     </a>
+
+    <div class="mod-phase"><span class="ph-n">PHASE 1</span><b>ビジネス要求（Why）</b></div>
     <div class="mod is-soon">
       <div class="mod__code">M1</div>
-      <div class="mod__body"><h3>Why ＆ ブランド</h3><p>KPIツリー草案はAI、成功の定義・体験原則は握る。T2／T3／T8。</p></div>
+      <div class="mod__body"><h3>Why ＆ ブランド</h3><p>KPIツリー草案はAI、成功の定義・体験原則は握る。T2／T3。</p></div>
       <div class="mod__depth">最小</div>
     </div>
+
+    <div class="mod-phase"><span class="ph-n">PHASE 2</span><b>As-Is 理解と課題</b></div>
+    <div class="mod is-soon">
+      <div class="mod__code">M3</div>
+      <div class="mod__body"><h3>As-Is 理解</h3><p>NAGIの現行コード・コンテンツを実際に読み、課題を定義する。T5／T6。</p></div>
+      <div class="mod__depth">課題特定◎</div>
+    </div>
+
+    <div class="mod-phase"><span class="ph-n">PHASE 3</span><b>To-Be 体験定義</b></div>
     <a class="mod is-live" href="course/m2.html">
       <div class="mod__code">M2</div>
       <div class="mod__body"><h3>誰の・どんな体験 <span class="tag tag--live">公開中</span></h3><p>体験原則を「状態と振る舞い」の要件へ翻訳。言語化しにくいUXを状態シミュレータで体感。T4／T7／T8。</p></div>
       <div class="mod__depth">体験は深く</div>
     </a>
-    <div class="mod is-soon">
-      <div class="mod__code">M3</div>
-      <div class="mod__body"><h3>As-Is 理解</h3><p>NAGIの現行コード・コンテンツを実際に読み、課題を定義する。T5。</p></div>
-      <div class="mod__depth">課題特定◎</div>
-    </div>
+
+    <div class="mod-phase"><span class="ph-n">PHASE 4</span><b>要件への落とし込み（What）</b></div>
     <a class="mod is-live" href="course/m4.html">
       <div class="mod__code">M4</div>
       <div class="mod__body"><h3>機能要件 <span class="tag tag--core">◎ 深く</span> <span class="tag tag--live">公開中</span></h3><p>体験ループを1本フルで。ストーリー＋受け入れ条件を書き、実装まで通して品質差を体感する。T9。</p></div>
@@ -165,13 +175,20 @@
       <div class="mod__body"><h3>非機能要件</h3><p>性能・アクセシビリティ（WCAG／JIS X 8341）・SEOを自分のサイトで観察。T11。</p></div>
       <div class="mod__depth">参考</div>
     </div>
+
+    <div class="mod-phase"><span class="ph-n">PHASE 5</span><b>統合・合意・設計引き渡し</b></div>
     <div class="mod is-soon">
-      <div class="mod__code">M9·M10</div>
-      <div class="mod__body"><h3>統合・合意・移行 <span class="tag tag--core">◎</span></h3><p>トレーサビリティ表で整合を取り、動くNAGIサイトを見せて合意する。T13／T14／T15。</p></div>
+      <div class="mod__code">M9</div>
+      <div class="mod__body"><h3>統合・合意（サインオフ） <span class="tag tag--core">◎</span></h3><p>トレーサビリティ表で整合を取り、動くNAGIサイトを見せて合意する。T13／T14。</p></div>
       <div class="mod__depth">◎ 深く</div>
     </div>
+    <div class="mod is-soon">
+      <div class="mod__code">M10</div>
+      <div class="mod__body"><h3>設計フェーズの準備</h3><p>確定した要件を設計へ引き渡す準備（設計インプット一式・未決事項リスト）。<strong>※ 教材は設けず、設計に入る前に準備が要ることを示します。</strong>T15。</p></div>
+      <div class="mod__depth">引き渡し</div>
+    </div>
   </div>
-  <p style="margin-top:var(--sp-4); color:var(--muted); font-size:.9rem">現在 <strong>Course 0 → NAGIサイト → M4 → M5</strong> まで公開中。残りのモジュールは順次追加。</p>
+  <p style="margin-top:var(--sp-4); color:var(--muted); font-size:.9rem">現在 <strong>Course 0・M2・M4・M5</strong> を公開中。残りのモジュールは順次追加します。</p>
 </section>
 
 <hr class="divider">

@@ -161,6 +161,10 @@ section { padding-block: var(--sp-7); }
 
 /* ---------------------------------------------------------------- module list */
 .modules { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.mod-phase { display:flex; align-items:baseline; gap:.7rem; flex-wrap:wrap; padding: var(--sp-5) var(--sp-2) var(--sp-2); border-bottom:1px solid var(--line); background: var(--surface-2); }
+.mod-phase .ph-n { font-family: var(--mono); font-size:.74rem; letter-spacing:.14em; color: var(--accent); }
+.mod-phase b { font-family: var(--serif); font-size:1.12rem; font-weight:500; }
+.mod-phase .ph-note { font-size:.82rem; color: var(--muted); }
 .mod {
   display: grid; grid-template-columns: 90px 1fr auto; gap: var(--sp-4); align-items: center;
   padding: var(--sp-4) var(--sp-2); border-bottom: 1px solid var(--line);
