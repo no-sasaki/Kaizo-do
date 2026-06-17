@@ -272,6 +272,11 @@ table.req code { font-family: var(--mono); font-size:.82rem; background: var(--a
 .rail li::before { content:""; position:absolute; left:-5px; top:.85rem; width:9px; height:9px; border-radius:50%; background:var(--line-strong); }
 .rail a { color: inherit; }
 .rail a:hover { color: var(--accent); }
+.rail a.is-active { color: var(--accent); font-weight: 600; }
+.takeaway { margin-top: var(--sp-3); padding:.7rem 1rem; background:var(--accent-tint); border-left:3px solid var(--accent); border-radius:4px; font-size:.95rem; line-height:1.65; }
+.takeaway b { color:var(--accent-deep); }
+.rail li:has(a.is-active) { color: var(--ink); }
+.rail li:has(a.is-active)::before { background: var(--accent); transform: scale(1.3); }
 .layout-rail { display:grid; grid-template-columns: 200px minmax(0, var(--readw)); gap: clamp(2.5rem, 5vw, 4.5rem); align-items:start; justify-content:center; }
 @media (max-width: 940px){ .layout-rail{ grid-template-columns:1fr; justify-content:stretch; } .rail{ display:none; } }
 

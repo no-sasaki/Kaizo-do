@@ -40,9 +40,9 @@
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) {
-          rail.forEach(function (a) { a.classList.remove("is-active"); });
+          rail.forEach(function (a) { a.classList.remove("is-active"); a.removeAttribute("aria-current"); });
           var m = targets.find(function (x) { return x.t === e.target; });
-          if (m) m.a.classList.add("is-active");
+          if (m) { m.a.classList.add("is-active"); m.a.setAttribute("aria-current", "true"); }
         }
       });
     }, { rootMargin: "-20% 0px -70% 0px" });

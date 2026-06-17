@@ -16,7 +16,7 @@
   <div class="wrap site-head__in">
     <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
     <nav class="nav">
-      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m0.html" data-page="m0.html">M0</a>
       <a href="m1.html" data-page="m1.html">M1</a>
       <a href="m2.html" data-page="m2.html">M2</a>
       <a href="m3.html" data-page="m3.html">M3</a>
@@ -48,6 +48,7 @@
       <li><a href="#diverge">発散と収束</a></li>
       <li><a href="#example">出力は「一例」</a></li>
       <li><a href="#train">鍛え方</a></li>
+      <li><a href="#back">学習に戻る</a></li>
     </ol>
   </nav>
 
@@ -77,7 +78,7 @@
         <p style="font-size:.86rem;color:var(--muted);margin:.6rem 0 0">＝サイト固有の前提を含む。今は<strong>そのままコピペで十分</strong>。仕組みが見えてくれば自然と書けるようになる。</p>
       </div>
     </div>
-    <blockquote>コンサルが磨くべきは「🧭 思考」のプロンプト。「⚙️ 開発体験用」は、実装者やAIに渡すための道具で、最初は写経で構いません。区別がつけば、どこで力を抜いてよいかが分かります。</blockquote>
+    <blockquote>コンサルが磨くべきは「🧭 思考」のプロンプト。「⚙️ 開発体験用」は、実装者やAIに渡すための道具で、最初はそのまま使って構いません。区別がつけば、どこで力を抜いてよいかが分かります。</blockquote>
 
     <h2 id="skeleton">プロンプトの骨格 ── 6つのブロック</h2>
     <p>良いプロンプトは、良い要件定義書のミニチュアです。次の6ブロックを意識すると、再現性のある品質で書けます。</p>
@@ -95,7 +96,7 @@
         </table>
       </div>
     </div>
-    <p>M4 のプロンプトを読み返すと、すべてこの6ブロックでできていることが分かります。<strong>評価基準</strong>を入れられるかが、素人と玄人の分かれ目 ── ここに要件定義スキルがそのまま乗ります。</p>
+    <p>M4 のプロンプトを読み返すと、すべてこの6ブロックでできていることが分かります。<strong>評価基準</strong>を入れられるかが、成果物の品質を分けるポイント ── ここに要件定義スキルがそのまま乗ります。</p>
     <div class="callout">
       <h4>📎 “実物”を渡すと、AIは具体的になる（文脈の強化）</h4>
       <p>サイトを分析・実装させるときは、<strong>実物（ソース・JSON）を文脈として渡す</strong>と精度が跳ね上がります。渡し方は簡単な順に ── ①<strong>コピペ</strong>（右クリック →「ページのソースを表示」→ 全選択／JSONはそのURLを開いてコピー）＝基本、②<strong>URLを渡す</strong>（AIがWebを読める場合）、③ファイル添付。<strong>実装を頼むときは「保存先のファイル名とディレクトリ」も必ず指定</strong>すると、そのまま反映できます。</p>
@@ -125,8 +126,19 @@
       <li><strong>実物で確かめる</strong>：<a href="m4.html#playground">M4 のインタラクティブ実験</a>や NAGI で、出力が実際に動くか・壊れるかを見る。机上で終わらせない。</li>
     </ol>
 
-    <div class="pill-row" style="margin:var(--sp-6) 0">
-      <a class="btn btn--ghost" href="m4.html">← M4 へ戻る</a>
+    <h2 id="back">学習に戻る</h2>
+    <p>直前のページへは、ブラウザの戻るボタンで戻れます。各モジュールへ直接戻るときは、こちらから。</p>
+    <div class="pill-row" style="flex-wrap:wrap;gap:.6rem;margin:var(--sp-4) 0">
+      <a class="btn btn--ghost" href="m0.html">M0 オリエン＆ブリーフ</a>
+      <a class="btn btn--ghost" href="m1.html">M1 Why＆ブランド</a>
+      <a class="btn btn--ghost" href="m2.html">M2 As-Is 理解</a>
+      <a class="btn btn--ghost" href="m3.html">M3 誰の・どんな体験</a>
+      <a class="btn btn--ghost" href="m4.html">M4 機能要件</a>
+      <a class="btn btn--ghost" href="m5.html">M5 情報設計＆コンテンツモデル</a>
+      <a class="btn btn--ghost" href="m6.html">M6 非機能要件</a>
+      <a class="btn btn--ghost" href="m7.html">M7 方式／CMS／連携／移行</a>
+    </div>
+    <div class="pill-row" style="margin:var(--sp-5) 0">
       <a class="btn" href="m4.html#playground">M4 で触って試す →</a>
     </div>
   </main>

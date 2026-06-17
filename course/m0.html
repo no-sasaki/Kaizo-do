@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Course 0 ｜ オリエンテーション＆ブリーフ ── 改造道</title>
-<meta name="description" content="ブラウザとチャットAIだけで本物のブランドサイトを動かす。仮想ブランドNAGIの世界観・ステークホルダー・プロジェクト憲章に出会うCourse 0。">
+<title>M0 ｜ オリエンテーション＆ブリーフ ── 改造道</title>
+<meta name="description" content="ブラウザとチャットAIだけで本物のブランドサイトを動かす。仮想ブランドNAGIの世界観・ステークホルダー・プロジェクト憲章に出会うM0。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
   <div class="wrap site-head__in">
     <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
     <nav class="nav">
-      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m0.html" data-page="m0.html">M0</a>
       <a href="m1.html" data-page="m1.html">M1</a>
       <a href="m2.html" data-page="m2.html">M2</a>
       <a href="m3.html" data-page="m3.html">M3</a>
@@ -35,11 +35,12 @@
 <section class="mod-hero">
   <div class="wrap">
     <p class="crumb"><a href="../index.html">改造道</a> ／ Phase 0 ・ 方向付け</p>
-    <p class="eyebrow">Course 0 ── オリエンテーション＆ブリーフ｜T1</p>
+    <p class="eyebrow">M0 ── オリエンテーション＆ブリーフ｜T1</p>
     <h1 style="max-width:18ch">ようこそ。まず、<br>「自分で動かせる」を体験する。</h1>
     <p class="lede read" style="margin-top:var(--sp-3)">この教材のゴールは、エンジニアになることではありません。
       上流の判断が下流でどう効くかを“体で”理解し、生成AIでそれを速く・広く・深くできるようになること。
-      Course 0 では、その舞台と道具に出会います。</p>
+      M0 では、その舞台と道具に出会います。</p>
+    <p class="takeaway read">この回を終えると、<b>自分のNAGIサイトを持ち、ブラウザだけで「編集 → 確認」を回す</b>準備ができます。</p>
     <div class="meta-row">
       <span class="tag tag--core">所要 約25分</span>
       <span class="tag">必要：ブラウザ＋チャットAI</span>
@@ -53,14 +54,14 @@
   <nav class="rail" aria-label="目次">
     <ol>
       <li><a href="#why">なぜこの教材か</a></li>
-      <li><a href="#proof">制約＝証明</a></li>
+      <li><a href="#proof">必要な道具</a></li>
       <li><a href="#setup">作業環境の準備</a></li>
       <li><a href="#world">舞台：NAGI</a></li>
       <li><a href="#stakeholders">ステークホルダー</a></li>
       <li><a href="#charter">プロジェクト憲章</a></li>
       <li><a href="#backlog">要望バックログ</a></li>
       <li><a href="#frame">委ねる／握る</a></li>
-      <li><a href="#next">次へ：M4</a></li>
+      <li><a href="#next">次へ：M1</a></li>
     </ol>
   </nav>
 
@@ -108,6 +109,11 @@
       <h4>🧭 セットアップは、この一度だけ</h4>
       <p>Fork して自分の Pages で公開する ── 手を動かすために必要な準備はこれだけです。あとはブラウザの中だけで「編集 → 確認 → AIに相談」のループが回り続けます。</p>
     </div>
+    <div class="callout">
+      <h4>反映されない・間違えたとき</h4>
+      <p>GitHub Pages への反映には数十秒〜数分かかることがあります。変えたはずなのに画面が変わらないときは、少し待ってから再読み込みしてください。
+        文字を間違えても、同じファイルをもう一度編集して Commit すれば上書きできます。大きく崩れてしまっても、<strong>GitHub の Commit 履歴から前の状態に戻せます</strong>ので、安心して試せます。</p>
+    </div>
 
     <!-- WORLD -->
     <h2 id="world">学びの舞台 ──「凪 / NAGI」</h2>
@@ -153,7 +159,7 @@
 
     <!-- BACKLOG -->
     <h2 id="backlog">要望バックログ ── 難度は徐々に上がる</h2>
-    <p>ステークホルダーからの要望はバックログ化され、モジュールが進むごとに難度が上がります。最初に取り組むのは <strong>PR・林さんからの依頼（R-01）</strong>です。</p>
+    <p>ステークホルダーからの要望はバックログ化され、モジュールが進むごとに難度が上がります。後半の M4 からは、これらの具体的な依頼を「依頼 → 要件 → 実装 → 結果」の体験ループで扱います。最初に向き合う代表例が、<strong>PR・林さんからの依頼（R-01）</strong>です。</p>
     <div class="artifact">
       <div class="artifact__head"><b>Requirements Backlog</b><span class="tag">起点</span></div>
       <div class="artifact__body">
@@ -161,7 +167,7 @@
           <tr><th>#</th><th>起案</th><th>要望（生の言葉）</th><th>扱うモジュール</th></tr>
           <tr><td>R-01</td><td>PR・林</td><td>「海外の記者に、プレスリリースをちゃんと見せたい」</td><td><strong style="color:var(--accent)">M4</strong></td></tr>
           <tr><td>R-02</td><td>デジタル・三宅</td><td>「ジャーナルを成分・効能で探せるようにしたい」</td><td>M5</td></tr>
-          <tr><td>R-03</td><td>CMO・佐倉</td><td>「店舗・スパを地図から探せると体験が締まる」</td><td>M5 / M7</td></tr>
+          <tr><td>R-03</td><td>CMO・佐倉</td><td>「店舗・スパを地図から探せると体験が締まる」</td><td>M7（M5の観点も参照）</td></tr>
           <tr><td>R-04</td><td>法務・和田</td><td>「市場ごとに出していい表現を制御したい」</td><td>M6</td></tr>
         </table>
       </div>

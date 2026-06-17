@@ -33,7 +33,7 @@
   <div class="wrap site-head__in">
     <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
     <nav class="nav">
-      <a href="course-0.html" data-page="course-0.html">Course&nbsp;0</a>
+      <a href="m0.html" data-page="m0.html">M0</a>
       <a href="m1.html" data-page="m1.html">M1</a>
       <a href="m2.html" data-page="m2.html">M2</a>
       <a href="m3.html" data-page="m3.html">M3</a>
@@ -54,7 +54,8 @@
     <h1 style="max-width:22ch">作るか、買うか。<br>何の上に、作るか。</h1>
     <p class="lede read" style="margin-top:var(--sp-3)">「店舗を地図から探せるように」── 自作する？ 地図サービスを連携する？
       ヘッドレスか従来型かDXPか。<strong>何の上に作るか</strong>の判断は、ベンダーの提案資料では決まりません。
-      M4・M5で建てた擬似ヘッドレスの肌感覚が、ここで実現可能性と移行リスクの“嗅覚”になります。</p>
+      M4・M5で建てた擬似ヘッドレスの肌感覚が、ここで実現可能性と移行リスクを見抜く判断材料になります。</p>
+    <p class="takeaway read">この回を終えると、<b>CMS・外部連携・移行の提案を、判断基準と重みで評価できる</b>ようになります。</p>
     <div class="meta-row">
       <span class="tag tag--core">所要 約45分</span>
       <span class="tag">対応タスク T12</span>
@@ -87,6 +88,7 @@
         ベンダーさんから色々提案が来てるんだけど、<strong>ヘッドレス？ DXP？ どれがうちに合うのか正直分からなくて</strong>。判断してもらえる？」</p>
     </div>
     <p>ここで効くのが、M4・M5で<strong>自分の手で擬似ヘッドレス（JSON＋表示層）を建てた経験</strong>です。方式の言葉（ヘッドレス／従来型／DXP）が、資料の用語ではなく<strong>体感を伴って</strong>判断できる。M7のゴールは、「何の上に作るか」を<strong>基準と重みで握る</strong>ことです。</p>
+    <p class="fine" style="margin-top:var(--sp-3);color:var(--muted)"><strong>握ったら、書く ──</strong> ここで決めた判断は、<strong>方式選定の基準・重み・移行リスク一覧</strong>に書き留めて初めて「握った」ことになります。</p>
 
     <!-- ===================================================== STEP 2 -->
     <h2 id="method">② 方式の土台 ── 建てた経験が、判断になる</h2>
@@ -153,8 +155,8 @@
     </div>
 
     <!-- ===================================================== STEP 4 -->
-    <h2 id="integ">④ 連携と、移行の地雷</h2>
-    <p>方式が決まると、次は「何とつなぐか」と「どう移すか」。とくに<strong>移行</strong>は、建てた経験がないと地雷が見えません。</p>
+    <h2 id="integ">④ 連携と、移行のリスク</h2>
+    <p>方式が決まると、次は「何とつなぐか」と「どう移すか」。とくに<strong>移行</strong>は、建てた経験がないと、見落としやすいリスクに気づけません。</p>
 
     <div class="artifact">
       <div class="artifact__head"><b>外部連携要件（抜粋）</b><span class="tag">integrations</span></div>
@@ -181,17 +183,17 @@
           <tr><td>ライス発酵成分</td><td><code>rice-ferment</code></td><td>表記ゆれ・要名寄せ</td></tr>
           <tr><td>（成分が空欄の記事）</td><td>—</td><td><strong>欠損 ── 補完が必要</strong></td></tr>
         </table>
-        <p style="font-size:.88rem;color:var(--muted);margin:.8rem 0 0">移行は機械的に終わりません。<strong>表記ゆれ・曖昧・欠損を人が裁く</strong>工程が必ず残る。M2で読んだレガシーと、M5で設計した統制語彙の“差”が、そのまま移行コストになります。建てた経験があると、この地雷が事前に見えます。</p>
+        <p style="font-size:.88rem;color:var(--muted);margin:.8rem 0 0">移行は機械的に終わりません。<strong>表記ゆれ・曖昧・欠損を人が裁く</strong>工程が必ず残る。M2で読んだレガシーと、M5で設計した統制語彙の“差”が、そのまま移行コストになります。建てた経験があると、このリスクが事前に見えます。</p>
       </div>
     </div>
 
     <!-- ===================================================== STEP 5 -->
     <h2 id="result">⑤ 振り返り</h2>
     <blockquote>方式に「唯一の正解」はない。あるのは、<strong>基準と重みの判断</strong>。<br>
-      自分で建てた経験があるから、実現可能性と移行リスクが“嗅げる” ── ベンダーの提案を、鵜呑みにせず評価できる。</blockquote>
+      自分で建てた経験があるから、実現可能性と移行リスクを見抜ける ── ベンダーの提案を、鵜呑みにせず評価できる。</blockquote>
     <div class="grid grid--2">
       <div class="card"><span class="num">気づき 1</span><h3 style="font-size:1.1rem;margin:.3rem 0">作らない判断も価値</h3><p style="color:var(--ink-2)">「自作しない＝負け」ではない。立ち上げ速度や保守を重視するなら、買う方が正しい。どこで作るのをやめるかを握る。</p></div>
-      <div class="card"><span class="num">気づき 2</span><h3 style="font-size:1.1rem;margin:.3rem 0">移行はプロジェクトの地雷</h3><p style="color:var(--ink-2)">移行は機械作業ではなく、表記ゆれ・欠損を裁く判断の連続。ここを軽く見ると、最後に火を噴く。</p></div>
+      <div class="card"><span class="num">気づき 2</span><h3 style="font-size:1.1rem;margin:.3rem 0">移行はプロジェクトの落とし穴</h3><p style="color:var(--ink-2)">移行は機械作業ではなく、表記ゆれ・欠損を裁く判断の連続。ここを軽く見ると、終盤で大きな手戻りになる。</p></div>
     </div>
 
     <!-- ===================================================== CHECK -->
