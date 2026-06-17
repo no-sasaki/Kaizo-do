@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M8 統合・合意（サインオフ） ｜ 束ねて、見せて、握る ── 改造道</title>
+<meta name="description" content="M1〜M7でバラバラに出した要件を、1枚のトレーサビリティ表で束ねる。抜け・矛盾を突き、動くNAGIを見せて合意する。AIに厳しいステークホルダーを演じさせ、十分性を判断してサインオフするM8キャップストーン。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/platform.css">
+<style>
+  /* M8 サインオフ・ボード */
+  .sb { border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  .sb__head, .sb__row { display:grid; grid-template-columns: 1.4fr 1.1fr .9fr 1fr 1fr; gap:.5rem; align-items:center; }
+  .sb__head { padding:.6rem .9rem; background:var(--surface-2); border-bottom:1px solid var(--line); font-family:var(--mono); font-size:.66rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  .sb__row { padding:.55rem .9rem; border-bottom:1px solid var(--line); font-size:.9rem; }
+  .sb__row b { font-size:.92rem; }
+  .sb__row small { color:var(--muted); display:block; font-size:.76rem; margin-top:.1rem; }
+  .sb__row select { font:inherit; font-size:.8rem; padding:.28rem .4rem; border:1px solid var(--line-strong); border-radius:4px; background:#fff; width:100%; }
+  .sb__result { padding:1.1rem .9rem; }
+  .sb__verdict { font-family:var(--sans); font-weight:700; font-size:1.05rem; padding:.7rem .9rem; border-radius:var(--radius); margin-bottom:.8rem; }
+  .sb__verdict.go { color:#1f5f4a; background:#E2EEEC; border:1px solid color-mix(in srgb,var(--delegate) 35%,transparent); }
+  .sb__verdict.no { color:#8E2C16; background:#F4E4D6; border:1px solid color-mix(in srgb,var(--accent) 35%,transparent); }
+  .sb__list { list-style:none; margin:0; padding:0; font-size:.88rem; }
+  .sb__list li { padding:.28rem 0; }
+  .sb__list li.ok { color:var(--delegate); }
+  .sb__list li.ng { color:#C0392B; }
+  .sb__list li.df { color:var(--muted); }
+  .sb__note { font-size:.84rem; color:var(--muted); border-top:1px solid var(--line); padding:.8rem .9rem; }
+  @media (max-width: 720px){ .sb__head{ display:none; } .sb__row{ grid-template-columns:1fr 1fr; gap:.45rem; } .sb__row .sb__c1{ grid-column:1 / -1; } }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="brand" href="../index.html"><b>改造道</b><span class="kana">Kaizō-dō</span></a>
+    <nav class="nav">
+      <a href="m0.html" data-page="m0.html">M0</a>
+      <a href="m1.html" data-page="m1.html">M1</a>
+      <a href="m2.html" data-page="m2.html">M2</a>
+      <a href="m3.html" data-page="m3.html">M3</a>
+      <a href="m4.html" data-page="m4.html">M4</a>
+      <a href="m5.html" data-page="m5.html">M5</a>
+      <a href="m6.html" data-page="m6.html">M6</a>
+      <a href="m7.html" data-page="m7.html">M7</a>
+      <a href="m8.html" data-page="m8.html">M8</a>
+      <a href="prompting.html" data-page="prompting.html">Appendix</a>
+      <a href="../nagi/index.html">NAGI サイト</a>
+      <a class="btn btn--accent" href="../nagi/index.html" target="_blank" rel="noopener">砂場を開く <span class="arr">↗</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ HERO -->
+<section class="mod-hero">
+  <div class="wrap">
+    <p class="crumb"><a href="../index.html">改造道</a> ／ <a href="m0.html">M0</a> ／ Phase 5 ・ 統合・合意・設計引き渡し</p>
+    <p class="eyebrow">M8 ── 統合・合意（サインオフ）（T13／T14）｜ ◎ 深く</p>
+    <h1 style="max-width:20ch">束ねて、見せて、握る。</h1>
+    <p class="lede read" style="margin-top:var(--sp-3)">M1 から M7 まで、要件はそろいました。けれど<strong>バラバラのまま</strong>です。最後の仕事は、それを1枚に束ね、抜けと矛盾を突き、<strong>動く NAGI を見せて合意（サインオフ）</strong>すること。
+      ここで効くのは、量産でも草案でもなく ── <strong>「これで設計に渡して十分か」を握る</strong>判断です。</p>
+    <p class="takeaway read">この回を終えると、<b>バラバラの要件を1枚のトレーサビリティ表で束ね、抜け・矛盾を指摘し、合意（サインオフ）まで運べる</b>ようになります。</p>
+    <div class="meta-row">
+      <span class="tag tag--core">所要 約55分</span>
+      <span class="tag">対応タスク T13・T14</span>
+      <span class="tag">成果物：トレーサビリティ表＋未決事項リスト＋サインオフ・パッケージ</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap layout-rail" style="padding-top:var(--sp-6)">
+  <nav class="rail" aria-label="目次">
+    <ol>
+      <li><a href="#brief">① 依頼を受ける</a></li>
+      <li><a href="#spar">② AIと壁打ち</a></li>
+      <li><a href="#artifact">③ 成果物をつくる</a></li>
+      <li><a href="#concept">整合と十分性</a></li>
+      <li><a href="#playground">触って確かめる</a></li>
+      <li><a href="#review">④ 合意レビューを回す</a></li>
+      <li><a href="#result">⑤ サインオフと振り返り</a></li>
+      <li><a href="#check">十分性チェック</a></li>
+      <li><a href="#next">次へ</a></li>
+    </ol>
+  </nav>
+
+  <main class="prose">
+
+    <!-- ===================================================== STEP 1 -->
+    <h2 id="brief">① 依頼を受ける</h2>
+    <p>Slack に、CMO・佐倉さんからメッセージが届きました。プロジェクトは大詰めです。</p>
+    <div class="callout">
+      <h4>💬 CMO・佐倉 怜 からの依頼</h4>
+      <p>「来週の経営会議で承認をもらって、設計フェーズに進めたいんです。ただ正直、各担当から上がってきた要件が<strong>バラバラで</strong>、本当に揃っているのか、矛盾していないのか、私には判断がつかなくて……。<strong>ちゃんと束ねて、見せて、これで進めていいと握れる</strong>形にしてもらえますか？」</p>
+    </div>
+    <p>これまでと依頼の質が違います。新しい機能を1つ作る話ではありません。<strong>M1〜M7 で別々に出した成果物を統合し、合意できる状態にする</strong> ── プロジェクトを前に進める、最後の関門です。多くの場合、ここで初めて「あの要件とこの要件、実は食い違っていた」が表に出ます。</p>
+    <p>立てる問いは2つ。<em>すべての要件は、ビジネスゴールまで一本でつながっているか（整合）。そして、設計に渡すのに足りているか（十分性）。</em></p>
+
+    <!-- ===================================================== STEP 2 -->
+    <h2 id="spar">② AIと壁打ちして、束ねる</h2>
+    <p>ここでも AI は強力です。ただし役割は変わります ── 生み出すのではなく、<strong>散らばった成果物を表に流し込み、抜けと矛盾を機械的に洗わせる</strong>。判断は、こちらが握ります。</p>
+    <div class="callout">
+      <h4>📋 プロンプトカードの読み方</h4>
+      <p>各カードには2種類のラベルが付きます ──
+        <span class="prompt__kind prompt__kind--think" style="background:var(--hold-soft);color:var(--accent-deep);border-color:color-mix(in srgb,var(--accent) 30%,transparent)">🧭 コンサルの思考</span>＝<strong>自分で書けるようになりたい側</strong>、
+        <span class="prompt__kind prompt__kind--copy" style="background:var(--delegate-soft);color:var(--delegate);border-color:color-mix(in srgb,var(--delegate) 30%,transparent)">⚙️ 開発体験用・コピペでOK</span>＝<strong>サイト固有の前提を含むので、いまはそのまま使って十分</strong>な側。
+        AIの出力は実行ごとに変わるので、教材の結果と違っても正常です。
+        <a href="prompting.html"><strong>自分で書けるようになるには →（Appendix）</strong></a></p>
+    </div>
+    <div class="split">
+      <div class="split__card split__card--delegate">
+        <h4>▷ AIに委ねる</h4>
+        <ul>
+          <li>成果物をトレーサビリティ表に<strong>整形</strong>する</li>
+          <li>ゴール↔要求↔要件↔検証の<strong>抜け・孤立</strong>の検出</li>
+          <li>要件どうしの<strong>矛盾・重複</strong>の指摘</li>
+          <li>厳しいステークホルダーを<strong>演じて</strong>穴を突く</li>
+        </ul>
+      </div>
+      <div class="split__card split__card--hold">
+        <h4>● 人が握る</h4>
+        <ul>
+          <li><strong>十分性</strong>＝「設計に渡すのに、これで足りるか」</li>
+          <li>今回やること／<strong>見送ること</strong>の線引き（スコープ確定）</li>
+          <li>未決事項を<strong>誰が・いつまでに</strong>の宿題に変える</li>
+          <li>関係者が<strong>揉めずに握れるか</strong>の最終判定</li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine" style="margin-top:var(--sp-3);color:var(--muted)"><strong>握ったら、書く ──</strong> ここで決めた判断は、<strong>トレーサビリティ表のスコープ列と、未決事項リスト（担当・期限つき）</strong>に書き留めて初めて「握った」ことになります。</p>
+
+    <p>まず、散らばった成果物を1枚に束ねさせます。<strong>各モジュールで作った成果物（受け入れ条件・コンテンツモデル・非機能要件・方式選定）を、そのまま貼って渡す</strong>のがコツです。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">束ねる：トレーサビリティ表に流し込む</span></div><button class="prompt__copy" data-copy="#p1">コピー</button></div>
+      <pre id="p1">あなたは経験豊富なWCMプロジェクトのリード・コンサルタントです。
+架空ウェルネスブランド「NAGI」のサイト刷新（非EC・ブランド/コンテンツ中心）で、
+これまで別々に定義してきた要件を、1枚のトレーサビリティ表に統合します。
+
+以下に、各検討で出した成果物を貼ります（順不同・粒度バラバラで構いません）:
+---
+（ここに、M1のKPI／M4の受け入れ条件／M5のコンテンツモデル・統制語彙／
+　M6の非機能・ガバナンス／M7の方式選定 などを貼り付ける）
+---
+
+次の列を持つトレーサビリティ表にまとめてください:
+| ビジネスゴール | ステークホルダー要求 | 要件 | 代表的な受け入れ条件 | 実装/対応状況 | 検証方法 |
+各行が「ゴール → 要求 → 要件 → 受け入れ条件 → 実装 → 検証」で一本につながるように対応づけること。
+対応が取れない項目（ゴールに紐づかない要件、要件化されていないゴール）は、空欄にせず「★未対応」と明記してください。</pre>
+    </div>
+    <p>表ができたら、次は<strong>突く</strong>。整っているように見える表ほど、抜けと矛盾が隠れています。AIに、あえて穴を探させます。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">突く：抜け・矛盾・重複の検出</span></div><button class="prompt__copy" data-copy="#p2">コピー</button></div>
+      <pre id="p2">先のトレーサビリティ表をレビューしてください。設計フェーズに渡す前提で、
+次の観点で「設計者が解釈に迷う・手が止まる」箇所を厳しく指摘してください。
+1. 孤立: どのビジネスゴールにも紐づかない要件はないか（＝スコープクリープの疑い）。
+2. 未達: 要件化されていないビジネスゴールはないか（＝約束したのに作っていない）。
+3. 矛盾: 互いに衝突する要件はないか（例：表現の自由度 vs 法務の統制）。
+4. 未検証: 受け入れ条件はあるが、検証手段が無い要件はないか。
+5. 曖昧: 検証可能でない受け入れ条件が残っていないか。
+各指摘を「該当行／何が問題か／設計フェーズで誰が決めるべきか」の形で出してください。</pre>
+    </div>
+    <div class="callout callout--win">
+      <h4>✦ ここでのAIの使い方</h4>
+      <p>M4 までは AI に「広げさせ」ました。ここでは逆で、<strong>畳んで、突かせる</strong>。表の機械的な整合チェックは AI が一瞬で網羅します。けれど「この未達ゴールは今回見送る／この矛盾は法務を立てる」という<strong>十分性とスコープの判断</strong>は、AI には決められません ── そこが、握りどころです。</p>
+    </div>
+
+    <!-- ===================================================== STEP 3 -->
+    <h2 id="artifact">③ 成果物をつくる</h2>
+    <p>AIの整形と指摘を、自分の判断で束ねた“合意できる成果物”がこれです。プロジェクト全体（R-01〜R-04）を、1枚で見渡せる状態にします。</p>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物A ｜ トレーサビリティ表（ゴール → 要求 → 要件 → 検証）</b><span class="tag tag--core">T13 OUT</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>ビジネスゴール</th><th>ステークホルダー要求</th><th>要件（モジュール）</th><th>代表的な受け入れ条件</th><th>実装/状況</th><th>検証</th></tr>
+          <tr>
+            <td>回遊・指名流入を増やす<br><small style="color:var(--muted)">三宅・デジタル</small></td>
+            <td>R-02 ジャーナルを成分・効能で探せるように</td>
+            <td>発見性／統制語彙（M5）</td>
+            <td>成分・効能で3クリック以内に到達。0件で「該当なし」＋解除導線</td>
+            <td>journal.html＋taxonomies 実装済</td>
+            <td>デモで絞り込み確認</td>
+          </tr>
+          <tr>
+            <td>海外報道に正しく届く<br><small style="color:var(--muted)">林・PR</small></td>
+            <td>R-01 記者にプレスリリースをちゃんと見せたい</td>
+            <td>機能要件（M4）</td>
+            <td>記者が3分で到達／カテゴリ絞り込み／日英フォールバック</td>
+            <td>press.html 実装済</td>
+            <td>デモで英語切替・絞り込み確認</td>
+          </tr>
+          <tr style="background:var(--hold-soft)">
+            <td>ブランド体験を締める<br><small style="color:var(--muted)">佐倉・CMO</small></td>
+            <td>R-03 店舗・スパを地図から探せると体験が締まる</td>
+            <td>方式判断（M7）</td>
+            <td>地図から店舗を探せる</td>
+            <td><strong>方式選定のみ（外部地図サービス連携を推奨）。実装は本フェーズ外</strong></td>
+            <td><strong>★未検証</strong></td>
+          </tr>
+          <tr style="background:var(--hold-soft)">
+            <td>市場ごとの表現を統制<br><small style="color:var(--muted)">和田・法務</small></td>
+            <td>R-04 市場ごとに出していい表現を制御したい</td>
+            <td>非機能・ガバナンス（M6）</td>
+            <td>効能表現は公開前に法務承認／市場別の可否管理</td>
+            <td>承認フローを<strong>要件として定義済</strong>。CMS/運用での実装は本フェーズ外</td>
+            <td><strong>★未検証</strong></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <p>上2行は<strong>ゴールから検証まで一本</strong>でつながっています。下2行（色つき）は要件まで降りているものの、<strong>実装・検証が本フェーズの外</strong>に出ています ── ここを「曖昧なまま放置」するか「宿題として明示」するかが、サインオフの分かれ目です。後者にするのが、次の成果物Bです。</p>
+
+    <div class="artifact">
+      <div class="artifact__head"><b>成果物B ｜ 未決事項リスト（オープンイシュー）</b><span class="tag">設計フェーズへの宿題</span></div>
+      <div class="artifact__body">
+        <table class="req">
+          <tr><th>#</th><th>論点</th><th>現状</th><th>設計フェーズで決めること</th><th>担当／期限</th></tr>
+          <tr><td>O-1</td><td>店舗・スパ地図（R-03）</td><td>方式は「外部地図サービス連携」を推奨（M7）。実装未着手</td><td>地図API選定・店舗データの構造化・移行</td><td>IT/アーキ ／ 設計開始2週</td></tr>
+          <tr><td>O-2</td><td>ガバナンス承認フロー（R-04）</td><td>要件定義済。運用・CMSでの実装は未</td><td>承認SLA・市場別ルールの管理方法・担当配置</td><td>和田＋運用 ／ 設計中</td></tr>
+          <tr><td>O-3</td><td>多言語の翻訳運用</td><td>未翻訳の ja フォールバックは実装済</td><td>翻訳の発注・品質・公開責任者の取り決め</td><td>三宅 ／ 設計中</td></tr>
+        </table>
+      </div>
+    </div>
+    <p>未決があること自体は、問題ではありません ── <strong>所在が不明なこと</strong>が問題なのです。「決まっていない」を「いつ・誰が決めるか」に変えた瞬間、未決は<strong>合意できる対象</strong>になります。</p>
+
+    <!-- ===================================================== CONCEPT -->
+    <h2 id="concept">束ねるときの2つの目 ── 整合（横）と十分性（縦）</h2>
+    <p>統合・合意のフェーズは、2つの目で表を見ます。混ざりやすいので、分けておきます。</p>
+    <div class="split">
+      <div class="split__card">
+        <h4>↔ 整合（T13）── 横のつながり</h4>
+        <p style="font-size:.92rem;margin:.2rem 0 0">表の<strong>各行が、ゴールから検証まで一本でつながっている</strong>か。孤立した要件（誰のゴールでもない）や、要件化されていないゴール（作っていない約束）を見つける目。<strong>横に読む。</strong></p>
+      </div>
+      <div class="split__card">
+        <h4>↥ 十分性（T14）── 縦の深さ</h4>
+        <p style="font-size:.92rem;margin:.2rem 0 0">設計者が受け取って、<strong>解釈の余地で手が止まらない</strong>か。受け入れ条件は検証可能か、未決は宿題化されているか。「これで渡して足りるか」を測る目。<strong>縦に読む。</strong></p>
+      </div>
+    </div>
+    <p>整合は「つながっているか（Yes/No）」、十分性は「足りているか（程度の判断）」。前者は AI に洗わせられますが、<strong>後者は人が握る</strong> ── どこまでで「足りる」とするかは、ビジネスの判断だからです。</p>
+
+    <!-- ===================================================== PLAYGROUND -->
+    <h2 id="playground">触って確かめる ── サインオフ・ボード</h2>
+    <p>なぜ今これを触るのか。<strong>「サインオフできる／できない」が、何によって決まるのか</strong>を、手で動かして体感するためです。下の4つの要件（R-01〜R-04）の状態を変えると、右の判定がその場で変わります。
+      <strong>整合（ゴールに紐づくか）</strong>と<strong>十分性（受け入れ条件・検証があるか）</strong>が両方そろわないと、サインオフは「可」になりません。</p>
+    <div class="sb">
+      <div class="sb__head">
+        <span>要件</span><span>紐づくゴール</span><span>スコープ</span><span>受け入れ条件</span><span>検証（デモ）</span>
+      </div>
+      <div class="sb__row" data-r="R-01">
+        <span class="sb__c1"><b>R-01 プレスルーム</b><small>林・PR ／ M4</small></span>
+        <select data-k="goal"><option value="g-pr">林・報道到達</option><option value="g-kpi">三宅・回遊/流入</option><option value="g-brand">佐倉・ブランド体験</option><option value="g-legal">和田・表現統制</option><option value="none">（なし）</option></select>
+        <select data-k="scope"><option value="must">今回必須</option><option value="should">今回推奨</option><option value="out">今回は見送り</option></select>
+        <select data-k="ac"><option value="ac">定義済み</option><option value="noac">未定義</option></select>
+        <select data-k="ver"><option value="ver">確認済み</option><option value="unver">未検証</option></select>
+      </div>
+      <div class="sb__row" data-r="R-02">
+        <span class="sb__c1"><b>R-02 ジャーナル発見性</b><small>三宅・デジタル ／ M5</small></span>
+        <select data-k="goal"><option value="g-kpi">三宅・回遊/流入</option><option value="g-pr">林・報道到達</option><option value="g-brand">佐倉・ブランド体験</option><option value="g-legal">和田・表現統制</option><option value="none">（なし）</option></select>
+        <select data-k="scope"><option value="must">今回必須</option><option value="should">今回推奨</option><option value="out">今回は見送り</option></select>
+        <select data-k="ac"><option value="ac">定義済み</option><option value="noac">未定義</option></select>
+        <select data-k="ver"><option value="ver">確認済み</option><option value="unver">未検証</option></select>
+      </div>
+      <div class="sb__row" data-r="R-03">
+        <span class="sb__c1"><b>R-03 店舗・スパ地図</b><small>佐倉・CMO ／ M7</small></span>
+        <select data-k="goal"><option value="g-brand">佐倉・ブランド体験</option><option value="g-pr">林・報道到達</option><option value="g-kpi">三宅・回遊/流入</option><option value="g-legal">和田・表現統制</option><option value="none">（なし）</option></select>
+        <select data-k="scope"><option value="must">今回必須</option><option value="should">今回推奨</option><option value="out">今回は見送り</option></select>
+        <select data-k="ac"><option value="noac">未定義</option><option value="ac">定義済み</option></select>
+        <select data-k="ver"><option value="unver">未検証</option><option value="ver">確認済み</option></select>
+      </div>
+      <div class="sb__row" data-r="R-04">
+        <span class="sb__c1"><b>R-04 ガバナンス</b><small>和田・法務 ／ M6</small></span>
+        <select data-k="goal"><option value="g-legal">和田・表現統制</option><option value="g-pr">林・報道到達</option><option value="g-kpi">三宅・回遊/流入</option><option value="g-brand">佐倉・ブランド体験</option><option value="none">（なし）</option></select>
+        <select data-k="scope"><option value="must">今回必須</option><option value="should">今回推奨</option><option value="out">今回は見送り</option></select>
+        <select data-k="ac"><option value="ac">定義済み</option><option value="noac">未定義</option></select>
+        <select data-k="ver"><option value="unver">未検証</option><option value="ver">確認済み</option></select>
+      </div>
+      <div class="sb__result">
+        <div class="sb__verdict" id="sb-verdict">判定中…</div>
+        <ul class="sb__list" id="sb-list"></ul>
+      </div>
+      <div class="sb__note" id="sb-note"></div>
+    </div>
+    <div class="callout callout--win">
+      <h4>✦ サインオフ＝「全部完成」ではない</h4>
+      <p>R-03 を「今回は見送り」にすると、ブロックは消えます ── ただし<strong>佐倉さんのブランド体験ゴールが宙に浮く</strong>のが見えるはずです。見送るなら、そのゴールは<strong>未決事項として明示し、握り直す</strong>必要がある。サインオフとは、全部を完成させることではなく、<strong>「何が済み・何が宿題か」を全員が同じ絵で握れる状態</strong>をつくることです。それを、手で動かして確かめてください。</p>
+    </div>
+
+    <!-- ===================================================== STEP 4 -->
+    <h2 id="review">④ 合意レビューを回す ── AIに“厳しい関係者”を演じさせる</h2>
+    <p>表が整い、未決が宿題化できたら、本番の前に<strong>予行演習</strong>をします。経営会議で実際に飛んでくる反論を、先に浴びておく ── ここで AI に、各ステークホルダーを<strong>演じさせて</strong>突かせます。これが M8 の“実装＝体験”です。</p>
+    <p class="fine" style="margin-top:var(--sp-2);color:var(--muted)">このプロンプトは<strong>体験用</strong>です。返ってきた反論のうち「成功の定義に照らして効くもの」だけを拾い、未決事項に足します。すべてに答えようとしなくて構いません。</p>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">予行演習：敵対的ステークホルダー・レビュー</span></div><button class="prompt__copy" data-copy="#p3">コピー</button></div>
+      <pre id="p3">あなたは、NAGIサイト刷新プロジェクトの承認会議に出席する4人のステークホルダーを、
+一人ずつ順番に演じてください。各人の立場で、提示された要件の弱点・反対理由・見落としを、
+遠慮なく厳しく突いてください（私の予行演習が目的です）。
+
+- 佐倉（CMO・ブランド起点）: 世界観・体験の一貫性の観点から
+- 三宅（デジタル・KPI起点）: 数字・回遊・流入で効くのかの観点から
+- 林（PR・広報起点）: 海外報道の実務で本当に使えるかの観点から
+- 和田（法務・ガバナンス起点）: 市場別の表現規制・リスクの観点から
+
+提示する要件（トレーサビリティ表と未決事項）:
+---
+（ここに成果物A・Bを貼る）
+---
+
+各人の指摘の最後に、「この指摘は今回対応すべきか / 設計フェーズ送りか」の私の判断欄を空けてください。</pre>
+    </div>
+    <div class="callout">
+      <h4>🎬 そして、見せる ── デモ台本をつくる</h4>
+      <p>合意は、資料ではなく<strong>動くもの</strong>で取りに行きます。AI に、自分の NAGI サイト（M4 のプレスルーム、M5 のジャーナル絞り込み）を実演する<strong>デモ台本</strong>を作らせ、受け入れ条件を1つずつ画面で示します。「言いました」ではなく「動いています」。これがサインオフの説得力です。</p>
+    </div>
+    <div class="prompt">
+      <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--copy">⚙️ 開発体験用・コピペでOK</span><span class="label">サインオフ用：デモ台本を生成</span></div><button class="prompt__copy" data-copy="#p4">コピー</button></div>
+      <pre id="p4">私の NAGI サイト（静的・JSON駆動）で、承認会議向けのデモ台本を作ってください。
+見せるページ: プレスルーム（press.html）と、ジャーナルの成分・効能絞り込み（journal.html）。
+各シーンを「操作 → 画面で何が起きる → どの受け入れ条件を満たしている」の3点セットで、
+3〜5分で話せる流れに並べてください。最後に、未決事項（R-03/R-04ほか）を
+「ここは設計フェーズで詰めます」と正直に伝えるクロージングも入れてください。</pre>
+    </div>
+
+    <!-- ===================================================== STEP 5 -->
+    <h2 id="result">⑤ サインオフと、振り返り</h2>
+    <p>予行演習で出た指摘を未決に反映し、デモで受け入れ条件を見せ、未決は「誰が・いつまでに」で握る。ここまで来ると、サインオフは<strong>儀式ではなく、当然の結論</strong>になります。</p>
+    <blockquote>合意は、説得ではなく<strong>「同じ絵を見ている」状態</strong>から生まれる。<br>
+      トレーサビリティ表が整合（横）を、未決事項リストが十分性（縦）を担保し、動くNAGIが「言った」を「動く」に変える。3つがそろって、初めて握れる。</blockquote>
+    <div class="grid grid--2">
+      <div class="card">
+        <span class="num">気づき 1</span>
+        <h3 style="font-size:1.1rem;margin:.3rem 0">矛盾は、束ねて初めて見える</h3>
+        <p style="color:var(--ink-2)">個々の要件は正しくても、並べると衝突する（表現の自由度 vs 法務の統制）。統合のフェーズは、欠陥を直す場ではなく、<strong>見えていなかった関係を見る</strong>場。</p>
+      </div>
+      <div class="card">
+        <span class="num">気づき 2</span>
+        <h3 style="font-size:1.1rem;margin:.3rem 0">「足りる」は、誰かが決めるしかない</h3>
+        <p style="color:var(--ink-2)">十分性に自動判定はない。どこまでで設計に渡すかは、ビジネスの判断＝握り。AIは整合は洗えても、<strong>十分かどうかは決められない</strong>。だからここがコンサルの仕事。</p>
+      </div>
+    </div>
+
+    <!-- ===================================================== CHECK -->
+    <h2 id="check">十分性チェック ── 設計に渡す前に</h2>
+    <p>合格ラインは「設計フェーズの担当者が、解釈の余地で手が止まらない」状態です。次に自信を持って“はい”と言えますか。</p>
+    <div class="artifact">
+      <div class="artifact__head"><b>サインオフ・セルフチェック</b><span class="tag">握る前に</span></div>
+      <div class="artifact__body">
+        <ul style="margin:0">
+          <li>□ すべての要件が、<strong>ビジネスゴールまで一本でつながっている</strong>か（孤立した要件はないか）</li>
+          <li>□ <strong>要件化されていないゴール</strong>（作っていない約束）が、未決として明示されているか</li>
+          <li>□ 互いに<strong>矛盾する要件</strong>がないか、あれば調停・優先が決まっているか</li>
+          <li>□ 未決事項が「<strong>誰が・いつまでに</strong>」の宿題に変わっているか</li>
+          <li>□ 主要な受け入れ条件を、<strong>動く画面で見せられる</strong>か</li>
+          <li>□ 今回やらないこと（スコープ外）に、関係者の<strong>合意</strong>があるか</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===================================================== NEXT -->
+    <h2 id="next">次へ ── そして、設計フェーズへ</h2>
+    <p>束ねて、見せて、握りました。これで、要件定義の体験ループ（依頼 → 壁打ち → 成果物 → 実装 → 検収）を、Why から合意まで <strong>一巡</strong>したことになります。Course の山は、ここで越えました。</p>
+    <div class="callout">
+      <h4>📨 最後の一歩は、引き渡し（M9）</h4>
+      <p>サインオフした要件は、ここから<strong>設計フェーズ</strong>に渡ります。確定した要件・トレーサビリティ表・未決事項リストを、設計が走り出せる「設計インプット一式」として整える ── それが <strong>M9（設計フェーズの準備）</strong>です。M9 は手を動かす教材を設けません。<strong>「要件定義を握った先に、設計へ渡す準備という仕事がある」</strong>こと自体を、ここで受け取ってください。良い要件定義は、良い引き継ぎで完成します。</p>
+    </div>
+    <div class="callout callout--win">
+      <h4>✦ ここまでで、握ったもの</h4>
+      <p>測れる成功（M1）、現状の課題（M2）、目指す体験（M3）、機能要件（M4）、情報設計（M5）、品質基準（M6）、方式判断（M7）、そして統合・合意（M8）。
+        コードを書けるようになったわけではありません。けれど、<strong>上流の判断が下流でどう効くかが“見える”</strong>ようになり、生成AIをその視点で使えるようになった ── 構想を、実装まで生きたまま届けるための筋力です。</p>
+    </div>
+    <div class="pill-row" style="margin:var(--sp-5) 0">
+      <a class="btn btn--ghost" href="m7.html">← M7 へ戻る</a>
+      <a class="btn" href="../nagi/index.html" target="_blank" rel="noopener">完成した NAGI を開く ↗</a>
+      <a class="btn btn--accent" href="../index.html">トップに戻る <span class="arr">→</span></a>
+    </div>
+  </main>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="fine">© 2026 改造道 Kaizō-dō ── 教育目的の架空教材。「凪 / NAGI」は架空のブランドです。 ｜ <a href="../index.html">トップへ</a></p>
+  </div>
+</footer>
+
+<script src="../assets/js/platform.js"></script>
+<script>
+/* Embedded sign-off board ─ 各要件の状態を変えると、整合(横)＋十分性(縦)で合意可否が変わる */
+(function () {
+  "use strict";
+  var board = document.querySelector(".sb");
+  if (!board) return;
+  var GOALS = { "g-pr":"林・報道到達", "g-kpi":"三宅・回遊/流入", "g-brand":"佐倉・ブランド体験", "g-legal":"和田・表現統制" };
+  var verdict = document.getElementById("sb-verdict"),
+      list = document.getElementById("sb-list"),
+      note = document.getElementById("sb-note");
+  var rows = Array.prototype.slice.call(board.querySelectorAll(".sb__row"));
+
+  function read(row) {
+    var get = function (k) { return row.querySelector('select[data-k="'+k+'"]').value; };
+    return { id: row.getAttribute("data-r"), goal: get("goal"), scope: get("scope"), ac: get("ac"), ver: get("ver") };
+  }
+  function li(cls, text) { return '<li class="'+cls+'">'+text+'</li>'; }
+
+  function render() {
+    var data = rows.map(read);
+    var blocking = [];   // 要対応（ブロッカー）
+    var oks = [];        // OK
+    var deferred = [];   // 見送り＝未決
+    var coveredGoals = {};
+
+    data.forEach(function (r) {
+      if (r.scope === "out") { deferred.push(r); return; }
+      if (r.goal !== "none") coveredGoals[r.goal] = true;
+      var probs = [];
+      if (r.goal === "none") probs.push("どのゴールにも紐づかない（スコープクリープの疑い）");
+      if (r.ac === "noac") probs.push("受け入れ条件が未定義（合意・検収できない）");
+      if (r.ver === "unver") probs.push("未検証（デモで Done を示せない）");
+      if (probs.length) blocking.push({ id: r.id, why: probs.join("／") });
+      else oks.push(r.id + "：ゴール紐づけ・受け入れ条件・検証がそろっている");
+    });
+
+    // 整合：要件化されていないゴール（未達の約束）
+    var unmet = Object.keys(GOALS).filter(function (g) { return !coveredGoals[g]; });
+
+    // 出力
+    var rowsHtml = "";
+    oks.forEach(function (t) { rowsHtml += li("ok", "OK｜" + t); });
+    blocking.forEach(function (b) { rowsHtml += li("ng", "要対応｜" + b.id + "：" + b.why); });
+    unmet.forEach(function (g) { rowsHtml += li("ng", "要対応｜ゴール「" + GOALS[g] + "」が要件化されていない（未達の約束）"); });
+    deferred.forEach(function (r) { rowsHtml += li("df", "見送り｜" + r.id + "：今回スコープ外 → 未決事項に記録（誰が・いつまでに）"); });
+    list.innerHTML = rowsHtml;
+
+    var blockCount = blocking.length + unmet.length;
+    if (blockCount === 0) {
+      verdict.className = "sb__verdict go";
+      verdict.textContent = "✓ サインオフ可能 ── 整合（横）と十分性（縦）がそろっています";
+    } else {
+      verdict.className = "sb__verdict no";
+      verdict.textContent = "✗ まだサインオフできない ── 要対応 " + blockCount + " 件";
+    }
+    note.innerHTML = "未決（見送り）として記録する項目：<b>" + deferred.length + " 件</b>。"
+      + "見送りは“悪”ではありません ── ただし、紐づくゴールが宙に浮く場合は、そのゴール自体を握り直す必要があります。";
+  }
+
+  board.addEventListener("change", render);
+  render();
+})();
+</script>
+</body>
+</html>
