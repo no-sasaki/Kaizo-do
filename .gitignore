@@ -3,3 +3,6 @@ Screenshot*.png
 Screenshot*.jpg
 *.tmp
 .DS_Store
+
+# プロンプト/応答の分析素材（公開デプロイには含めない）
+llm_response/

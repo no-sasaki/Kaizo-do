@@ -140,15 +140,23 @@
     <div class="callout callout--win">
       <h4>✦ コードは、AIに読ませて理解する</h4>
       <p>非技術者が実装を理解する近道は、暗記でも独学でもなく、<strong>気になったコードをそのままAIに渡して「何が問題で、なぜか」を聞く</strong>こと。握りどころは、返ってきた説明を<strong>コンサルの判断で課題に翻訳する</strong>ところです。</p>
+      <p style="margin:.6rem 0 0;font-size:.92rem"><strong>AIにソースを渡す方法（簡単な順）：</strong>
+        ① <strong>ソースをコピペ</strong>（基本）── ページを右クリック →「ページのソースを表示」→ 全選択してコピー。JSONはそのファイルのURLを開いてコピー。
+        ② <strong>URLを渡す</strong>（AIがWebを読める場合）。
+        ③ ファイルごと添付（対応AIなら）。<strong>迷ったら①でOK。</strong></p>
     </div>
     <div class="prompt">
       <div class="prompt__bar"><div class="left"><span class="prompt__kind prompt__kind--think">🧭 コンサルの思考</span><span class="label">コードを読ませて、原因を知る</span></div><button class="prompt__copy" data-copy="#p2">コピー</button></div>
-      <pre id="p2">現行サイトのコード（またはデータ）の一部を貼ります。
+      <pre id="p2">現行サイト（NAGI）のソースを貼ります。これは販売をストアに委ねた「非EC」のブランドサイトです。
 UX・アクセシビリティ・SEO・コンテンツモデルの観点で、何が問題で、その「原因」と「直す方向」を、
 コードを書かない人にも分かる言葉で説明してください。必ず「症状（ユーザーが感じること）」と
 「原因（実装でこうなっている）」を分けて書くこと。
 
-（ここに nagi-legacy のコードや data/products.json の一部を貼る）</pre>
+── 以下に、現行サイトのソースを貼り付け ──
+取得方法：現行サイト（nagi-legacy）のページを開き、右クリック →「ページのソースを表示」→ 全選択してコピー。
+商品データは、アドレスバーを …/nagi-legacy/data/products.json に変えて開き、全選択してコピー。
+
+［ここに HTMLソース と products.json を貼る］</pre>
     </div>
     <p><span class="example-tag">● 出力は一例</span> 返ってくる説明を鵜呑みにせず、現行サイトの実際の挙動と突き合わせて確かめます。<a href="prompting.html">プロンプトを自分で書けるようになるには →（Appendix）</a></p>
 
