@@ -193,7 +193,7 @@ UX・アクセシビリティ・SEO・コンテンツモデルの観点で、何
     <!-- PLAYGROUND -->
     <h3 id="diag">触って診断する ── 「ぱっと見」と「プロの目」</h3>
     <p>下は現行サイトの商品ページの一部です。最初は<strong>ぱっと見、そんなに悪くない</strong>。「プロの目で診断」に切り替えると、隠れていた問題が、原因とレンズつきで浮かび上がります。</p>
-    <div class="diag" id="diag">
+    <div class="diag" id="diagbox">
       <div class="diag__bar">
         <b>現行サイト・商品の一部</b>
         <button class="diag__tg" id="d-plain" aria-pressed="true">👁 ぱっと見</button>
@@ -346,7 +346,7 @@ UX・アクセシビリティ・SEO・コンテンツモデルの観点で、何
 <script>
 /* M2 診断オーバーレイ ─ ぱっと見 / プロの目 を切り替える */
 (function () {
-  var diag = document.getElementById("diag");
+  var diag = document.getElementById("diagbox");
   if (!diag) return;
   var plain = document.getElementById("d-plain");
   var pro = document.getElementById("d-diag");
